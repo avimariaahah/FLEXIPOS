@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Product extends Model
+class Supplier extends Model
 {
     use HasFactory, Notifiable;
 
@@ -16,16 +16,15 @@ class Product extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'productcategory',
-        'productname',
-        'brandname',
-        'wholesaleunit',
-        'retailunit',
-        'retailqtyperwholesaleunit',
-        'reorderpoint',
-        'markup',
-        'isactive',
-        'quantityonhand',
+        'supplierName',
+        'productName',
+        'address',
+        'Telephone1',
+        'Telephone2',
+        'contactPerson',
+        'isActive',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -43,16 +42,15 @@ class Product extends Model
     protected function casts(): array
     {
         return [
-            'productcategory',
+            'supplierName',
             'productname',
-            'brandname',
-            'wholesaleunit',
-            'retailunit',
-            'retailqtyperwholesaleunit',
-            'reorderpoint',
-            'markup',
-            'isactive',
-            'quantityonhand',
+            'address',
+            'Telephone1',
+            'Telephone2',
+            'contactPerson',
+            'isActive',
+            'created_at',
+            'updated_at',
         ];
     }
 }

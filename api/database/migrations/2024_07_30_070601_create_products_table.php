@@ -12,7 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->id('productID');
+            $table->string('productcategory');
+            $table->string('productname');
+            $table->string('brandname');
+            $table->decimal('wholesaleunit', 15, 2);  // Decimal with precision and scale for money
+            $table->decimal('retailunit', 15, 2);     // Decimal with precision and scale for money
+            $table->integer('retailqtyperwholesaleunit');
+            $table->integer('reorderpoint');
+            $table->decimal('markup', 5, 2);  // Assuming markup is a percentage, e.g., 10.00%
+            $table->boolean('isactive')->default(true);
+            $table->integer('quantityonhand');
             $table->timestamps();
         });
     }
