@@ -10,7 +10,7 @@ interface ProductCategoryServiceInterface
 
     public function createProductCategory(object $payload);
 
-    public function updateProductCategory(int $id, object $payload);
+    public function updateProductCategory(object $payload, int $id);
 
     public function removeProductCategory(int $id);
 }

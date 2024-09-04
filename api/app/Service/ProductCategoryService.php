@@ -36,9 +36,9 @@ class ProductCategoryService implements ProductCategoryServiceInterface
         return new ProductCategoryResource($productCategory);
     }
 
-    public function updateProductCategory(int $id, object $payload)
+    public function updateProductCategory(object $payload, int $id)
     {
-        $productCategory = $this->productCategoryRepository->update($id, $payload);
+        $productCategory = $this->productCategoryRepository->update($payload, $id);
 
         return new ProductCategoryResource($productCategory);
     }

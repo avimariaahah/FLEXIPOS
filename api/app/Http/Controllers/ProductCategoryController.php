@@ -33,7 +33,7 @@ class ProductCategoryController extends Controller
 
     public function update(ProductCategoryUpdateRequest $request, int $productCategoryId)
     {
-        return $this->productCategoryService->updateProductCategory($productCategoryId, $request);
+        return $this->productCategoryService->updateProductCategory($request, $productCategoryId);
     }
 
     public function destroy(int $productCategoryId)

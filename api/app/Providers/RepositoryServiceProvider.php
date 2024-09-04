@@ -24,7 +24,16 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        //Repository
+        $this->app->bind(UserRepositoryInterface::class, RepositoryUserRepository::class);
+        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        $this->app->bind(ProductCategoryRepositoryInterface::class, ProductCategoryRepositoryInterface::class);
+
+        //Service
+        $this->app->bind(ProductCategoryServiceInterface::class, ProductCategoryService::class);
+        $this->app->bind(UserServiceInterface::class, UserService::class);
+        $this->app->bind(ProductServiceInterface::class, ProductService::class);
+        $this->app->bind(AuthenticationServiceInterface::class, AuthService::class);
     }
 
     /**
@@ -32,16 +41,6 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //Repository
-        $this->app->bind(UserRepositoryInterface::class, RepositoryUserRepository::class);
-        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
-        $this->app->bind(ProductCategoryRepositoryInterface::class, ProductCategoryRepositoryInterface::class);
-
-
-        //Service
-        $this->app->bind(ProductCategoryServiceInterface::class, ProductCategoryService::class);
-        $this->app->bind(UserServiceInterface::class, UserService::class);
-        $this->app->bind(ProductServiceInterface::class, ProductService::class);
-        $this->app->bind(AuthenticationServiceInterface::class, AuthService::class);
+        //
     }
 }

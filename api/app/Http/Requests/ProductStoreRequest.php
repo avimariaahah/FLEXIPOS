@@ -23,10 +23,10 @@ class ProductStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required',
             'productcategory' => 'required',
             'productname' => 'required',
             'brandname' => 'required',
+            'supplierid' => 'required',
             'wholesaleunit' => ['required', 'decimal:1,8'],
             'retailunit' => ['required', 'decimal:1,8'],
             'retailqtyperwholesaleunit' => 'required',

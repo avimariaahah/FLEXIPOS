@@ -22,7 +22,6 @@ class ProductCategoryStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required',
             'productcategoryname' => 'required',
             'isactive' => 'required',
         ];

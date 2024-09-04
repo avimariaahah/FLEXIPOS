@@ -15,7 +15,14 @@ class InventoryAdjustments extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'adjustmentdate',
+        'adjustmenttype',
+        'reason',
+        'status',
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -31,6 +38,13 @@ class InventoryAdjustments extends Model
      */
     protected function casts(): array
     {
-        return [];
+        return [
+            'adjustmentdate',
+            'adjustmenttype',
+            'reason',
+            'status',
+            'created_at',
+            'updated_at',
+        ];
     }
 }
