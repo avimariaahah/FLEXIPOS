@@ -47,14 +47,15 @@ class BaseAPIService {
             switch (error.response.status) {
                 case 400:
                     throw new APIError(error.response._data);
+                case 401:
+                    this.revokeAccess();
+                    throw new APIError(error.response._data);
                 case 404:
                     throw new APIError(error.response._data);
                 case 422:
                     throw new APIError(error.response._data);
                 case 429:
                     throw new APIError(error.response._data);
-                case 401:
-                    this.revokeAccess();
                 case 500:
                     throw new APIError({
                         message:
@@ -71,7 +72,7 @@ class BaseAPIService {
 
     revokeAccess() {
         localStorage.removeItem("_token");
-        navigateTo("/");
+        navigateTo("/signin");
     }
 }
 

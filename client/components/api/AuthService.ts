@@ -1,4 +1,4 @@
-import BaseAPIService from "~/components/api/BaseAPIService";
+import BaseAPIService from "./BaseAPIService";
 
 class AuthService extends BaseAPIService {
     async login(params: object): Promise<any> {

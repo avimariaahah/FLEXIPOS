@@ -27,6 +27,7 @@ class ProductResource extends JsonResource
             'isactive' => $this->isactive,
             'quantityonhand' => $this->quantityonhand,
             'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
