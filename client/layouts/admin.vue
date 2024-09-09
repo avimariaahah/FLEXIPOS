@@ -1,26 +1,4 @@
-<!--
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
--->
 <template>
-    <!--
-      This example requires updating your template:
-  
-      ```
-      <html class="h-full bg-white">
-      <body class="h-full">
-      ```
-    -->
     <div>
         <TransitionRoot as="template" :show="sidebarOpen">
             <Dialog class="relative z-50 lg:hidden" @close="sidebarOpen = false">
@@ -46,7 +24,6 @@
                                     </button>
                                 </div>
                             </TransitionChild>
-                            <!-- Sidebar component, swap this element with another sidebar if you like -->
                             <div
                                 class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10">
                                 <div class="flex h-16 shrink-0 items-center">
@@ -59,12 +36,10 @@
                                         <li>
                                             <ul role="list" class="-mx-2 space-y-1">
                                                 <li v-for="item in navigation" :key="item.name">
-                                                    <a :href="item.href" :class="[
-                                                        item.current
-                                                            ? 'bg-gray-800 text-white'
-                                                            : 'text-gray-400 hover:bg-gray-800 hover:text-white',
+                                                    <a :class="[
+                                                        item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white',
                                                         'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
-                                                    ]">
+                                                    ]" @click.prevent="handleNavigation(item)">
                                                         <component :is="item.icon" class="h-6 w-6 shrink-0"
                                                             aria-hidden="true" />
                                                         {{ item.name }}
@@ -72,7 +47,6 @@
                                                 </li>
                                             </ul>
                                         </li>
-
                                         <li class="mt-auto">
                                             <a href="#"
                                                 class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white">
@@ -91,7 +65,6 @@
 
         <!-- Static sidebar for desktop -->
         <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-            <!-- Sidebar component, swap this element with another sidebar if you like -->
             <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
                 <div class="flex h-16 shrink-0 items-center">
                     <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
@@ -102,12 +75,10 @@
                         <li>
                             <ul role="list" class="-mx-2 space-y-1">
                                 <li v-for="item in navigation" :key="item.name">
-                                    <a :href="item.href" :class="[
-                                        item.current
-                                            ? 'bg-gray-800 text-white'
-                                            : 'text-gray-400 hover:bg-gray-800 hover:text-white',
+                                    <a :class="[
+                                        item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white',
                                         'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
-                                    ]">
+                                    ]" @click.prevent="handleNavigation(item)">
                                         <component :is="item.icon" class="h-6 w-6 shrink-0" aria-hidden="true" />
                                         {{ item.name }}
                                     </a>
@@ -138,15 +109,12 @@
                 <div class="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true" />
 
                 <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-                    <form class="relative flex flex-1" action="#" method="GET">
+                    <label class="relative flex flex-1" action="#" method="GET">
                         <label for="search-field" class="sr-only">Search</label>
-                        <MagnifyingGlassIcon
-                            class="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400"
-                            aria-hidden="true" />
-                        <input id="search-field"
+                        <label id="search-field"
                             class="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
                             placeholder="Search..." type="search" name="search" />
-                    </form>
+                    </label>
                     <div class="flex items-center gap-x-4 lg:gap-x-6">
 
                         <!-- Separator -->
@@ -209,7 +177,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, reactive } from 'vue';
 import {
     Dialog,
     DialogPanel,
@@ -219,38 +187,36 @@ import {
     MenuItems,
     TransitionChild,
     TransitionRoot,
-} from "@headlessui/vue";
+} from '@headlessui/vue';
 import {
     Bars3Icon,
-    BellIcon,
     ShoppingBagIcon,
     AdjustmentsHorizontalIcon,
-    CalendarIcon,
-    ChartPieIcon,
-    Cog6ToothIcon,
-    DocumentDuplicateIcon,
-    FolderIcon,
-    HomeIcon,
     UsersIcon,
+    HomeIcon,
+    Cog6ToothIcon,
     XMarkIcon,
-} from "@heroicons/vue/24/outline";
-import { ChevronDownIcon, MagnifyingGlassIcon } from "@heroicons/vue/20/solid";
-import { authService } from "~/components/api/AuthService";
+} from '@heroicons/vue/24/outline';
+import { ChevronDownIcon } from '@heroicons/vue/20/solid';
+import { authService } from '~/components/api/AuthService';
 
-const navigation = [
-    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
-    { name: "Products", href: "../dashboard/products", icon: ShoppingBagIcon, current: false },
-    { name: "Adjustments", href: "../dashboard/adjustments", icon: AdjustmentsHorizontalIcon, current: false },
-    { name: "Employees", href: "../dashboard/employees", icon: UsersIcon, current: false },
-    { name: "Transactions", href: "../dashboard/transactions", icon: UsersIcon, current: false },
-    { name: "Roles/Permissions", href: "../dashboard/roleperm", icon: UsersIcon, current: false },
-    { name: "Returns", href: "../dashboard/returns", icon: UsersIcon, current: false },
-    { name: "Warehouse", href: "../dashboard/warehouse", icon: UsersIcon, current: false },
-    { name: "Reports", href: "../dashboard/reports", icon: UsersIcon, current: false },
-];
+const navigation = reactive([
+    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
+    { name: 'Products', href: '../products', icon: ShoppingBagIcon, current: false },
+    { name: 'Customers', href: '/customers', icon: HomeIcon, current: false },
+    { name: 'Suppliers', href: '/suppliers', icon: HomeIcon, current: false },
+    { name: 'Adjustments', href: '../adjustments', icon: AdjustmentsHorizontalIcon, current: false },
+    { name: 'Employees', href: '../employees', icon: UsersIcon, current: false },
+    { name: 'Transactions', href: '../transactions', icon: UsersIcon, current: false },
+    { name: 'Roles/Permissions', href: '../roleperm', icon: UsersIcon, current: false },
+    { name: 'Returns', href: '../returns', icon: UsersIcon, current: false },
+    { name: 'Warehouse', href: '../warehouse', icon: UsersIcon, current: false },
+    { name: 'Reports', href: '../reports', icon: UsersIcon, current: false },
+]);
+
 const userNavigation = [
-    { name: "Your profile", href: "#" },
-    { name: "Sign out", href: "../" },
+    { name: 'Your profile', href: '#' },
+    { name: 'Sign out', href: '../' },
 ];
 
 const state = reactive({
@@ -263,8 +229,8 @@ async function logout() {
     try {
         const response = await authService.logout();
         if (response) {
-            localStorage.removeItem("_token");
-            navigateTo("../");
+            localStorage.removeItem('_token');
+            window.location.href = '../';
         }
     } catch (error) {
         state.error = error;
@@ -273,4 +239,15 @@ async function logout() {
 }
 
 const sidebarOpen = ref(false);
+
+function handleNavigation(item) {
+    setCurrent(item.name);
+    window.location.href = item.href;
+}
+
+function setCurrent(name) {
+    navigation.forEach(item => {
+        item.current = item.name === name;
+    });
+}
 </script>

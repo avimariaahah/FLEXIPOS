@@ -68,9 +68,9 @@
                             <h1 class="mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">The
                                 point
                                 of sale of every sale</h1>
-                            <p class="mt-6 text-lg leading-8 text-gray-600 text-sm">Discover the future of smooth
+                            <p class="mt-6 text-lg leading-8 text-gray-600">Discover the future of smooth
                                 transaction.</p>
-                            <p class="mt-2 text-lg leading-8 text-gray-600 text-sm">Get our user-friendly POS system to
+                            <p class="mt-2 text-lg leading-8 text-gray-600">Get our user-friendly POS system to
                                 manage sales, track inventory, and improve your business efficiency.</p>
                             <div class="mt-10 flex items-center gap-x-6">
                                 <a href=""

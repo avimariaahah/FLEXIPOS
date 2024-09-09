@@ -1,20 +1,21 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
-  css: ["~/assets/css/main.css"],
+    devtools: { enabled: true },
+    modules: ['@pinia/nuxt'],
+    css: ["~/assets/css/main.css"],
+    postcss: {
+        plugins: {
+            tailwindcss: {},
+            autoprefixer: {},
+        },
+    },
+    runtimeConfig: {
+        public: {
+            appName: process.env.APP_NAME,
+            apiBaseURL: process.env.API_BASE_URL,
+        },
+    },
+    ssr: false,
 
-  postcss: {
-      plugins: {
-          tailwindcss: {},
-          autoprefixer: {},
-      },
-  },
-
-  runtimeConfig: {
-      public: {
-          apiBaseURL: process.env.API_BASE_URL,
-      },
-  },
-
-  compatibilityDate: "2024-07-10",
+    compatibilityDate: "2024-07-10",
 });
