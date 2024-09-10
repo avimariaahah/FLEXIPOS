@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('lastname'); // Last name of the customer
             $table->string('email')->unique(); // Email address, unique constraint to avoid duplicates
             $table->string('phonenumber'); // Phone number of the customer
+            $table->string('billingaddress'); // Billing address of the customer
             $table->boolean('isactive')->default(true); // Active status of the customer
             $table->timestamps(); // Created at and Updated at timestamps
         });

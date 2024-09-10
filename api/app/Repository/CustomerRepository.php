@@ -24,6 +24,7 @@ class CustomerRepository implements CustomerRepositoryInterface
         $customer->lastname = $payload->lastname;
         $customer->email = $payload->email;
         $customer->phonenumber = $payload->phonenumber;
+        $customer->billingaddress = $payload->billingaddress;
         $customer->isactive = $payload->isactive;
         $customer->save();
 
@@ -37,6 +38,7 @@ class CustomerRepository implements CustomerRepositoryInterface
         $customer->lastname = $payload->lastname;
         $customer->email = $payload->email;
         $customer->phonenumber = $payload->phonenumber;
+        $customer->billingaddress = $payload->billingaddress;
         $customer->isactive = $payload->isactive;
         $customer->save();
 

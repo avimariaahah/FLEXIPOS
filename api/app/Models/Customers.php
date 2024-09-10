@@ -15,6 +15,9 @@ class Customers extends Model
      *
      * @var array<int, string>
      */
+    protected $primaryKey = 'customerID';
+
+
     protected $fillable = [
         'firstname',
         'lastname',

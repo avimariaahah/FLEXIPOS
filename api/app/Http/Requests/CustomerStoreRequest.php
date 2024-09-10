@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Customers;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class CustomerStoreRequest extends FormRequest
 {
@@ -22,12 +24,12 @@ class CustomerStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'email' => 'required',
-            'phonenumber' => 'required',
-            'billingaddress' => 'required',
-            'isactive' => 'required',
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phonenumber' => 'required|string|max:20',
+            'billingaddress' => 'required|string|max:255', // Ensure this matches
+            'isactive' => 'required|boolean',
         ];
     }
 }

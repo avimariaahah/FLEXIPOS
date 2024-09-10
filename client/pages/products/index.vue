@@ -6,21 +6,9 @@
                 <Head>
                     <Title>Products - {{ runtimeConfig.public.appName }}</Title>
                 </Head>
-                <!-- Add Button and Description -->
-                <div class="sm:flex sm:items-center">
-                    <div class="sm:flex-auto">
-                        <h1 class="text-base font-semibold leading-6 text-gray-900">Products</h1>
-                        <p class="mt-2 text-sm text-gray-700">A list of all the products and their details.</p>
-                    </div>
-                    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <button type="button" @click="toggleForm"
-                            class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                            Add Product</button>
-                    </div>
-                </div>
-                <!-- Search Bar
-                <div class="relative flex items-center space-x-4 mt-3">
-                    <div class="relative flex flex-1">
+                <div class="sm:flex sm:items-center sm:justify-between">
+                    <!-- Search Bar -->
+                    <div class="relative flex flex-1 ml-8 mt-5">
                         <svg xmlns="http://www.w3.org/2000/svg"
                             class="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500"
                             viewBox="0 0 20 20" fill="currentColor">
@@ -31,7 +19,20 @@
                         <input type="text" placeholder="Search"
                             class="block w-70 rounded-md border border-gray-400 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs pl-8 pr-2 py-1.5" />
                     </div>
-                </div> -->
+                    <!-- Add Product Button -->
+                    <div class="mt-4 sm:ml-16 sm:mt-3 sm:flex-none mr-6">
+                        <button type="button" @click="toggleForm"
+                            class="block rounded-md bg-gray-900 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                            Add Product
+                        </button>
+                    </div>
+                </div>
+                <div class="sm:flex sm:items-center sm:justify-between mt-4 ml-8">
+                    <div class="sm:flex-auto">
+                        <h1 class="text-base font-semibold leading-6 text-gray-900">Products</h1>
+                        <p class="mt-2 text-sm text-gray-700">A list of all the products and their details.</p>
+                    </div>
+                </div>
                 <!-- Product Form -->
                 <div v-if="showForm" class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
                     <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
@@ -40,9 +41,15 @@
                                 <div class="flex items-center mb-1 ml-7">
                                     <label for="productcategory"
                                         class="text-xxs font-medium text-gray-700 w-20 mr-2">Category</label>
-                                    <input id="productcategory" v-model="product.productcategory" type="text"
-                                        class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs px-3 py-2"
-                                        required />
+                                    <select id="productcategory" v-model="product.productcategory"
+                                        class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xxs px-3 py-2"
+                                        required>
+                                        <option disabled value="">Select a category</option>
+                                        <option value="category1">Category 1</option>
+                                        <option value="category2">Category 2</option>
+                                        <option value="category3">Category 3</option>
+                                        <!-- Add more categories as needed -->
+                                    </select>
                                 </div>
                                 <div class="flex items-center mb-1 ml-7">
                                     <label for="productname"
@@ -61,39 +68,39 @@
                                 <div class="flex items-center mb-1 ml-7">
                                     <label for="wholesaleunit"
                                         class="text-xxs font-medium text-gray-700 w-20 mr-2">Wholesale Unit</label>
-                                    <input id="wholesaleunit" v-model="product.wholesaleunit" type="text"
+                                    <input id="wholesaleunit" v-model="product.wholesaleunit" type="number"
                                         class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs px-3 py-2" />
                                 </div>
                                 <div class="flex items-center mb-1 ml-7">
                                     <label for="retailunit" class="text-xxs font-medium text-gray-700 w-20 mr-2">Retail
                                         Unit</label>
-                                    <input id="retailunit" v-model="product.retailunit" type="text"
+                                    <input id="retailunit" v-model="product.retailunit" type="number"
                                         class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs px-3 py-2" />
                                 </div>
                                 <div class="flex items-center mb-1 ml-7">
                                     <label for="retailqtyperwholesaleunit"
                                         class="text-xxs font-medium text-gray-700 w-20 mr-2">Retail Qty</label>
                                     <input id="retailqtyperwholesaleunit" v-model="product.retailqtyperwholesaleunit"
-                                        type="number"
+                                        type="number" min="0"
                                         class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs px-3 py-2" />
                                 </div>
                                 <div class="flex items-center mb-1 ml-7">
                                     <label for="reorderpoint"
                                         class="text-xxs font-medium text-gray-700 w-20 mr-2">Reorder
                                         Point</label>
-                                    <input id="reorderpoint" v-model="product.reorderpoint" type="number"
+                                    <input id="reorderpoint" v-model="product.reorderpoint" type="number" min="0"
                                         class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs px-3 py-2" />
                                 </div>
                                 <div class="flex items-center mb-1 ml-7">
                                     <label for="markup"
                                         class="text-xxs font-medium text-gray-700 w-20 mr-2">Markup</label>
-                                    <input id="markup" v-model="product.markup" type="number"
+                                    <input id="markup" v-model="product.markup" type="number" min="0"
                                         class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs px-3 py-2" />
                                 </div>
                                 <div class="flex items-center mb-1 ml-7">
                                     <label for="quantityonhand" class="text-xxs font-medium text-gray-700 w-20 mr-2">Qty
                                         on Hand</label>
-                                    <input id="quantityonhand" v-model="product.quantityonhand" type="number"
+                                    <input id="quantityonhand" v-model="product.quantityonhand" type="number" min="0"
                                         class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs px-3 py-2" />
                                 </div>
                                 <div class="flex justify-end gap-2 mt-4">
@@ -111,6 +118,66 @@
                     </div>
                 </div>
 
+                <!-- View Details -->
+                <div v-if="productToView"
+                    class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
+                    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                        <div class="grid grid-cols-1 gap-1 mt-3 mx-2">
+                            <div class="flex items-center mb-1 ml-7">
+                                <label class="text-xxs font-medium text-gray-700 w-20 mr-2">Category:</label>
+                                <span>{{ state.products.data.find(p => p.productID === productToView)?.productcategory
+                                    }}</span>
+                            </div>
+                            <div class="flex items-center mb-1 ml-7">
+                                <label class="text-xxs font-medium text-gray-700 w-20 mr-2">Product Name:</label>
+                                <span>{{ state.products.data.find(p => p.productID === productToView)?.productname
+                                    }}</span>
+                            </div>
+                            <div class="flex items-center mb-1 ml-7">
+                                <label class="text-xxs font-medium text-gray-700 w-20 mr-2">Brand Name:</label>
+                                <span>{{ state.products.data.find(p => p.productID === productToView)?.brandname
+                                    }}</span>
+                            </div>
+                            <div class="flex items-center mb-1 ml-7">
+                                <label class="text-xxs font-medium text-gray-700 w-20 mr-2">Wholesale Unit:</label>
+                                <span>{{ state.products.data.find(p => p.productID === productToView)?.wholesaleunit
+                                    }}</span>
+                            </div>
+                            <div class="flex items-center mb-1 ml-7">
+                                <label class="text-xxs font-medium text-gray-700 w-20 mr-2">Retail Unit:</label>
+                                <span>{{ state.products.data.find(p => p.productID === productToView)?.retailunit
+                                    }}</span>
+                            </div>
+                            <div class="flex items-center mb-1 ml-7">
+                                <label class="text-xxs font-medium text-gray-700 w-20 mr-2">Retail Qty:</label>
+                                <span>{{ state.products.data.find(p => p.productID ===
+                                    productToView)?.retailqtyperwholesaleunit }}</span>
+                            </div>
+                            <div class="flex items-center mb-1 ml-7">
+                                <label class="text-xxs font-medium text-gray-700 w-20 mr-2">Reorder Point:</label>
+                                <span>{{ state.products.data.find(p => p.productID === productToView)?.reorderpoint
+                                    }}</span>
+                            </div>
+                            <div class="flex items-center mb-1 ml-7">
+                                <label class="text-xxs font-medium text-gray-700 w-20 mr-2">Markup:</label>
+                                <span>{{ state.products.data.find(p => p.productID === productToView)?.markup }}</span>
+                            </div>
+                            <div class="flex items-center mb-1 ml-7">
+                                <label class="text-xxs font-medium text-gray-700 w-20 mr-2">Qty on Hand:</label>
+                                <span>{{ state.products.data.find(p => p.productID === productToView)?.quantityonhand
+                                    }}</span>
+                            </div>
+                            <div class="flex justify-end gap-2 mt-4">
+                                <button @click="productToView = null"
+                                    class="rounded-md bg-gray-200 px-4 py-2 text-xxs font-semibold text-gray-700 shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300">
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Product Table-->
                 <div>
                     <Alert type="danger" :text="state.error?.message" v-if="state.error" />
                     <div class="table-responsive">
@@ -146,15 +213,34 @@
                                     <td>
                                         <span>{{ product.markup }}</span>
                                     </td>
+
                                     <td>
-                                        <span>{{ product.isactive }}</span>
+                                        <span
+                                            :class="product.isactive
+                                                ? 'inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20'
+                                                : 'inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20'">
+                                            {{ product.isactive ? 'Active' : 'Inactive' }}
+                                        </span>
                                     </td>
+
                                     <td>
                                         <span>{{ product.quantityonhand }}</span>
                                     </td>
+
                                     <td class="px-4 py-2 text-xxs text-gray-700">
                                         <div class="flex space-x-2">
-                                            <button @click="" class="text-gray-600 hover:text-gray-900">
+                                            <button @click="viewProduct(product.productID)"
+                                                class="text-gray-600 hover:text-gray-900">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                                                    viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                                    <path fill-rule="evenodd"
+                                                        d="M12 4.5C8.798 4.5 6 7.057 6 10.5S8.798 16.5 12 16.5 18 13.943 18 10.5 15.202 4.5 12 4.5ZM12 15.5C10.343 15.5 9 14.156 9 12.5S10.343 9.5 12 9.5 15 10.844 15 12.5 13.657 15.5 12 15.5ZM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2ZM12 20C7.03 20 3 15.97 3 12S7.03 4 12 4s9 4.03 9 9-4.03 9-9 9Z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
+
+                                            <button @click="editProduct(product.productID)"
+                                                class="text-gray-600 hover:text-gray-900">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
                                                     viewBox="0 0 20 20" fill="currentColor">
                                                     <path
@@ -185,7 +271,7 @@
 
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { productService } from '~/components/api/ProductService';
 
 const runtimeConfig = useRuntimeConfig();
@@ -205,9 +291,9 @@ const state = reactive({
         { name: "Product Name", sorter: true, key: "productname" },
         { name: "Category", sorter: true, key: "productcategory" },
         { name: "Brand", sorter: true, key: "brandname" },
-        { name: "Wholesale Unit", sorter: true, key: "wholesaleunit" },
-        { name: "Retail Unit", sorter: true, key: "retailunit" },
-        { name: "Retail Qty per Wholesale Unit", sorter: true, key: "retailqtyperwholesaleunit" },
+        { name: "Wholesale", sorter: true, key: "wholesaleunit" },
+        { name: "Retail", sorter: true, key: "retailunit" },
+        { name: "Retail Quantity", sorter: true, key: "retailqtyperwholesaleunit" },
         { name: "Reorder Point", sorter: true, key: "reorderpoint" },
         { name: "Markup", sorter: true, key: "markup" },
         { name: "Is Active", sorter: true, key: "isactive" },
@@ -262,16 +348,14 @@ function sort(sortingData: { column: string; sort: string }) {
         };
     } else {
         console.error('Invalid sort order:', sortingData.sort);
-        // You can also set a default sort order here if needed
         state.sortData = {
             sortField: sortingData.column,
-            sortOrder: 'ascend', // or 'descend'
+            sortOrder: 'ascend',
         };
     }
     fetchProducts();
 }
 
-// Product form data
 const product = ref({
     productcategory: '',
     productname: '',
@@ -285,7 +369,8 @@ const product = ref({
     quantityonhand: '',
 });
 
-// Save product function
+const productToEdit = ref<number | null>(null);
+
 async function saveProduct() {
     try {
         const products = {
@@ -294,61 +379,87 @@ async function saveProduct() {
             brandname: product.value.brandname,
             wholesaleunit: product.value.wholesaleunit,
             retailunit: product.value.retailunit,
-            retailqtyperwholesaleunit: parseInt(product.value.retailqtyperwholesaleunit, 10),
-            reorderpoint: parseInt(product.value.reorderpoint, 10),
-            markup: parseFloat(product.value.markup).toFixed(2),
+            retailqtyperwholesaleunit: parseInt(product.value.retailqtyperwholesaleunit, 10) || 0,
+            reorderpoint: parseInt(product.value.reorderpoint, 10) || 0,
+            markup: parseFloat(product.value.markup) || 0,
             isactive: product.value.isactive,
-            quantityonhand: parseInt(product.value.quantityonhand, 10),
+            quantityonhand: parseInt(product.value.quantityonhand, 10) || 0,
         };
 
-        const response = await productService.createProduct(products);
+        let response;
 
-        if (response != null) {
-            alert('Product has been added!');
-            fetchProducts();
-            showForm.value = false;
+        if (productToEdit.value) {
+            // Update existing product.
+            response = await productService.updateProduct(productToEdit.value, products);
+            alert(response ? 'Product has been updated!' : 'Product update failed!');
         } else {
-            alert('Product creation failed!');
-            fetchProducts();
-            showForm.value = false;
+            // Create new product.
+            response = await productService.createProduct(products);
+            alert(response ? 'Product has been added!' : 'Product creation failed!');
         }
+
+        fetchProducts(); // Refresh the product list.
+        toggleForm(); // Hide the form after save.
     } catch (error: any) {
-        console.error(error.message);
+        console.error('Error saving product:', error.message);
+        alert('An error occurred while saving the product.');
+    }
+}
+const productToView = ref<number | null>(null);
+
+function viewProduct(productID: number) {
+    const selectedProduct = state.products.data.find(p => p.productID === productID);
+
+    if (selectedProduct) {
+        productToView.value = productID;
+    } else {
+        console.error(`Product with ID ${productID} not found.`);
     }
 }
 
-// Delete product function
+
+// Delete product function.
 async function deleteProduct(productID: number) {
     try {
         const response = await productService.deleteProduct(productID);
-
-        if (response != null) {
-            alert('Product has been deleted!');
-            fetchProducts(); // Refresh the product list
-        } else {
-            alert('Product deletion failed!');
-        }
+        alert(response ? 'Product has been deleted!' : 'Product deletion failed!');
+        fetchProducts();
     } catch (error: any) {
         console.error(error.message);
     }
 }
 
-// // Edit product function
-// function editProduct(productID: number) {
-//     // Find the product with the matching ID
-//     const selectedProduct = state.products.find(p => p.productID === productID);
+// Update product function.
+function editProduct(productID: number) {
+    const selectedProduct = state.products.data.find(p => p.productID === productID);
 
-//     if (selectedProduct) {
-//         product.value = { ...selectedProduct };  // Populate the form with selected product data
-//         showForm.value = true;
-//     } else {
-//         console.error(`Product with ID ${productID} not found.`);
-//     }
-// }
+    if (selectedProduct) {
+        product.value = { ...selectedProduct };
+        productToEdit.value = productID;
+        showForm.value = true;
+    } else {
+        console.error(`Product with ID ${productID} not found.`);
+    }
+}
 
 const showForm = ref(false);
 
 function toggleForm() {
     showForm.value = !showForm.value;
+    if (!showForm.value) {
+        product.value = {
+            productcategory: '',
+            productname: '',
+            brandname: '',
+            wholesaleunit: '',
+            retailunit: '',
+            retailqtyperwholesaleunit: '',
+            reorderpoint: '',
+            markup: '',
+            isactive: false,
+            quantityonhand: '',
+        };
+        productToEdit.value = null;
+    }
 }
 </script>
