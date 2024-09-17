@@ -1,11 +1,21 @@
 {
     "alert": {
       "Success": "Success",
+      "Error": "Error",
       "customerSuccessfullyUpdated": "Customer successfully updated",
       "customerUpdateFailed": "Customer update failed",
       "customerSuccessfullyCreated": "Customer successfully created",
       "customerCreationFailed": "Customer creation failed",
       "customerHasBeenDeleted": "Customer successfully deleted",
-      "errorOccurredWhileSavingCustomer": "An error occurred while saving the customer"
-    }
+      "customerDeletionFailed": "An error occured while deleting the customer",
+      "errorOccurredWhileSavingCustomer": "An error occurred while saving the customer",
+      "errorOccuredWhileViewingCustomer": "An error occure while trying to view a customer",
+      "errorCustomerNotFound": "Customer not Found"
+    },
+    "form": {
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+  "save": "save",
+  "cancel": "cancel"
 }

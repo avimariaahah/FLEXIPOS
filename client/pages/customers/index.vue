@@ -84,14 +84,12 @@
                                     <FormError :error="state?.error?.errors?.isactive?.[0]" />
                                 </div>
                                 <div class="flex justify-end gap-2 mt-4">
-                                    <button type="submit"
-                                        class="rounded-md bg-gray-900 px-4 py-2 text-xxs font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                                    <FormButton type="submit" buttonStyle="success" class="w-full">
                                         Save
-                                    </button>
-                                    <button @click="toggleForm" type="button"
-                                        class="rounded-md bg-gray-200 px-4 py-2 text-xxs font-semibold text-gray-700 shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300">
+                                    </FormButton>
+                                    <FormButton @click="toggleForm" buttonStyle="xxx" class="w-full">
                                         Cancel
-                                    </button>
+                                    </FormButton>
                                 </div>
                             </div>
                         </form>
@@ -303,6 +301,7 @@ const v$ = useVuelidate(rules, { customer });
 
 // Alert and i18n setup
 const { successAlert } = useAlert();
+const { errorAlert } = useAlert();
 const { t } = useI18n()
 
 onMounted(() => {
@@ -321,7 +320,7 @@ async function fetchCustomers() {
         const response = await customerService.getCustomers();
         state.customers = response;
     } catch (error: any) {
-        state.error = error;
+        errorAlert("error", "Something went wrong while fetching customers.");
     }
     state.isTableLoading = false;
 }
@@ -376,18 +375,17 @@ async function saveCustomer() {
             // Update existing customer.
             response = await customerService.updateCustomer(customerToEdit.value, customerData);
             if (response) {
-                successAlert(`${t('alert.success')}!`, `${t('alert.customerSuccessfullyUpdated')}.`);
+                successAlert(`${t('alert.Success')}!`, `${t('alert.customerSuccessfullyUpdated')}.`);
             } else {
-                alert(t('alert.customerUpdateFailed'));
+                errorAlert(`${t('alert.Error')}!`, `${t('alert.customerUpdateFailed')}.`);
             }
         } else {
             // Create new customer.
             response = await customerService.createCustomer(customerData);
             if (response) {
-                successAlert(`${t('alert.success')}!`, `${t('alert.customerSuccessfullyCreated')}.`);
+                successAlert(`${t('alert.Success')}!`, `${t('alert.customerSuccessfullyCreated')}.`);
             } else {
-                alert(t('alert.customerCreationFailed'));
-                console.log(customer.value.isactive);
+                errorAlert(`${t('alert.Error')}!`, `${t('alert.customerCreationFailed')}.`);
             }
         }
 
@@ -395,7 +393,7 @@ async function saveCustomer() {
         toggleForm(); // Hide the form after save.
     } catch (error: any) {
         console.error('Error saving customer:', error.message);
-        alert(t('alert.errorOccurredWhileSavingCustomer'));
+        errorAlert(`${t('alert.Error')}!`, `${t('alert.errorOccurredWhileSavingCustomer')}.`);
     }
 }
 
@@ -407,6 +405,7 @@ function viewCustomer(customerID: number) {
         customerToView.value = customerID; // Show the view modal
     } else {
         console.error(`Customer with ID ${customerID} not found.`);
+        errorAlert(`${t('alert.Error')}!`, `${t('alert.errorOccuredWhileViewingCustomer')}.`);
     }
 }
 
@@ -415,9 +414,10 @@ const customerToView = ref<number | null>(null);
 async function deleteCustomer(customerID: number) {
     try {
         const response = await customerService.deleteCustomer(customerID);
-        successAlert(`${t('alert.danger')}!`, `${t('alert.customerHasBeenDeleted')}.`);
+        successAlert(`${t('alert.Success')}!`, `${t('alert.customerHasBeenDeleted')}.`);
         fetchCustomers();
     } catch (error: any) {
+        errorAlert(`${t('alert.Error')}!`, `${t('alert.customerDeletionFailed')}.`);
         console.error(error.message);
     }
 }
@@ -430,7 +430,7 @@ function editCustomer(customerID: number) {
         customerToEdit.value = customerID;
         showForm.value = true;
     } else {
-        console.error(`Customer with ID ${customerID} not found.`);
+        errorAlert(`${t('alert.Error')}!`, `${t('alert.customerNotFound' + ' With ID:' + { customerID })}.`);
     }
 }
 

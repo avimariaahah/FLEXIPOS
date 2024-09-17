@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductCategoryStoreRequest;
 use App\Http\Requests\ProductCategoryUpdateRequest;
 use App\Interface\Service\ProductCategoryServiceInterface;
-use Illuminate\Http\Request;
 
 class ProductCategoryController extends Controller
 {
