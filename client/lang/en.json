@@ -1,0 +1,11 @@
+{
+    "alert": {
+      "Success": "Success",
+      "customerSuccessfullyUpdated": "Customer successfully updated",
+      "customerUpdateFailed": "Customer update failed",
+      "customerSuccessfullyCreated": "Customer successfully created",
+      "customerCreationFailed": "Customer creation failed",
+      "customerHasBeenDeleted": "Customer successfully deleted",
+      "errorOccurredWhileSavingCustomer": "An error occurred while saving the customer"
+    }
+}

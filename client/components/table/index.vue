@@ -14,22 +14,6 @@
                                             item.textAlign === 'right' && 'text-right',
                                             item.textAlign === 'center' && 'text-center']">
                                             <p class="grow truncate">{{ item.name }}</p>
-                                            <div class="flex items-center justify-end" v-if="item.sorter">
-                                                <ArrowsUpDownIcon
-                                                    class="h-5 w-5 cursor-pointer text-gray-400 hover:text-gray-600"
-                                                    aria-hidden="true" v-show="item.key !== (sortData?.sortField ?? '')"
-                                                    @click="$emit('sort', { sort: 'ascend', column: item.key })" />
-                                                <ArrowLongDownIcon
-                                                    class="h-5 w-5 cursor-pointer text-gray-400 hover:text-gray-600"
-                                                    aria-hidden="true"
-                                                    v-show="['ascend', null].includes(sortData?.sortOrder ?? '') && item.key === (sortData?.sortField ?? '')"
-                                                    @click="$emit('sort', { sort: 'descend', column: item.key })" />
-                                                <ArrowLongUpIcon
-                                                    class="h-5 w-5 cursor-pointer text-gray-400 hover:text-gray-600"
-                                                    aria-hidden="true"
-                                                    v-show="sortData?.sortOrder == 'descend' && item.key === (sortData?.sortField ?? '')"
-                                                    @click="$emit('sort', { sort: null, column: null })" />
-                                            </div>
                                         </div>
                                     </th>
                                 </tr>

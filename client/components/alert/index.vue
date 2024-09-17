@@ -13,30 +13,28 @@
             </svg>
         </div>
         <div v-if="props.type === 'success'">
-            <CheckCircleIcon class="w-5 h-5 text-white rounded-full" />
+            <Icon name="heroicons:check-circle" class="w-5 h-5 text-white rounded-full" />
         </div>
         <div class="ml-3 text-sm font-medium" :class="[
             props.type === 'default' && 'text-primary',
-            props.type === 'danger' && 'text-red-700',
-        ]">
+            props.type === 'danger' && 'text-red-700']">
             {{ props.text }}
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { CheckCircleIcon } from "@heroicons/vue/24/outline";
 
 const props = defineProps({
     type: {
         type: String,
-        default: "default",
+        default: 'default',
         required: true,
     },
     text: {
         type: String,
-        default: "",
+        default: '',
         required: true,
     },
-});
+})
 </script>

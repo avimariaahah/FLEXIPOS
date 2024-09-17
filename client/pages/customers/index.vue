@@ -40,50 +40,48 @@
                 <div v-if="showForm" class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
                     <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
                         <form @submit.prevent="saveCustomer">
+                            <Alert type="danger" :text="state?.error?.message" v-if="
+                                state.error?.message &&
+                                state.error.message.length > 0
+                            " />
                             <div class="grid grid-cols-1 gap-1 mt-3 mx-2">
-                                <div class="flex items-center mb-1 ml-7">
-                                    <label for="firstname" class="text-xxs font-medium text-gray-700 w-20 mr-2">First
-                                        Name</label>
-                                    <input id="firstname" v-model="customer.firstname" type="text"
-                                        class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs px-3 py-2"
-                                        required />
+                                <div class="flex items-center mb-1">
+                                    <FormTextField id="firstname" name="firstname" v-model="customer.firstname"
+                                        placeholder="First Name" />
+                                    <FormError :error="v$?.firstname?.$errors[0]?.$message.toString()" />
+                                    <FormError :error="state?.error?.errors?.firstname?.[0]" />
                                 </div>
-                                <div class="flex items-center mb-1 ml-7">
-                                    <label for="lastname" class="text-xxs font-medium text-gray-700 w-20 mr-2">Last
-                                        Name</label>
-                                    <input id="lastname" v-model="customer.lastname" type="text"
-                                        class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs px-3 py-2"
-                                        required />
+                                <div class="flex items-center mb-1">
+                                    <FormTextField id="lastname" name="lastname" v-model="customer.lastname"
+                                        placeholder="Last Name" />
+                                    <FormError :error="v$?.formCustomer?.lastname?.$errors[0]?.$message.toString()" />
+                                    <FormError :error="state?.error?.errors?.lastname?.[0]" />
                                 </div>
-                                <div class="flex items-center mb-1 ml-7">
-                                    <label for="email"
-                                        class="text-xxs font-medium text-gray-700 w-20 mr-2">Email</label>
-                                    <input id="email" v-model="customer.email" type="text"
-                                        class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs px-3 py-2"
-                                        required />
+                                <div class="flex items-center mb-1">
+                                    <FormTextField id="email" name="email" v-model="customer.email" type="email"
+                                        placeholder="Email" />
+                                    <FormError :error="v$?.formCustomer?.email?.$errors[0]?.$message.toString()" />
+                                    <FormError :error="state?.error?.errors?.email?.[0]" />
                                 </div>
-                                <div class="flex items-center mb-1 ml-7">
-                                    <label for="phonenumber"
-                                        class="text-xxs font-medium text-gray-700 w-20 mr-2">Phone</label>
-                                    <input id="phonenumber" v-model="customer.phonenumber" type="text"
-                                        class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs px-3 py-2" />
+                                <div class="flex items-center mb-1">
+                                    <FormNumberField id="phonenumber" name="phonenumber" v-model="customer.phonenumber"
+                                        placeholder="Phone Number" />
+                                    <FormError
+                                        :error="v$?.formCustomer?.phonenumber?.$errors[0]?.$message.toString()" />
+                                    <FormError :error="state?.error?.errors?.phonenumber?.[0]" />
                                 </div>
-                                <div class="flex items-center mb-1 ml-7">
-                                    <label for="billingaddress"
-                                        class="text-xxs font-medium text-gray-700 w-20 mr-2">Billing
-                                        Address</label>
-                                    <input id="billingaddress" v-model="customer.billingaddress" type="text"
-                                        class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs px-3 py-2" />
+                                <div class="flex items-center mb-1">
+                                    <FormTextField id="billingaddress" name="billingaddress"
+                                        v-model="customer.billingaddress" placeholder="Billing Address" />
+                                    <FormError
+                                        :error="v$?.formCustomer?.billingaddress?.$errors[0]?.$message.toString()" />
+                                    <FormError :error="state?.error?.errors?.billingaddress?.[0]" />
                                 </div>
-                                <div class="flex items-center mb-1 ml-7">
-                                    <label for="isactive"
-                                        class="text-xxs font-medium text-gray-700 w-20 mr-2">Active</label>
-                                    <select id="isactive" v-model.number="customer.isactive"
-                                        class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs px-3 py-2"
-                                        required>
-                                        <option :value="true">Active</option>
-                                        <option :value="false">Inactive</option>
-                                    </select>
+                                <div class="flex items-center mb-1">
+                                    <FormLabel for="isactive" label="isActive" class="mr-3" />
+                                    <FormSelectField v-model="selectedIsActive" :options="activeInactiveOptions" />
+                                    <FormError :error="v$?.formCustomer?.isactive?.$errors[0]?.$message.toString()" />
+                                    <FormError :error="state?.error?.errors?.isactive?.[0]" />
                                 </div>
                                 <div class="flex justify-end gap-2 mt-4">
                                     <button type="submit"
@@ -152,7 +150,7 @@
                                 v-if="!(state.isTableLoading || (state.customers?.data && state.customers?.data.length === 0))">
                                 <tr v-for="(customer, index) in state.customers?.data" :key="index">
                                     <td>
-                                        <span class="truncate">{{ customer.firstname }}</span>
+                                        <span class="truncate pl-3">{{ customer.firstname }}</span>
                                     </td>
                                     <td>
                                         <span>{{ customer.lastname }}</span>
@@ -214,12 +212,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, watch } from 'vue';
 import { customerService } from '~/components/api/CustomerService';
+import { helpers, required } from '@vuelidate/validators';
+import useVuelidate from '@vuelidate/core';
+import { useAlert } from '@/composables/alert';
+import { useI18n } from 'vue-i18n';
+import type { Error } from '@/types/error';
 
-const runtimeConfig = useRuntimeConfig();
-let currentTablePage = 1;
-
+// Define interface for sort data and customers
 interface SortData {
     sortField: string;
     sortOrder: "ascend" | "descend" | null;
@@ -232,6 +233,31 @@ interface Customers {
         totalPages: number;
     };
 }
+
+// State variables and constants
+const runtimeConfig = useRuntimeConfig();
+let currentTablePage = 1;
+
+const activeInactiveOptions = [
+    { value: true, label: 'Active' },
+    { value: false, label: 'Inactive' },
+];
+
+const customer = ref({
+    firstname: '',
+    lastname: '',
+    email: '',
+    phonenumber: '',
+    billingaddress: '',
+    isactive: false, // Changed to boolean
+});
+
+const selectedIsActive = computed({
+    get: () => customer.value.isactive,
+    set: (newValue: boolean) => {
+        customer.value.isactive = newValue;
+    }
+});
 
 const state = reactive({
     columnHeaders: [
@@ -248,6 +274,36 @@ const state = reactive({
     sortData: { sortField: "", sortOrder: null } as SortData,
     customers: { data: [], pagination: { currentPage: 1, totalPages: 1 } } as Customers,
 });
+
+const rules = computed(() => ({
+    customer: {
+        firstname: {
+            required: helpers.withMessage('This field is required.', required),
+        },
+        lastname: {
+            required: helpers.withMessage('This field is required.', required),
+        },
+        email: {
+            required: helpers.withMessage('This field is required.', required),
+        },
+        phonenumber: {
+            required: helpers.withMessage('This field is required.', required),
+        },
+        billingaddress: {
+            required: helpers.withMessage('This field is required.', required),
+        },
+        isactive: {
+            required: helpers.withMessage('This field is required.', required),
+        },
+    },
+}));
+
+// Pass only the form data to useVuelidate
+const v$ = useVuelidate(rules, { customer });
+
+// Alert and i18n setup
+const { successAlert } = useAlert();
+const { t } = useI18n()
 
 onMounted(() => {
     fetchCustomers();
@@ -301,15 +357,6 @@ function sort(sortingData: { column: string; sort: string }) {
     fetchCustomers();
 }
 
-const customer = ref({
-    firstname: '',
-    lastname: '',
-    email: '',
-    phonenumber: '',
-    billingaddress: '',
-    isactive: false,
-});
-
 const customerToEdit = ref<number | null>(null);
 
 async function saveCustomer() {
@@ -328,18 +375,27 @@ async function saveCustomer() {
         if (customerToEdit.value) {
             // Update existing customer.
             response = await customerService.updateCustomer(customerToEdit.value, customerData);
-            alert(response ? 'Customer has been updated!' : 'Customer update failed!');
+            if (response) {
+                successAlert(`${t('alert.success')}!`, `${t('alert.customerSuccessfullyUpdated')}.`);
+            } else {
+                alert(t('alert.customerUpdateFailed'));
+            }
         } else {
             // Create new customer.
             response = await customerService.createCustomer(customerData);
-            alert(response ? 'Customer has been added!' : 'Customer creation failed!');
+            if (response) {
+                successAlert(`${t('alert.success')}!`, `${t('alert.customerSuccessfullyCreated')}.`);
+            } else {
+                alert(t('alert.customerCreationFailed'));
+                console.log(customer.value.isactive);
+            }
         }
 
         fetchCustomers(); // Refresh the customer list.
         toggleForm(); // Hide the form after save.
     } catch (error: any) {
         console.error('Error saving customer:', error.message);
-        alert('An error occurred while saving the customer.');
+        alert(t('alert.errorOccurredWhileSavingCustomer'));
     }
 }
 
@@ -359,7 +415,7 @@ const customerToView = ref<number | null>(null);
 async function deleteCustomer(customerID: number) {
     try {
         const response = await customerService.deleteCustomer(customerID);
-        alert(response ? 'Customer has been deleted!' : 'Customer deletion failed!');
+        successAlert(`${t('alert.danger')}!`, `${t('alert.customerHasBeenDeleted')}.`);
         fetchCustomers();
     } catch (error: any) {
         console.error(error.message);
@@ -389,7 +445,7 @@ function toggleForm() {
             email: '',
             phonenumber: '',
             billingaddress: '',
-            isactive: false,
+            isactive: false, // Changed to boolean
         };
         customerToEdit.value = null;
     }
