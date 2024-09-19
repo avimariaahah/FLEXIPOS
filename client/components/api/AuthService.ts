@@ -8,6 +8,10 @@ class AuthService extends BaseAPIService {
     async logout(): Promise<any> {
         return await this.request(`/logout`, "POST");
     }
+
+    async createUser(params: object): Promise<any> {
+        return await this.request(`/users`, "POST", params);
+    }
 }
 
 export const authService = new AuthService();

@@ -163,26 +163,26 @@
                                         <span class="truncate">{{ supplier.supplierName }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ supplier.productName }}</span>
+                                        <span class="pl-3">{{ supplier.productName }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ supplier.address }}</span>
+                                        <span class="pl-3">{{ supplier.address }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ supplier.Telephone1 }}</span>
+                                        <span class="pl-3">{{ supplier.Telephone1 }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ supplier.Telephone2 }}</span>
+                                        <span class="pl-3">{{ supplier.Telephone2 }}</span>
                                     </td>
                                     <td>
-                                        <span
+                                        <span class="ml-2"
                                             :class="supplier.isactive
                                                 ? 'inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20'
                                                 : 'inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20'">
                                             {{ supplier.isactive ? 'Active' : 'Inactive' }}
                                         </span>
                                     </td>
-                                    <td class="px-4 py-2 text-xxs text-gray-700">
+                                    <td class="pl-2 py-2 text-xxs text-gray-700">
                                         <div class="flex space-x-2">
                                             <button @click="viewSupplier(supplier.supplierID)"
                                                 class="text-gray-600 hover:text-gray-900">

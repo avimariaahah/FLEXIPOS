@@ -1,4 +1,10 @@
 <template>
+    <button @click="backToHome" class="ml-4 mt-4">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            class="size-6 hover:text-zinc-500">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+        </svg>
+    </button>
     <div class="flex min-h-full flex-1 flex-col justify-center pt-40 sm:px-6 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
             <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
@@ -164,5 +170,9 @@ async function login() {
         }
         state.isPageLoading = false
     }
+}
+
+function backToHome() {
+    navigateTo('./');
 }
 </script>

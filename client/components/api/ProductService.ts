@@ -1,4 +1,5 @@
 import BaseAPIService from "./BaseAPIService";
+import axios from 'axios';
 
 class ProductService extends BaseAPIService {
     // Fetch all products

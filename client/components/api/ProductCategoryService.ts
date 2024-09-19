@@ -1,4 +1,6 @@
 import BaseAPIService from "./BaseAPIService";
+import axios from 'axios';
+
 
 class ProductCategoryService extends BaseAPIService {
     // Fetch all product categories
@@ -26,5 +28,15 @@ class ProductCategoryService extends BaseAPIService {
         return await this.request(`/productcategories/${productCategoryId}`, "DELETE");
     }
 }
+
+export const fetchProductCategories = async (): Promise<any[]> => {
+    try {
+        const response = await axios.get('/api/product-categories');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching product categories:', error);
+        return [];
+    }
+};
 
 export const productCategoryService = new ProductCategoryService();

@@ -196,6 +196,7 @@ import {
     HomeIcon,
     Cog6ToothIcon,
     XMarkIcon,
+    NewspaperIcon,
 } from '@heroicons/vue/24/outline';
 import { ChevronDownIcon } from '@heroicons/vue/20/solid';
 import { authService } from '~/components/api/AuthService';
@@ -203,6 +204,7 @@ import { authService } from '~/components/api/AuthService';
 const navigation = reactive([
     { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
     { name: 'Products', href: '../products', icon: ShoppingBagIcon, current: false },
+    { name: 'Product Category', href: '../product_category', icon: NewspaperIcon, current: false },
     { name: 'Customers', href: '/customers', icon: HomeIcon, current: false },
     { name: 'Suppliers', href: '/suppliers', icon: HomeIcon, current: false },
     { name: 'Adjustments', href: '../adjustments', icon: AdjustmentsHorizontalIcon, current: false },
@@ -211,6 +213,7 @@ const navigation = reactive([
     { name: 'Roles/Permissions', href: '../roleperm', icon: UsersIcon, current: false },
     { name: 'Returns', href: '../returns', icon: UsersIcon, current: false },
     { name: 'Warehouse', href: '../warehouse', icon: UsersIcon, current: false },
+    { name: 'Subscriptions', href: '/subscription', icon: HomeIcon, current: false },
     { name: 'Reports', href: '../reports', icon: UsersIcon, current: false },
 ]);
 

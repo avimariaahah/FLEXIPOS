@@ -73,7 +73,7 @@
                             <p class="mt-2 text-lg leading-8 text-gray-600">Get our user-friendly POS system to
                                 manage sales, track inventory, and improve your business efficiency.</p>
                             <div class="mt-10 flex items-center gap-x-6">
-                                <a href=""
+                                <a href="/signup"
                                     class="inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold text-white bg-gray-900 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600">Get
                                     started</a>
                             </div>

@@ -45,16 +45,16 @@
                                         class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xxs px-3 py-2"
                                         required>
                                         <option disabled value="">Select a category</option>
-                                        <option value="category1">Category 1</option>
-                                        <option value="category2">Category 2</option>
-                                        <option value="category3">Category 3</option>
-                                        <!-- Add more categories as needed -->
+                                        <option v-for="category in state.categories" :key="category.id"
+                                            :value="category.productcategoryname">
+                                            {{ category.productcategoryname }}
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="flex items-center mb-1 ml-7">
-                                    <label for="productname"
-                                        class="text-xxs font-medium text-gray-700 w-20 mr-2">Product
-                                        Name</label>
+                                    <label for="productname" class="text-xxs font-medium text-gray-700 w-20 mr-2">
+                                        Product Name
+                                    </label>
                                     <input id="productname" v-model="product.productname" type="text"
                                         class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs px-3 py-2"
                                         required />
@@ -125,17 +125,20 @@
                         <div class="grid grid-cols-1 gap-1 mt-3 mx-2">
                             <div class="flex items-center mb-1 ml-7">
                                 <label class="text-xxs font-medium text-gray-700 w-20 mr-2">Category:</label>
-                                <span>{{ state.products.data.find(p => p.productID === productToView)?.productcategory
+                                <span>{{ state.products.data.find(p => p.productID ===
+                                    productToView)?.productcategory
                                     }}</span>
                             </div>
                             <div class="flex items-center mb-1 ml-7">
                                 <label class="text-xxs font-medium text-gray-700 w-20 mr-2">Product Name:</label>
-                                <span>{{ state.products.data.find(p => p.productID === productToView)?.productname
+                                <span>{{ state.products.data.find(p => p.productID ===
+                                    productToView)?.productname
                                     }}</span>
                             </div>
                             <div class="flex items-center mb-1 ml-7">
                                 <label class="text-xxs font-medium text-gray-700 w-20 mr-2">Brand Name:</label>
-                                <span>{{ state.products.data.find(p => p.productID === productToView)?.brandname
+                                <span>{{ state.products.data.find(p => p.productID ===
+                                    productToView)?.brandname
                                     }}</span>
                             </div>
                             <div class="flex items-center mb-1 ml-7">
@@ -190,28 +193,28 @@
                             )">
                                 <tr v-for="(product, index) in state.products?.data" :key="index">
                                     <td>
-                                        <span class="truncate">{{ product.productname }}</span>
+                                        <span class="truncate pl-3">{{ product.productname }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ product.productcategory }}</span>
+                                        <span class="pl-3">{{ product.productcategory }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ product.brandname }}</span>
+                                        <span class="pl-3">{{ product.brandname }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ product.wholesaleunit }}</span>
+                                        <span class="pl-3">{{ product.wholesaleunit }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ product.retailunit }}</span>
+                                        <span class="pl-3">{{ product.retailunit }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ product.retailqtyperwholesaleunit }}</span>
+                                        <span class="pl-3">{{ product.retailqtyperwholesaleunit }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ product.reorderpoint }}</span>
+                                        <span class="pl-3">{{ product.reorderpoint }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ product.markup }}</span>
+                                        <span class="pl-3">{{ product.markup }}</span>
                                     </td>
 
                                     <td>
@@ -224,10 +227,10 @@
                                     </td>
 
                                     <td>
-                                        <span>{{ product.quantityonhand }}</span>
+                                        <span class="pl-3">{{ product.quantityonhand }}</span>
                                     </td>
 
-                                    <td class="px-4 py-2 text-xxs text-gray-700">
+                                    <td class="pl-1 py-2 text-xxs text-gray-700">
                                         <div class="flex space-x-2">
                                             <button @click="viewProduct(product.productID)"
                                                 class="text-gray-600 hover:text-gray-900">
@@ -273,6 +276,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
 import { productService } from '~/components/api/ProductService';
+import { productCategoryService } from '@/components/api/ProductCategoryService.js';
 
 const runtimeConfig = useRuntimeConfig();
 let currentTablePage = 1;
@@ -284,6 +288,12 @@ interface SortData {
 
 interface Products {
     data: any[];
+}
+
+interface ProductCategory {
+    id: number;
+    productcategoryname: string;
+    isactive: boolean;
 }
 
 const state = reactive({
@@ -304,11 +314,26 @@ const state = reactive({
     isTableLoading: false,
     sortData: { sortField: "", sortOrder: null } as SortData,
     products: { data: [] } as Products,
+    categories: [] as ProductCategory[],
 });
 
 onMounted(() => {
     fetchProducts();
+    fetchProductCategory();
 });
+
+async function fetchProductCategory() {
+    state.isTableLoading = true;
+    state.error = null;
+    try {
+        const response = await productCategoryService.getProductCategories();
+        state.categories = response.data; // Adjust if necessary based on API response structure
+        console.log('Fetched categories:', response.data); // Log fetched categories
+    } catch (error: any) {
+        state.error = error;
+    }
+    state.isTableLoading = false;
+}
 
 async function fetchProducts() {
     state.isTableLoading = true;
@@ -357,7 +382,7 @@ function sort(sortingData: { column: string; sort: string }) {
 }
 
 const product = ref({
-    productcategory: '',
+    productcategory: null,
     productname: '',
     brandname: '',
     wholesaleunit: '',
@@ -365,7 +390,7 @@ const product = ref({
     retailqtyperwholesaleunit: '',
     reorderpoint: '',
     markup: '',
-    isactive: false,
+    isactive: true,
     quantityonhand: '',
 });
 
@@ -373,6 +398,7 @@ const productToEdit = ref<number | null>(null);
 
 async function saveProduct() {
     try {
+        console.log('Product before save:', product.value);
         const products = {
             productcategory: product.value.productcategory,
             productname: product.value.productname,
@@ -448,7 +474,7 @@ function toggleForm() {
     showForm.value = !showForm.value;
     if (!showForm.value) {
         product.value = {
-            productcategory: '',
+            productcategory: null,
             productname: '',
             brandname: '',
             wholesaleunit: '',
@@ -456,7 +482,7 @@ function toggleForm() {
             retailqtyperwholesaleunit: '',
             reorderpoint: '',
             markup: '',
-            isactive: false,
+            isactive: true,
             quantityonhand: '',
         };
         productToEdit.value = null;

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
@@ -15,17 +16,18 @@ Route::middleware('auth:sanctum')->prefix('user')->group(function () {});
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-// User Routes
+// Public User Registration Route
+Route::post('/users', [UserController::class, 'store']);
+
+// Protected User Routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
-    Route::post('/users', [UserController::class, 'store']);
     Route::get('/users/{id}', [UserController::class, 'show']);
     Route::put('/users/{id}', [UserController::class, 'update']);
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
 });
 
-
-// ProductCategory Routes
+// Product Category Routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/productcategories', [ProductCategoryController::class, 'index']);
     Route::post('/productcategories', [ProductCategoryController::class, 'store']);
@@ -59,4 +61,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/customers/{customerID}', [CustomerController::class, 'show']);
     Route::put('/customers/{customerID}', [CustomerController::class, 'update']);
     Route::delete('/customers/{customerID}', [CustomerController::class, 'destroy']);
+});
+
+// Employees Routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/employees', [EmployeeController::class, 'index']);
+    Route::post('/employees', [EmployeeController::class, 'store']);
+    Route::get('/employees/{employeeID}', [EmployeeController::class, 'show']);
+    Route::put('/employees/{employeeID}', [EmployeeController::class, 'update']);
+    Route::delete('/employees/{employeeID}', [EmployeeController::class, 'destroy']);
 });

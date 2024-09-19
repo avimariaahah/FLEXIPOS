@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Service;
+
 use App\Http\Resources\UserResource;
 use App\Interface\Repository\UserRepositoryInterface;
 use App\Interface\Service\UserServiceInterface;

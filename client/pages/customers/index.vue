@@ -40,29 +40,34 @@
                 <div v-if="showForm" class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
                     <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
                         <form @submit.prevent="saveCustomer">
+                            <FormLabel label="Customer Details" class="text-xl" />
                             <Alert type="danger" :text="state?.error?.message" v-if="
                                 state.error?.message &&
                                 state.error.message.length > 0
                             " />
                             <div class="grid grid-cols-1 gap-1 mt-3 mx-2">
+                                <FormLabel for="isactive" label="First Name" class="mr-3" />
                                 <div class="flex items-center mb-1">
                                     <FormTextField id="firstname" name="firstname" v-model="customer.firstname"
                                         placeholder="First Name" />
                                     <FormError :error="v$?.firstname?.$errors[0]?.$message.toString()" />
                                     <FormError :error="state?.error?.errors?.firstname?.[0]" />
                                 </div>
+                                <FormLabel for="isactive" label="Last Name" class="mr-3" />
                                 <div class="flex items-center mb-1">
                                     <FormTextField id="lastname" name="lastname" v-model="customer.lastname"
                                         placeholder="Last Name" />
                                     <FormError :error="v$?.formCustomer?.lastname?.$errors[0]?.$message.toString()" />
                                     <FormError :error="state?.error?.errors?.lastname?.[0]" />
                                 </div>
+                                <FormLabel for="isactive" label="Email" class="mr-3" />
                                 <div class="flex items-center mb-1">
                                     <FormTextField id="email" name="email" v-model="customer.email" type="email"
                                         placeholder="Email" />
                                     <FormError :error="v$?.formCustomer?.email?.$errors[0]?.$message.toString()" />
                                     <FormError :error="state?.error?.errors?.email?.[0]" />
                                 </div>
+                                <FormLabel for="isactive" label="Phone Number" class="mr-3" />
                                 <div class="flex items-center mb-1">
                                     <FormNumberField id="phonenumber" name="phonenumber" v-model="customer.phonenumber"
                                         placeholder="Phone Number" />
@@ -70,6 +75,7 @@
                                         :error="v$?.formCustomer?.phonenumber?.$errors[0]?.$message.toString()" />
                                     <FormError :error="state?.error?.errors?.phonenumber?.[0]" />
                                 </div>
+                                <FormLabel for="isactive" label="Billing Address" class="mr-3" />
                                 <div class="flex items-center mb-1">
                                     <FormTextField id="billingaddress" name="billingaddress"
                                         v-model="customer.billingaddress" placeholder="Billing Address" />
@@ -77,7 +83,7 @@
                                         :error="v$?.formCustomer?.billingaddress?.$errors[0]?.$message.toString()" />
                                     <FormError :error="state?.error?.errors?.billingaddress?.[0]" />
                                 </div>
-                                <div class="flex items-center mb-1">
+                                <div class="mb-1">
                                     <FormLabel for="isactive" label="isActive" class="mr-3" />
                                     <FormSelectField v-model="selectedIsActive" :options="activeInactiveOptions" />
                                     <FormError :error="v$?.formCustomer?.isactive?.$errors[0]?.$message.toString()" />
@@ -151,19 +157,19 @@
                                         <span class="truncate pl-3">{{ customer.firstname }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ customer.lastname }}</span>
+                                        <span class="pl-3">{{ customer.lastname }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ customer.email }}</span>
+                                        <span class="pl-3">{{ customer.email }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ customer.phonenumber }}</span>
+                                        <span class="pl-3">{{ customer.phonenumber }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ customer.billingaddress }}</span>
+                                        <span class="pl-3">{{ customer.billingaddress }}</span>
                                     </td>
                                     <td>
-                                        <span
+                                        <span class="pl-3"
                                             :class="customer.isactive ? 'inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20' : 'inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20'">
                                             {{ customer.isactive ? 'Active' : 'Inactive' }}
                                         </span>
@@ -187,7 +193,7 @@
                                                         d="M4.293 18.293a1 1 0 0 1-.293-.707V16a1 1 0 0 1 .293-.707l8-8a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-.707.293H5a1 1 0 0 1-.707-.293ZM5 16v1a1 1 0 0 0 .293.707L15 9l-1.414-1.414L5.293 16ZM3 12a9 9 0 0 1 15.027-6.088l1.97 1.97A9.005 9.005 0 0 1 21 12a8.96 8.96 0 0 1-1.672 5.163l-1.457-1.457A6.961 6.961 0 0 0 19 12a6.973 6.973 0 0 0-1.25-4.027l-1.457 1.457A8.978 8.978 0 0 1 12 21a9 9 0 0 1-9-9ZM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2ZM12 20c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9Z" />
                                                 </svg>
                                             </button>
-                                            <button @click="deleteCustomer(customer.customerID)"
+                                            <!-- <button @click="deleteCustomer(customer.customerID)"
                                                 class="text-gray-600 hover:text-gray-900">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
                                                     viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -195,7 +201,7 @@
                                                         d="M4 6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v1H4V6Zm2 2h12v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8ZM7 10a1 1 0 0 1 .993.883L8 11v8a1 1 0 0 1-1.993.117L6 19v-8a1 1 0 0 1 1-1Zm7 0a1 1 0 0 1 .993.883L15 11v8a1 1 0 0 1-1.993.117L13 19v-8a1 1 0 0 1 1-1ZM12 2a1 1 0 0 1 .993.883L13 3v1H9V3a1 1 0 0 1 1-1h2Z"
                                                         clip-rule="evenodd" />
                                                 </svg>
-                                            </button>
+                                            </button> -->
                                         </div>
                                     </td>
                                 </tr>
@@ -247,7 +253,7 @@ const customer = ref({
     email: '',
     phonenumber: '',
     billingaddress: '',
-    isactive: false, // Changed to boolean
+    isactive: true, // Changed to boolean
 });
 
 const selectedIsActive = computed({
@@ -385,7 +391,7 @@ async function saveCustomer() {
             if (response) {
                 successAlert(`${t('alert.Success')}!`, `${t('alert.customerSuccessfullyCreated')}.`);
             } else {
-                errorAlert(`${t('alert.Error')}!`, `${t('alert.customerCreationFailed')}.`);
+                errorAlert(`ERROR!`, `${t('alert.customerCreationFailed')}.`);
             }
         }
 
@@ -393,7 +399,7 @@ async function saveCustomer() {
         toggleForm(); // Hide the form after save.
     } catch (error: any) {
         console.error('Error saving customer:', error.message);
-        errorAlert(`${t('alert.Error')}!`, `${t('alert.errorOccurredWhileSavingCustomer')}.`);
+        errorAlert(`ERRRORYAWA!`, `${t('alert.errorOccurredWhileSavingCustomer')}.`);
     }
 }
 
@@ -445,7 +451,7 @@ function toggleForm() {
             email: '',
             phonenumber: '',
             billingaddress: '',
-            isactive: false, // Changed to boolean
+            isactive: true, // Changed to boolean
         };
         customerToEdit.value = null;
     }
