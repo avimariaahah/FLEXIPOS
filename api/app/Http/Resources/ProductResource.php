@@ -15,19 +15,18 @@ class ProductResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'productID' => $this->productID, // Adjusted to match your database column name
-            'productcategory' => $this->productcategory,
-            'productname' => $this->productname,
-            'brandname' => $this->brandname,
-            'wholesaleunit' => $this->wholesaleunit,
-            'retailunit' => $this->retailunit,
-            'retailqtyperwholesaleunit' => $this->retailqtyperwholesaleunit,
-            'reorderpoint' => $this->reorderpoint,
+            'id' => $this->id,
+            'product_category_id' => $this->product_category_id,
+            'name' => $this->name,
+            'brand' => $this->brand,
+            'quantity_onhand' => $this->quantity_onhand,
+            'wholesale_unit' => $this->wholesale_unit,
+            'retail_unit' => $this->retail_unit,
+            'wholesale_quantity' => $this->wholesale_quantity,
+            'reorder_point' => $this->reorder_point,
             'markup' => $this->markup,
-            'isactive' => $this->isactive,
-            'quantityonhand' => $this->quantityonhand,
+            'is_active' => $this->is_active,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ];
     }
 }

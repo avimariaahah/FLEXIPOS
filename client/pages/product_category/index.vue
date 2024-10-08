@@ -127,7 +127,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
-import { productCategoryService } from '~/components/api/ProductCategoryService';
+import { productCategoryService } from '~/components/api/admin/ProductCategoryService';
 
 const runtimeConfig = useRuntimeConfig();
 let currentTablePage = 1;
@@ -162,7 +162,7 @@ onMounted(() => {
 const category = ref({
     productcategoryname: '',
 
-    isActive: false,
+    isActive: true,
 });
 
 function toggleForm() {

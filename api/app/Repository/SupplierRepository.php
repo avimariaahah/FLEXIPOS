@@ -12,7 +12,7 @@ class SupplierRepository implements SupplierRepositoryInterface
         return Supplier::all();
     }
 
-    public function findOne(int $id)
+    public function findOneById(int $id)
     {
         return Supplier::findOrFail($id);
     }
@@ -20,12 +20,11 @@ class SupplierRepository implements SupplierRepositoryInterface
     public function create(object $payload)
     {
         $supplier = new Supplier();
-        $supplier->supplierName = $payload->supplierName;
-        $supplier->productName = $payload->productName;
+        $supplier->name = $payload->name;
         $supplier->address = $payload->address;
-        $supplier->Telephone1 = $payload->Telephone1;
-        $supplier->Telephone2 = $payload->Telephone2;
-        $supplier->isactive = $payload->isactive;
+        $supplier->phone = $payload->phone;
+        $supplier->alternate_phone = $payload->alternate_phone;
+        $supplier->is_active = $payload->is_active;
         $supplier->save();
 
         return $supplier->fresh();
@@ -34,12 +33,11 @@ class SupplierRepository implements SupplierRepositoryInterface
     public function update(object $payload, int $id)
     {
         $supplier = Supplier::findOrFail($id);
-        $supplier->supplierName = $payload->supplierName;
-        $supplier->productName = $payload->productName;
+        $supplier->name = $payload->name;
         $supplier->address = $payload->address;
-        $supplier->Telephone1 = $payload->Telephone1;
-        $supplier->Telephone2 = $payload->Telephone2;
-        $supplier->isactive = $payload->isactive;
+        $supplier->phone = $payload->phone;
+        $supplier->alternate_phone = $payload->alternate_phone;
+        $supplier->is_active = $payload->is_active;
         $supplier->save();
 
         return $supplier->fresh();

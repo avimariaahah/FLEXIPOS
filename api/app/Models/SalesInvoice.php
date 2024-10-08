@@ -2,63 +2,58 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class SalesInvoice extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'branchno',
-        'referencedocnum',
-        'sales_orderid',
+        'branch_id',
+        'sales_order_id',
+        'customer_id',
+        'processed_by_id',
+        'cancel_type',
+        'cancel_id',
+        'approve_type',
+        'approve_id',
+        'document_no',
         'date',
-        'customerno',
-        'userno',
-        'iscancelled',
-        'cancelledby',
-        'preparedby',
-        'approvedby',
-        'isapprovedby',
-        'created_at',
-        'updated_at',
+        'is_approved',
+        'is_cancelled',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    public function branch(): BelongsTo
     {
-        return [
-            'branchno',
-            'referencedocnum',
-            'sales_orderid',
-            'date',
-            'customerno',
-            'userno',
-            'iscancelled',
-            'cancelledby',
-            'preparedby',
-            'approvedby',
-            'isapprovedby',
-            'created_at',
-            'updated_at',
-        ];
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function sales_order(): BelongsTo
+    {
+        return $this->belongsTo(SalesOrder::class);
+    }
+
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function cancel(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    public function approve(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    public function sales_invoice_details(): HasMany
+    {
+        return $this->hasMany(SalesInvoiceDetail::class);
     }
 }

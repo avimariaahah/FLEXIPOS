@@ -24,7 +24,7 @@ class SupplierService implements SupplierServiceInterface
 
     public function findSupplierById(int $id)
     {
-        $supplier = $this->supplierRepository->findOne($id);
+        $supplier = $this->supplierRepository->findOneById($id);
 
         return new SupplierResource($supplier);
     }

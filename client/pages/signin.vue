@@ -26,7 +26,7 @@
                             address</label>
                         <div class="mt-2">
                             <input id="email" name="email" type="email" autocomplete="email" v-model="state.email"
-                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                class="pl-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                         </div>
                         <FormError :error="v$?.email?.$errors[0]?.$message.toString()" />
                         <FormError :error="state?.error?.errors?.email?.[0]" />
@@ -36,7 +36,7 @@
                         <div class="mt-2">
                             <input id="password" name="password" type="password" autocomplete="current-password"
                                 v-model="state.password"
-                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                                class="pl-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                         </div>
                         <FormError :error="v$?.password?.$errors[0]?.$message.toString()
                             " />
@@ -120,6 +120,7 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, helpers } from "@vuelidate/validators";
 import FormError from "../components/form/Error.vue"; // Adjust the path if necessary
 import { authService } from "~/components/api/AuthService";
+import { computed } from "vue";
 
 interface LoginError {
     message?: string;
@@ -129,7 +130,7 @@ interface LoginError {
 }
 
 const state = reactive({
-    email: null,
+    email: '',
     error: {} as LoginError,
     isPageLoading: false,
     password: null,
@@ -163,7 +164,26 @@ async function login() {
             const response = await authService.login(params)
             if (response.data) {
                 localStorage.setItem("_token", response.data?.token)
-                navigateTo('/dashboard')
+                // Retrieve the user's role from the database
+                const userResponse = await authService.getUserByEmail(state.email);
+                console.log(userResponse);
+                localStorage.setItem('firstname', userResponse.data.firstname);
+                localStorage.setItem('lastname', userResponse.data.lastname);
+                localStorage.setItem('user_id', userResponse.data.id);
+                // localStorage.setItem('', userResponse.firstname.value);
+                console.log("role:" + userResponse.data.role.name + " and id:" + userResponse.data.id);
+                if (userResponse.data.role) {
+                    const role = userResponse.data.role.name
+                    if (role == 'superadmin') {
+                        navigateTo('/superadmin/dashboard')
+                    }
+                    else if (role == 'admin') {
+                        navigateTo('/admin/dashboard')
+                    }
+                    else {
+                        navigateTo('/employee/dashboard')
+                    }
+                }
             }
         } catch (error: any) {
             state.error = error

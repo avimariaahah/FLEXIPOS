@@ -22,8 +22,8 @@ class InventoryAdjustmentUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'adjustmentdate' => 'required',
-            'adjustmenttype' => 'required',
+            'date' => 'required',
+            'type' => 'required',
             'reason' => 'required',
             'status' => 'required',
         ];

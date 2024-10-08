@@ -22,10 +22,10 @@ class SupplierReturnStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'supplierid' => 'required',
-            'processedby' => 'required',
-            'returndate' => 'required',
-            'returnstatus' => 'required',
+            'supplier_id' => 'required',
+            'processed_by_id' => 'required',
+            'return_date' => 'required',
+            'status' => 'required',
         ];
     }
 }

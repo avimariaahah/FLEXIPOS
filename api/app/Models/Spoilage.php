@@ -2,51 +2,35 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Spoilage extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'productid',
-        'reportedby',
+        'product_id',
+        'reported_by_id',
         'quantity',
-        'damagedtype',
+        'damage_type',
         'status',
-        'created_at',
-        'updated_at',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    public function product(): BelongsTo
     {
-        return [
-            'productid',
-            'reportedby',
-            'quantity',
-            'damagedtype',
-            'status',
-            'created_at',
-            'updated_at',
-        ];
+        return $this->belongsTo(Product::class);
+    }
+
+    public function reported_by(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'id');
+    }
+
+    public function spoilage_details(): HasMany
+    {
+        return $this->hasMany(SpoilageDetail::class);
     }
 }

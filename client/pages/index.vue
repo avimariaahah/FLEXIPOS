@@ -42,7 +42,7 @@
                             <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700"
                                 @click="mobileMenuOpen = false">
                                 <span class="sr-only">Close menu</span>
-                                <XMarkIcon class="h-6 w-6" aria-hidden="true" />
+                                <XCircleIcon class="h-6 w-6" aria-hidden="true" />
                             </button>
                         </div>
                         <div class="mt-6 flow-root">
@@ -52,6 +52,12 @@
                                         class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                                         {{ item.name }}
                                     </a>
+                                    <div class="hidden lg:flex lg:flex-1 lg:justify-end mr-5">
+                                        <router-link to="/signin"
+                                            class="inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold text-white bg-gray-900 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600">
+                                            Log in
+                                        </router-link>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -93,7 +99,7 @@
             </main>
         </div>
         <!-- Start of Feature Section -->
-        <div class="bg-slate-100 py-24 sm:py-32">
+        <div class="py-24 sm:py-32">
             <div class="mx-auto max-w-7xl px-6 lg:px-8">
                 <div class="mx-auto max-w-2xl lg:text-center">
                     <h2 class="text-base font-semibold leading-7 text-indigo-600">Deploy faster</h2>
@@ -212,7 +218,7 @@
                                                                     <CheckIcon v-if="feature.tiers[tier.name] === true"
                                                                         class="mx-auto h-5 w-5 text-indigo-600"
                                                                         aria-hidden="true" />
-                                                                    <XMarkIconMini v-else
+                                                                    <XCircleIcon v-else
                                                                         class="mx-auto h-5 w-5 text-gray-400"
                                                                         aria-hidden="true" />
                                                                     <span class="sr-only">{{ feature.tiers[tier.name]
@@ -292,7 +298,7 @@
                                                                 <CheckIcon v-if="feature.tiers[tier.name] === true"
                                                                     class="mx-auto h-5 w-5 text-indigo-600"
                                                                     aria-hidden="true" />
-                                                                <XMarkIconMini v-else
+                                                                <XCircleIcon v-else
                                                                     class="mx-auto h-5 w-5 text-gray-400"
                                                                     aria-hidden="true" />
                                                                 <span class="sr-only">{{ feature.tiers[tier.name] ===
@@ -395,8 +401,8 @@
                                         class="flex w-full items-start justify-between text-left text-gray-900">
                                         <span class="text-base font-semibold leading-7">{{ faq.question }}</span>
                                         <span class="ml-6 flex h-7 items-center">
-                                            <PlusSmallIcon v-if="!open" class="h-6 w-6" aria-hidden="true" />
-                                            <MinusSmallIcon v-else class="h-6 w-6" aria-hidden="true" />
+                                            <PlusCircleIcon v-if="!open" class="h-6 w-6" aria-hidden="true" />
+                                            <MinusCircleIcon v-else class="h-6 w-6" aria-hidden="true" />
                                         </span>
                                     </DisclosureButton>
                                 </dt>
@@ -528,11 +534,11 @@ import {
     RadioGroup,
     RadioGroupOption,
 } from '@headlessui/vue';
-import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
+import { Bars3Icon } from '@heroicons/vue/24/outline';
 //features imports
 import { ArrowPathIcon, CloudArrowUpIcon, FingerPrintIcon, LockClosedIcon, BugAntIcon, ChatBubbleLeftRightIcon, ComputerDesktopIcon } from '@heroicons/vue/24/outline';
 //pricing imports
-import { CheckIcon } from '@heroicons/vue/20/solid'
+import { CheckIcon, MinusCircleIcon, PlusCircleIcon, XCircleIcon } from '@heroicons/vue/20/solid'
 //contacts imports
 
 //main page functions

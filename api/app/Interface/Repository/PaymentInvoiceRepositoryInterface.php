@@ -2,15 +2,15 @@
 
 namespace App\Interface\Repository;
 
-interface PaymentInvoiceRepositoryInterace
+interface PaymentInvoiceRepositoryInterface
 {
     public function findMany();
 
-    public function findOne(int $id);
+    public function findOneById(int $id);
 
     public function create(object $payload);
 
-    public function update(object $payload, int $id);
+    public function update(object $payload);
 
     public function delete(int $id);
 }

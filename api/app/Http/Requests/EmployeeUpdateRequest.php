@@ -22,12 +22,12 @@ class EmployeeUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userID' => 'required|string|max:255',
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'telephone' => 'required|string|max:20',
-            'designation' => 'required|string|max:255', // Ensure this matches
-            'isactive' => 'required|boolean',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'designation' => 'required',
+            'is_active' => 'required',
         ];
     }
 }

@@ -6,7 +6,7 @@ interface ProductCategoryRepositoryInterface
 {
     public function findMany();
 
-    public function findOne(int $id);
+    public function findOneById(int $id);
 
     public function create(object $payload);
 

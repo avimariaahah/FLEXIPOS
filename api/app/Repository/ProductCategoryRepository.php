@@ -9,38 +9,39 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
 {
     public function findMany()
     {
-        return ProductCategory::all();
+        return ProductCategory::paginate(10);
     }
-    public function findOne(int $id)
+
+    public function findOneById(int $id)
     {
         return ProductCategory::findOrFail($id);
     }
 
     public function create(object $payload)
     {
-        $productcategory = new ProductCategory();
-        $productcategory->productcategoryname = $payload->productcategoryname;
-        $productcategory->isactive = $payload->isactive;
-        $productcategory->save();
+        $category = new ProductCategory();
+        $category->name = $payload->name;
+        $category->is_active = $payload->is_active;
+        $category->save();
 
-        return $productcategory->fresh();
+        return $category->fresh();
     }
 
     public function update(object $payload, int $id)
     {
-        $productcategory = ProductCategory::findOrFail($id);
-        $productcategory->productcategoryname = $payload->productcategoryname;
-        $productcategory->isactive = $payload->isactive;
-        $productcategory->save();
+        $category = ProductCategory::findOrFail($id);
+        $category->name = $payload->name;
+        $category->is_active = $payload->is_active;
+        $category->save();
 
-        return $productcategory->fresh();
+        return $category->fresh();
     }
 
     public function delete(int $id)
     {
-        $productcategory = ProductCategory::findOrFail($id);
+        $category = ProductCategory::findOrFail($id);
 
-        $productcategory->delete();
+        $category->delete();
 
         return true;
     }

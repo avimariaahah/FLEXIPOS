@@ -22,12 +22,12 @@ class SalesOrderStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'processedby' => 'required',
-            'customerid' => 'required',
-            'orderdate' => 'required',
-            'totalamount' => 'required',
+            'processed_by_id' => 'required',
+            'customer_id' => 'required',
+            'date' => 'required',
+            'total_amount' => 'required',
             'discount' => 'required',
-            'taxamount' => 'required',
+            'tax_amount' => 'required',
         ];
     }
 }

@@ -10,9 +10,9 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@headlessui/vue": "^1.7.22",
-    "@heroicons/vue": "^2.1.4",
-    "@intlify/unplugin-vue-i18n": "^5.0.0",
+    "@headlessui/vue": "^1.7.23",
+    "@heroicons/vue": "^2.1.5",
+    "@intlify/unplugin-vue-i18n": "^5.2.0",
     "@intlify/vite-plugin-vue-i18n": "^7.0.0",
     "@kyvg/vue3-notification": "^3.3.0",
     "@pinia/nuxt": "^0.5.4",
@@ -22,16 +22,18 @@
     "@vuelidate/validators": "^2.0.4",
     "axios": "^1.7.7",
     "chart.js": "^4.4.4",
-    "nuxt": "^3.12.3",
+    "flatpickr": "^4.6.13",
+    "nuxt": "^3.13.2",
     "pinia": "^2.2.2",
     "vue": "latest",
-    "vue-i18n": "^10.0.1",
+    "vue-flatpickr-component": "^11.0.5",
+    "vue-i18n": "^10.0.3",
     "vuelidate": "^0.7.7"
   },
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "^6.12.0",
-    "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.39",
-    "tailwindcss": "^3.4.4"
+    "@nuxtjs/tailwindcss": "^6.12.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.12"
   }
 }

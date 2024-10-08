@@ -22,6 +22,8 @@ class UserUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'role_id' => 'required',
+            'stripe_user_id',
             'firstname' => 'required',
             'lastname' => 'required',
             'email' => 'required',

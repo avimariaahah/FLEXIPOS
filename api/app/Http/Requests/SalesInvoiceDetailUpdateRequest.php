@@ -22,13 +22,13 @@ class SalesInvoiceDetailUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'sales_invoiceid' => 'required',
-            'productid' => 'required',
-            'quantitysold' => 'required',
-            'unitprice' => 'required',
-            'discounts' => 'required',
-            'taxamount' => 'required',
-            'totalamount' => 'required',
+            'sales_invoice_id' => 'required',
+            'product_id' => 'required',
+            'quantity_sold' => 'required',
+            'price' => 'required',
+            'discount' => 'required',
+            'tax_amount' => 'required',
+            'total' => 'required',
         ];
     }
 }

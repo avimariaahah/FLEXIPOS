@@ -24,7 +24,7 @@ class CustomerService implements CustomerServiceInterface
 
     public function findCustomerById(int $id)
     {
-        $customer = $this->customerRepository->findOne($id);
+        $customer = $this->customerRepository->findOneById($id);
 
         return new CustomerResource($customer);
     }

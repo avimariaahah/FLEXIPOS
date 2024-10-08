@@ -5,9 +5,12 @@ namespace App\Service;
 use App\Http\Resources\EmployeeResource;
 use App\Interface\Repository\EmployeeRepositoryInterface;
 use App\Interface\Service\EmployeeServiceInterface;
+use App\Traits\SortingTraits;
 
 class EmployeeService implements EmployeeServiceInterface
 {
+    use SortingTraits;
+
     private $employeeRepository;
 
     public function __construct(EmployeeRepositoryInterface $employeeRepository)
@@ -15,16 +18,18 @@ class EmployeeService implements EmployeeServiceInterface
         $this->employeeRepository = $employeeRepository;
     }
 
-    public function findEmployees()
+    public function findEmployees(object $payload)
     {
-        $employees = $this->employeeRepository->findMany();
+        $sortField = $this->sortField($payload, 'created_at');
+        $sortOrder = $this->sortOrder($payload, 'desc');
+        $employees = $this->employeeRepository->findMany($payload, $sortField, $sortOrder);
 
         return EmployeeResource::collection($employees);
     }
 
     public function findEmployeeById(int $id)
     {
-        $employee = $this->employeeRepository->findOne($id);
+        $employee = $this->employeeRepository->findOneById($id);
 
         return new EmployeeResource($employee);
     }

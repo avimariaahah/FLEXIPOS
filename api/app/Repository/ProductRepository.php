@@ -9,9 +9,10 @@ class ProductRepository implements ProductRepositoryInterface
 {
     public function findMany()
     {
-        return Product::all();
+        return Product::paginate(10);
     }
-    public function findOne(int $id)
+
+    public function findOneById(int $id)
     {
         return Product::findOrFail($id);
     }
@@ -19,16 +20,16 @@ class ProductRepository implements ProductRepositoryInterface
     public function create(object $payload)
     {
         $product = new Product();
-        $product->productcategory = $payload->productcategory;
-        $product->productname = $payload->productname;
-        $product->brandname = $payload->brandname;
-        $product->wholesaleunit = $payload->wholesaleunit;
-        $product->retailunit = $payload->retailunit;
-        $product->retailqtyperwholesaleunit = $payload->retailqtyperwholesaleunit;
-        $product->reorderpoint = $payload->reorderpoint;
+        $product->product_category_id = $payload->product_category_id;
+        $product->name = $payload->name;
+        $product->brand = $payload->brand;
+        $product->quantity_onhand = $payload->quantity_onhand;
+        $product->wholesale_unit = $payload->wholesale_unit;
+        $product->retail_unit = $payload->retail_unit;
+        $product->wholesale_quantity = $payload->wholesale_quantity;
+        $product->reorder_point = $payload->reorder_point;
         $product->markup = $payload->markup;
-        $product->isactive = $payload->isactive;
-        $product->quantityonhand = $payload->quantityonhand;
+        $product->is_active = $payload->is_active;
         $product->save();
 
         return $product->fresh();
@@ -37,16 +38,16 @@ class ProductRepository implements ProductRepositoryInterface
     public function update(object $payload, int $id)
     {
         $product = Product::findOrFail($id);
-        $product->productcategory = $payload->productcategory;
-        $product->productname = $payload->productname;
-        $product->brandname = $payload->brandname;
-        $product->wholesaleunit = $payload->wholesaleunit;
-        $product->retailunit = $payload->retailunit;
-        $product->retailqtyperwholesaleunit = $payload->retailqtyperwholesaleunit;
-        $product->reorderpoint = $payload->reorderpoint;
+        $product->product_category_id = $payload->product_category_id;
+        $product->name = $payload->name;
+        $product->brand = $payload->brand;
+        $product->quantity_onhand = $payload->quantity_onhand;
+        $product->wholesale_unit = $payload->wholesale_unit;
+        $product->retail_unit = $payload->retail_unit;
+        $product->wholesale_quantity = $payload->wholesale_quantity;
+        $product->reorder_point = $payload->reorder_point;
         $product->markup = $payload->markup;
-        $product->isactive = $payload->isactive;
-        $product->quantityonhand = $payload->quantityonhand;
+        $product->is_active = $payload->is_active;
         $product->save();
 
         return $product->fresh();

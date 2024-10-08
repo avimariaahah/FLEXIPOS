@@ -22,10 +22,10 @@ class PaymentDetailUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'paymentid' => 'required',
-            'transactionref' => 'required',
+            'payment_id' => 'required',
+            'transaction_ref' => 'required',
             'amount' => 'required',
-            'detaildescription' => 'required',
+            'description' => 'required',
             'status' => 'required',
         ];
     }

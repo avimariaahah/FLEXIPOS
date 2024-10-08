@@ -22,12 +22,11 @@ class SupplierStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'supplierName' => 'required|string|max:255',
-            'productName' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'Telephone1' => 'required|string|max:255',
-            'Telephone2' => 'nullable|string|max:255', // Optional field
-            'isactive' => 'required|boolean', // Assuming isactive is a boolean field
+            'name' => 'required',
+            'address' => 'required',
+            'phone' => 'required',
+            'alternate_phone',
+            'is_active' => 'required',
         ];
     }
 }

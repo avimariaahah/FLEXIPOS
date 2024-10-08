@@ -22,10 +22,10 @@ class SpoilageStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'productid' => 'required',
-            'reportedby' => 'required',
+            'product_id' => 'required',
+            'reported_by_id' => 'required',
             'quantity' => 'required',
-            'damagedtype' => 'required',
+            'damage_type' => 'required',
             'status' => 'required',
         ];
     }

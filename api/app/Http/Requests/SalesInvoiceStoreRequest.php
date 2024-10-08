@@ -22,18 +22,18 @@ class SalesInvoiceStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'branchno' => 'required',
-            'salesinvoicerefno' => 'required',
-            'sales_orderid' => 'required',
-            'invoicedate' => 'required',
-            'customerno' => 'required',
-            'userno' => 'required',
-            'iscancelled' => 'required',
-            'cancelledby' => 'required',
-            'preparedby' => 'required',
-            'approvedby' => 'required',
-            'isapprovedby' => 'required',
-            'remarks' => 'required',
+            'branch_id' => 'required',
+            'sales_order_id' => 'required',
+            'customer_id' => 'required',
+            'processed_by_id' => 'required',
+            'cancel_type' => 'required',
+            'cancel_id' => 'required',
+            'approve_type' => 'required',
+            'approve_id' => 'required',
+            'document_no' => 'required',
+            'date' => 'required',
+            'is_approved' => 'required',
+            'is_cancelled' => 'required',
         ];
     }
 }

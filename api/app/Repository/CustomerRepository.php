@@ -3,29 +3,29 @@
 namespace App\Repository;
 
 use App\Interface\Repository\CustomerRepositoryInterface;
-use App\Models\Customers;
+use App\Models\Customer;
 
 class CustomerRepository implements CustomerRepositoryInterface
 {
     public function findMany()
     {
-        return Customers::all();
+        return Customer::all();
     }
 
-    public function findOne(int $id)
+    public function findOneById(int $id)
     {
-        return Customers::findOrFail($id);
+        return Customer::findOrFail($id);
     }
 
     public function create(object $payload)
     {
-        $customer = new Customers();
+        $customer = new Customer();
         $customer->firstname = $payload->firstname;
         $customer->lastname = $payload->lastname;
         $customer->email = $payload->email;
-        $customer->phonenumber = $payload->phonenumber;
-        $customer->billingaddress = $payload->billingaddress;
-        $customer->isactive = $payload->isactive;
+        $customer->phone = $payload->phone;
+        $customer->address = $payload->address;
+        $customer->is_active = $payload->is_active;
         $customer->save();
 
         return $customer->fresh();
@@ -33,13 +33,13 @@ class CustomerRepository implements CustomerRepositoryInterface
 
     public function update(object $payload, int $id)
     {
-        $customer = Customers::findOrFail($id);
+        $customer = Customer::findOrFail($id);
         $customer->firstname = $payload->firstname;
         $customer->lastname = $payload->lastname;
         $customer->email = $payload->email;
-        $customer->phonenumber = $payload->phonenumber;
-        $customer->billingaddress = $payload->billingaddress;
-        $customer->isactive = $payload->isactive;
+        $customer->phone = $payload->phone;
+        $customer->address = $payload->address;
+        $customer->is_active = $payload->is_active;
         $customer->save();
 
         return $customer->fresh();
@@ -47,7 +47,7 @@ class CustomerRepository implements CustomerRepositoryInterface
 
     public function delete(int $id)
     {
-        $customer = Customers::findOrFail($id);
+        $customer = Customer::findOrFail($id);
 
         $customer->delete();
 

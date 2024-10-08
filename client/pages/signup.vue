@@ -91,7 +91,6 @@ import { required, email, minLength, sameAs, helpers } from '@vuelidate/validato
 import { authService } from '@/components/api/AuthService.js';
 import { useAlert } from '@/composables/alert';
 import { useI18n } from 'vue-i18n';
-import type { Error } from '@/types/error';
 
 
 const { successAlert } = useAlert();
@@ -99,6 +98,7 @@ const { errorAlert } = useAlert();
 const { t } = useI18n();
 
 const state = reactive<{
+    role_id: number;
     firstname: string;
     lastname: string;
     email: string;
@@ -107,6 +107,7 @@ const state = reactive<{
     error: any;
     isPageLoading: boolean;
 }>({
+    role_id: 2,
     firstname: '',
     lastname: '',
     email: '',
@@ -146,6 +147,7 @@ async function createUserAccount() {
     try {
         state.isPageLoading = true;
         const params = {
+            role_id: 2,
             firstname: state.firstname,
             lastname: state.lastname,
             email: state.email,
@@ -156,10 +158,13 @@ async function createUserAccount() {
 
         if (response) {
             successAlert(`Success!`, `User created successfully!`);
-            navigateTo('/signin');
+            console.log(response);
+            const id = response.data.id;
+            navigateTo(`/select-plan?user_id=${id}`);
             state.error = null; // Clear any previous errors
         } else {
             errorAlert(`Error!`, `User creation failed.`);
+            console.log("errror: " + response);
         }
     } catch (error: any) {
         state.isPageLoading = false;
@@ -173,6 +178,7 @@ async function createUserAccount() {
 
         console.error('Error creating user:', error.message);
         errorAlert(`Error!`, `Error occured while creating user.`);
+        console.log(state);
     }
 }
 

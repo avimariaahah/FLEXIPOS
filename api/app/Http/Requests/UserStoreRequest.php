@@ -22,29 +22,12 @@ class UserStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ];
-    }
-
-    /**
-     * Get custom messages for validator errors.
-     *
-     * @return array<string, string>
-     */
-    public function messages(): array
-    {
-        return [
-            'firstname.required' => 'First name is required.',
-            'lastname.required' => 'Last name is required.',
-            'email.required' => 'Email is required.',
-            'email.email' => 'Please enter a valid email address.',
-            'email.unique' => 'This email is already registered.',
-            'password.required' => 'Password is required.',
-            'password.min' => 'Password must be at least 8 characters.',
-            'password.confirmed' => 'Passwords do not match.',
+            'role_id' => 'required',
+            'stripe_user_id',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'email' => 'required',
+            'password' => 'required',
         ];
     }
 }

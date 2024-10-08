@@ -24,7 +24,7 @@ class ProductService implements ProductServiceInterface
 
     public function findProductById(int $id)
     {
-        $product = $this->productRepository->findOne($id);
+        $product = $this->productRepository->findOneById($id);
 
         return new ProductResource($product);
     }

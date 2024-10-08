@@ -16,10 +16,9 @@ class ProductCategoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'productcategoryname' => $this->productcategoryname,
-            'isactive' => $this->isactive,
+            'name' => $this->name,
+            'is_active' => $this->is_active,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ];
     }
 }

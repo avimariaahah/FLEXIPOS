@@ -15,15 +15,13 @@ class SupplierResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'supplierID' => $this->supplierID,
-            'supplierName' => $this->supplierName,
-            'productName' => $this->productName,
+            'id' => $this->id,
+            'name' => $this->name,
             'address' => $this->address,
-            'Telephone1' => $this->Telephone1,
-            'Telephone2' => $this->Telephone2,
-            'isactive' => $this->isactive,
+            'phone' => $this->phone,
+            'alternate_phone' => $this->alternate_phone,
+            'is_active' => $this->is_active,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ];
     }
 }

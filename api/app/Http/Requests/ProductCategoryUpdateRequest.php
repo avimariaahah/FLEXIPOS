@@ -22,8 +22,8 @@ class ProductCategoryUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'productcategoryname' => 'required',
-            'isactive' => 'required',
+            'name' => 'required',
+            'is_active' => 'required',
         ];
     }
 }

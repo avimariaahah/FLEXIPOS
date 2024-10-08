@@ -24,7 +24,7 @@ class ProductCategoryService implements ProductCategoryServiceInterface
 
     public function findProductCategoryById(int $id)
     {
-        $productCategory = $this->productCategoryRepository->findOne($id);
+        $productCategory = $this->productCategoryRepository->findOneById($id);
 
         return new ProductCategoryResource($productCategory);
     }

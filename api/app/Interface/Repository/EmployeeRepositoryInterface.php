@@ -4,9 +4,11 @@ namespace App\Interface\Repository;
 
 interface EmployeeRepositoryInterface
 {
-    public function findMany();
+    public function findMany(object $payload, string $sortField, string $sortOrder);
 
-    public function findOne(int $id);
+    public function findOneById(int $id);
+
+    public function findOneByEmail(string $email);
 
     public function create(object $payload);
 

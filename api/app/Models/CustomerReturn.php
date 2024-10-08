@@ -2,49 +2,34 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CustomerReturn extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
-        'customerID',
-        'processedBy',
-        'returnDate',
-        'returnStatus',
-        'created_at',
-        'updated_at',
+        'processed_by_id',
+        'customer_id',
+        'return_date',
+        'return_status',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    public function processed_by(): BelongsTo
     {
-        return [
-            'customerID',
-            'processedBy',
-            'returnDate',
-            'returnStatus',
-            'created_at',
-            'updated_at',
-        ];
+        return $this->belongsTo(Employee::class, 'id');
+    }
+
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function customer_return_details(): HasMany
+    {
+        return $this->hasMany(CustomerReturnDetail::class);
     }
 }

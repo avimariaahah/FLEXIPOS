@@ -4,7 +4,7 @@ namespace App\Interface\Service;
 
 interface EmployeeServiceInterface
 {
-    public function findEmployees();
+    public function findEmployees(object $payload);
 
     public function findEmployeeById(int $id);
 

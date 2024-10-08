@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Interface\Service\UserServiceInterface;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UserController
 {
     private $userService;
 
@@ -19,9 +19,19 @@ class UserController extends Controller
         return $this->userService->findUsers();
     }
 
+    public function getCurrentUser()
+    {
+        return $this->userService->getCurrentUser();
+    }
+
     public function show(int $id)
     {
         return $this->userService->findUserById($id);
+    }
+
+    public function showUserByEmail(string $email)
+    {
+        return $this->userService->FindUserByEmail($email);
     }
 
     public function store(Request $request)

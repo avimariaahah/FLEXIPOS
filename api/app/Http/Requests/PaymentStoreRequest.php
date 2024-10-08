@@ -22,11 +22,11 @@ class PaymentStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'paymentmethod_id' => 'required',
-            'billid' => 'required',
-            'paymentamount' => 'required',
-            'paymentdate' => 'required',
-            'paymentstatus' => 'required',
+            'payment_method_id' => 'required',
+            'bill_id' => 'required',
+            'amount' => 'required',
+            'date' => 'required',
+            'status' => 'required',
         ];
     }
 }
