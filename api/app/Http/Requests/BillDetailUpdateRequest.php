@@ -23,9 +23,8 @@ class BillDetailUpdateRequest extends FormRequest
     {
         return [
             'bill_id' => 'required',
-            'product_id' => 'required',
-            'barcode' => 'required',
-            'unit' => 'required',
+            'product_id',
+            'unit',
             'expiry_date' => 'required',
             'quantity' => 'required',
             'price' => 'required',

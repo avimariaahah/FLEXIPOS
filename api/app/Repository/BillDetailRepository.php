@@ -22,7 +22,6 @@ class BillDetailRepository implements BillDetailRepositoryInterface
         $billDetail = new BillDetail();
         $billDetail->bill_id = $payload->bill_id;
         $billDetail->product_id = $payload->product_id;
-        $billDetail->barcode = $payload->barcode;
         $billDetail->unit = $payload->unit;
         $billDetail->expiry_date = $payload->expiry_date;
         $billDetail->quantity = $payload->quantity;
@@ -37,7 +36,6 @@ class BillDetailRepository implements BillDetailRepositoryInterface
         $billDetail = BillDetail::findOrFail($id);
         $billDetail->bill_id = $payload->bill_id;
         $billDetail->product_id = $payload->product_id;
-        $billDetail->barcode = $payload->barcode;
         $billDetail->unit = $payload->unit;
         $billDetail->expiry_date = $payload->expiry_date;
         $billDetail->quantity = $payload->quantity;

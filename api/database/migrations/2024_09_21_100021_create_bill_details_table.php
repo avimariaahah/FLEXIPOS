@@ -12,7 +12,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('bill_id');
             $table->unsignedBigInteger('product_id');
-            $table->string('barcode');
             $table->string('unit');
             $table->string('expiry_date');
             $table->string('quantity');

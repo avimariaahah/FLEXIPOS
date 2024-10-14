@@ -12,17 +12,17 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'payment_method_id',
         'bill_id',
-        'amount',
+        'branch_id',
+        'customer_id',
+        'or_number',
+        'prepared_by_id',
+        'cancelled_by_id',
+        'is_approved',
+        'is_cancelled',
         'date',
         'status',
     ];
-
-    public function payment_method(): BelongsTo
-    {
-        return $this->belongsTo(PaymentMethod::class);
-    }
 
     public function bill(): BelongsTo
     {

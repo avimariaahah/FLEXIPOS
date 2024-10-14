@@ -49,6 +49,13 @@
                                     <FormError :error="state?.error?.errors?.product_category_id?.[0]" />
                                 </div>
 
+                                <FormLabel for="barcode" label="Barcode" class="mr-3" />
+                                <div class="flex items-center mb-1">
+                                    <FormNumberField id="barcode" name="barcode" v-model="product.barcode"
+                                        placeholder="Barcode" />
+                                    <FormError :error="state?.error?.errors?.barcode?.[0]" />
+                                </div>
+
                                 <FormLabel for="productname" label="Product Name" class="mr-3" />
                                 <div class="flex items-center mb-1">
                                     <FormTextField id="productname" name="productname" v-model="product.name"
@@ -201,6 +208,9 @@
                             )">
                                 <tr v-for="(product, index) in state.products?.data" :key="index">
                                     <td>
+                                        <span class="truncate pl-3">{{ product.barcode }}</span>
+                                    </td>
+                                    <td>
                                         <span class="truncate pl-3">{{ product.name }}</span>
                                     </td>
                                     <td>
@@ -327,6 +337,7 @@ const wholesaleUnitOptions = [
 
 const state = reactive({
     columnHeaders: [
+        { name: "Barcode", sorter: true, key: "barcode" },
         { name: "Product Name", sorter: true, key: "productname" },
         { name: "Category", sorter: true, key: "productcategory" },
         { name: "Brand", sorter: true, key: "brandname" },
@@ -424,6 +435,9 @@ const rules = computed(() => ({
         categoryname: {
             required: helpers.withMessage('This field is required.', required),
         },
+        barcode: {
+            required: helpers.withMessage('This field is required.', required),
+        },
         name: {
             required: helpers.withMessage('This field is required.', required),
         },
@@ -457,6 +471,7 @@ const rules = computed(() => ({
 const product = ref({
     product_category_id: null,
     categoryname: '',
+    barcode: '',
     name: '',
     brand: '',
     wholesale_unit: '',
@@ -483,6 +498,7 @@ async function saveProduct() {
         console.log('Product before save:', product.value);
         const products = {
             product_category_id: product.value.product_category_id,
+            barcode: product.value.barcode,
             name: product.value.name,
             brand: product.value.brand,
             quantity_onhand: 0,
@@ -560,6 +576,7 @@ function toggleForm() {
         product.value = {
             product_category_id: null,
             categoryname: '',
+            barcode: '',
             name: '',
             brand: '',
             wholesale_unit: '',

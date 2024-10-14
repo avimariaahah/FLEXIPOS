@@ -21,6 +21,7 @@ class ProductRepository implements ProductRepositoryInterface
     {
         $product = new Product();
         $product->product_category_id = $payload->product_category_id;
+        $product->barcode = $payload->barcode;
         $product->name = $payload->name;
         $product->brand = $payload->brand;
         $product->quantity_onhand = $payload->quantity_onhand;
@@ -39,6 +40,7 @@ class ProductRepository implements ProductRepositoryInterface
     {
         $product = Product::findOrFail($id);
         $product->product_category_id = $payload->product_category_id;
+        $product->barcode = $payload->barcode;
         $product->name = $payload->name;
         $product->brand = $payload->brand;
         $product->quantity_onhand = $payload->quantity_onhand;

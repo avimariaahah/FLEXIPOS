@@ -1,0 +1,434 @@
+<template>
+    <div class="min-h-screen flex flex-col bg-gray-200">
+        <header class="bg-gray-900 text-white p-4 flex justify-between items-center">
+            <img class="h-8 pl-6 w-auto" src="/public/images/Logo.png" alt="" />
+            <button @click="logout"
+                class="bg-gray-900 hover:bg-gray-600 mt-2 text-white py-1 px-3 rounded flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9" />
+                </svg>
+            </button>
+        </header>
+
+        <main class="flex-1 p-6 flex">
+
+            <div class="flex-grow flex flex-col space-y-4">
+                <div class="flex items-center space-x-4">
+
+                    <div class="flex h-16 items-center rounded-l-md overflow-hidden">
+                        <img class="h-8 w-auto" src="public/images/Barcode.png" alt="" />
+                    </div>
+
+                    <button @click="toggleDescCode"
+                        class="bg-gray-900 hover:bg-gray-600 text-white py-1 px-3 rounded w-20 font-bold">
+                        {{ displayText }}
+                    </button>
+
+                    <input type="text" ref="barcodeInputRef" v-model="barcodeInput" @keyup.enter="addItem"
+                        class="border bg-white border-gray-400 rounded py-1 pl-3 pr-0 text-gray-700 focus:outline-none focus:border-blue-500 flex-grow"
+                        :placeholder="placeholderText" />
+
+                    <select
+                        class="border bg-white border-gray-400 rounded py-1 px-20 text-gray-700 focus:outline-none focus:border-blue-500 w-48">
+                    </select>
+                </div>
+                <div class="mt-6 flex-grow">
+                    <table class="w-full bg-white border border-gray-300 rounded-md shadow-md">
+                        <thead>
+                            <tr class="bg-white text-black">
+                                <th class="py-2 px-4 border-b text-left">Barcode</th>
+                                <th class="py-2 px-4 border-b text-left">Description</th>
+                                <th class="py-2 px-4 border-b text-right">Price</th>
+                                <th class="py-2 px-4 border-b text-right">Quantity</th>
+                                <th class="py-2 px-4 border-b text-right">Discount</th>
+                                <th class="py-2 px-4 border-b text-right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in paginatedItems" :key="item.barcode" class="bg-gray-200">
+                                <td class="py-2 px-4 border-b text-left">{{ item.barcode }}</td>
+                                <td class="py-2 px-4 border-b text-left">{{ item.description }}</td>
+                                <td class="py-2 px-4 border-b text-right">{{ item.price }}</td>
+                                <td class="py-2 px-4 border-b text-right">{{ item.quantity }}</td>
+                                <td class="py-2 px-4 border-b text-right">{{ item.discount }}</td>
+                                <td class="py-2 px-4 border-b text-right">{{ item.total }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="flex justify-end mt-4">
+                        <button @click="prevPage"
+                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
+                            Prev
+                        </button>
+                        <button @click="nextPage"
+                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Amount Details -->
+            <div class="w-1/4 bg-gray-900 text-white p-4 ml-4">
+                <div class="text-center py-2 rounded-t-sm">
+                    <div class="bg-white text-gray-900 text-2xl font-bold text-center rounded py-6 px-4 w-full">
+                        <!-- Replace with the dynamic amount of products scanned -->
+
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <h2 class="text-lg font-bold text-center">Sample Item</h2>
+                    <ul class="list-disc">
+                        <li class="mb-1 flex justify-between">
+                            <span>Price:</span>
+                            <span>100.00</span>
+                        </li>
+                        <li class="mb-1 flex justify-between">
+                            <span>Quantity:</span>
+                            <span>2.00</span>
+                        </li>
+                        <li class="mb-1 flex justify-between">
+                            <span>Discount:</span>
+                            <span>0</span>
+                        </li>
+                        <li class="mb-1 flex justify-between font-bold">
+                            <span>Total:</span>
+                            <span>200.00</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="mt-3">
+                    <h2 class="text-lg font-bold text-center ">SALES SUB TOTALS</h2>
+                    <ul class="list-disc">
+                        <li class="mb-1 flex justify-between mt-2">
+                            <span>Amount Due:</span>
+                            <span>200.00</span>
+                        </li>
+                        <li class="mb-1 flex justify-between">
+                            <span>Total Item/s:</span>
+                            <span>2.00</span>
+                        </li>
+                        <li class="mb-1 flex justify-between">
+                            <span>Total Discount:</span>
+                            <span>0</span>
+                        </li>
+                        <li class="mb-1 flex justify-between">
+                            <span>NET:</span>
+                            <span>0</span>
+                        </li>
+                        <li class="mb-1 flex justify-between">
+                            <span>VAT:</span>
+                            <span>0</span>
+                        </li>
+                        <li class="mb-1 flex justify-between">
+                            <span>VAT EXEMPT:</span>
+                            <span>0</span>
+                        </li>
+                        <li class="mb-1 flex justify-between font-bold">
+                            <span>Total Amount Due:</span>
+                            <span>200.00</span>
+                        </li>
+                        <li class="mb-1 mt-72 flex justify-between">
+                            <span>CASHIER: </span>
+                            <span> {{ firstname }} {{ lastname }}</span>
+                        </li>
+                        <li class="mb-1 flex justify-between">
+                            <span>DATE: </span>
+                            <span> {{ currentDateTime }}</span>
+                        </li>
+                        <li class="mb-1 flex justify-between">
+                            <span>TIME: </span>
+                            <span> {{ currentTime }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+
+        <!-- Buttons -->
+        <div class="flex flex-wrap gap-2 p-4">
+            <button
+                class="bg-white text-black ml-5 mr-4 font-bold py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
+                <span class="text-xxs">F1</span>
+            </button>
+
+            <button class="bg-white font-bold mr-4 text-black py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
+                <span class="text-xxs">F2</span>
+            </button>
+
+            <button class="bg-white text-black mr-4 font-bold py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
+                <span class="text-xxs">F3</span>
+            </button>
+
+            <button class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
+                <span class="text-xxs">CTRL<br>+<br>ENTER</span>
+            </button>
+
+            <button class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
+                <span class="text-xxs">CTRL<br>+SHIFT+<br>0</span>
+            </button>
+
+            <button class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
+                <span class="text-xxs">F6</span>
+            </button>
+
+            <button class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
+                <span class="text-xxs">F7</span>
+            </button>
+
+            <button class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
+                <span class="text-xxs">F8</span>
+            </button>
+
+            <button class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
+                <span class="text-xxs">F9</span>
+            </button>
+
+            <button class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
+                <span class="text-xxs">F10</span>
+            </button>
+
+            <button class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
+                <span class="text-xxs">F11</span>
+            </button>
+        </div>
+    </div>
+</template>
+
+<script setup lang="ts">
+//import area
+import { ref, onMounted, onUnmounted } from 'vue';
+import { productService } from '~/components/api/admin/ProductService.js';
+
+// interface area
+interface Item {
+    barcode: string;
+    description: string;
+    price: number;
+    quantity: number;
+    discount: number;
+    total: number;
+}
+
+interface Product {
+    id: number;
+    barcode: string;
+    name: string;
+    price: number;
+}
+
+// const area
+const user_id = computed(() => localStorage.getItem('user_id'));
+const firstname = computed(() => localStorage.getItem('firstname'));
+const lastname = computed(() => localStorage.getItem('lastname'));
+const displayText = ref('CODE');
+const placeholderText = ref('Enter Barcode');
+const currentTime = ref('');
+const currentDateTime = ref('');
+const barcodeInput = ref('');
+const barcodeInputRef = ref<HTMLInputElement | null>(null);
+const itemsPerPage = 16;
+const currentPage = ref(1);
+const items = ref<Item[]>([]);
+const paginatedItems = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return items.value.slice(start, end);
+});
+
+const state = reactive({
+    error: null as Error | null,
+    isTableLoading: false,
+    products: [] as Product[],
+});
+
+// async functions area
+async function fetchProducts() {
+    state.isTableLoading = true;
+    state.error = null;
+    try {
+        const response = await productService.getProducts();
+        state.products = response.data; // Adjust if necessary based on API response structure
+        console.log('Fetched products:', response.data); // Log fetched products
+    } catch (error: any) {
+        state.error = error;
+    }
+    state.isTableLoading = false;
+}
+
+// functions area
+
+function prevPage() {
+    if (currentPage.value > 1) {
+        currentPage.value--;
+    }
+}
+
+function nextPage() {
+    if (currentPage.value * itemsPerPage < items.value.length) {
+        currentPage.value++;
+    }
+}
+
+function addItem() {
+    // Check if the barcode input is valid
+    if (barcodeInput.value.trim() !== '') {
+        // Find the product with the matching barcode
+        const product = state.products.find(product => product.barcode === barcodeInput.value);
+        console.log(product?.barcode);
+
+        if (product) {
+            // Add the item to the list
+            items.value.push({
+                barcode: product.barcode,
+                description: product.name,
+                price: 0,
+                quantity: 1,
+                discount: 0,
+                total: 100,
+            });
+        } else {
+            // Alert if the product does not exist
+            alert(`Product with barcode ${barcodeInput.value} does not exist.`);
+        }
+
+        // Clear the barcode input
+        barcodeInput.value = '';
+    }
+}
+
+function printItems() {
+    const printWindow = window.open('', 'Print Receipt', 'width=800,height=600');
+    if (printWindow) {
+        let html = '';
+        html += '<!DOCTYPE html><html><head><title>Receipt</title></head><body>';
+        html += '<style>body { font-family: Arial, sans-serif; }</style>';
+        html += '<h1>Receipt</h1>';
+        html += '<h4>Date: ' + currentDateTime.value + '</h4>';
+        html += '<h4>Time: ' + currentTime.value + '</h4>';
+        html += '<h4>Cashier: ' + firstname.value + ' ' + lastname.value + '</h4>';
+        html += '<table border="1" cellpadding="5" cellspacing="0">';
+        html += '<tr><th>Barcode</th><th>Description</th><th>Price</th><th>Quantity</th></tr>';
+
+        // Debugging: Log items to console
+        console.log('Items to print:', items.value);
+
+        items.value.forEach((item) => {
+            html += '<tr>';
+            html += `<td>${item.barcode}</td>`;
+            html += `<td>${item.description}</td>`;
+            html += `<td>$${item.price}</td>`;
+            html += `<td>${item.quantity}</td>`;
+            html += '</tr>';
+        });
+        html += '</table>';
+
+        const subtotal = items.value.reduce((acc, item) => acc + item.total, 0);
+        html += '<h4>Subtotal: $' + subtotal + '</h4>';
+        html += '<h4>Tax (0%): $0.00</p>';
+        html += '<h4>Total: $' + subtotal + '</h4>';
+        html += '<h4>Thank you for shopping with us!</h4>';
+        html += '</body></html>';
+
+        printWindow.document.write(html);
+        printWindow.document.close(); // Close the document to prevent further modifications
+        printWindow.focus(); // Focus on the print window
+
+        // Use setTimeout to ensure the document is fully rendered before printing
+        setTimeout(() => {
+            printWindow.print(); // Print the window
+            printWindow.close(); // Close the print window
+        }, 100); // Adjust the timeout as necessary
+    } else {
+        console.log('Failed to open print window');
+    }
+}
+
+function handlePrintEvent(event: KeyboardEvent) {
+    if (event.ctrlKey && event.key === 'r') {
+        event.preventDefault(); // Prevent the default refresh action
+        printItems();
+    }
+}
+
+function toggleDescCode() {
+    if (displayText.value === 'CODE') {
+        displayText.value = 'DESC';
+        placeholderText.value = 'Enter Item';
+    } else {
+        displayText.value = 'CODE';
+        placeholderText.value = 'Enter Barcode';
+    }
+}
+
+function handleCtrlS(event: KeyboardEvent) {
+    if (event.ctrlKey && event.key === 's') {
+        event.preventDefault();
+        toggleDescCode();
+    }
+}
+
+// USE THIS FOR MUTIPLE EVENT KEYS FOR INSTANCE: CTRL + E + Q
+// let keysPressed: { [key: string]: boolean } = {};
+
+// document.addEventListener('keydown', (event) => {
+//     keysPressed[event.key] = true;
+//     if (keysPressed['Control'] && keysPressed['e'] && keysPressed['q']) {
+//         // Your code here
+//         event.preventDefault();
+//         toggleDescCode();
+//     }
+// });
+
+// document.addEventListener('keyup', (event) => {
+//     delete keysPressed[event.key];
+// });
+
+onMounted(() => {
+    window.addEventListener('keydown', handleCtrlS);
+    window.addEventListener('keydown', handlePrintEvent);
+    setInterval(updateDateTime, 1000);
+    setInterval(updateTimeOnly, 1000);
+    barcodeInputRef.value?.focus();
+    fetchProducts();
+});
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', handleCtrlS);
+    window.removeEventListener('keydown', handlePrintEvent);
+});
+
+function logout() {
+    console.log('User logged out');
+    const router = useRouter();
+    router.push('/admin/dashboard');
+}
+
+function updateDateTime() {
+    const currentTimeValue = new Date();
+    const dayOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][currentTimeValue.getDay()];
+    const month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][currentTimeValue.getMonth()];
+    const day = currentTimeValue.getDate();
+    const year = currentTimeValue.getFullYear();
+    let hours = currentTimeValue.getHours();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    const minutes = currentTimeValue.getMinutes().toString().padStart(2, '0');
+    const seconds = currentTimeValue.getSeconds().toString().padStart(2, '0');
+    const dateTimeString = `${dayOfWeek}, ${month} ${day}, ${year}`;
+    currentDateTime.value = dateTimeString;
+}
+
+function updateTimeOnly() {
+    const currentTimeValue = new Date();
+    let hours = currentTimeValue.getHours();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    const minutes = currentTimeValue.getMinutes().toString().padStart(2, '0');
+    const seconds = currentTimeValue.getSeconds().toString().padStart(2, '0');
+    const timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
+    currentTime.value = timeString;
+}
+</script>

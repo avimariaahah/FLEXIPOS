@@ -207,7 +207,6 @@
 </template>
 
 <script setup lang="ts">
-
 import { helpers, required } from '@vuelidate/validators';
 import { ref, reactive, onMounted, computed } from 'vue';
 import { billService } from '~/components/api/admin/BillService.js';
@@ -216,9 +215,9 @@ import { useI18n } from 'vue-i18n';
 import type { Error } from '@/types/error';
 import { supplierService } from '~/components/api/admin/SupplierService.js';
 import { productService } from '~/components/api/admin/ProductService.js';
+import { billDetailService } from '~/components/api/admin/BillDetailService.js';
 import FlatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/themes/dark.css';
-import { billDetailService } from '~/components/api/admin/BillDetailService.js';
 
 const user_id = computed(() => localStorage.getItem('user_id'));
 const firstname = computed(() => localStorage.getItem('firstname'));
@@ -401,6 +400,16 @@ async function fetchBills() {
 
 const toggleBillForm = () => {
     showBillForm.value = !showBillForm.value;
+    billDetailsList.value = [];
+    billDetail.value = {
+        product_id: '',
+        name: '',
+        barcode: '',
+        unit: '',
+        expiry_date: '',
+        quantity: '',
+        price: ''
+    };
 };
 
 async function saveBill() {

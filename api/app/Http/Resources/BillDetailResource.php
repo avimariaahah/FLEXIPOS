@@ -18,7 +18,6 @@ class BillDetailResource extends JsonResource
             'id' => $this->id,
             'bill_id' => $this->bill_id,
             'product_id' => $this->product_id,
-            'barcode' => $this->barcode,
             'unit' => $this->unit,
             'expiry_date' => $this->expiry_date,
             'quantity' => $this->quantity,

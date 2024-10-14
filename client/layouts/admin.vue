@@ -27,9 +27,7 @@
                             <div
                                 class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10">
                                 <div class="flex h-16 shrink-0 items-center">
-                                    <img class="h-8 w-auto"
-                                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                                        alt="Your Company" />
+                                    <img class="h-8 w-auto" src="" alt="Your Company" />
                                 </div>
                                 <nav class="flex flex-1 flex-col">
                                     <ul role="list" class="flex flex-1 flex-col gap-y-7">
@@ -234,6 +232,7 @@ import {
     ChartBarSquareIcon,
     ChevronDownIcon,
     ChevronRightIcon,
+    PresentationChartBarIcon,
 } from '@heroicons/vue/24/outline';
 import { authService } from '~/components/api/AuthService';
 import { computed } from 'vue';
@@ -245,6 +244,7 @@ const sidebarOpen = ref(false);
 
 const navigation = [
     { name: "Dashboard", href: "/admin/dashboard", icon: ChartPieIcon, current: false },
+    { name: "POS", href: "/admin/POS", icon: PresentationChartBarIcon, current: false },
     {
         name: "Product", icon: ShoppingBagIcon, current: false,
         children: [

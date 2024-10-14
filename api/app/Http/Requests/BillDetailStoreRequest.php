@@ -24,7 +24,6 @@ class BillDetailStoreRequest extends FormRequest
         return [
             'bill_id' => 'required',
             'product_id',
-            'barcode',
             'unit',
             'expiry_date' => 'required',
             'quantity' => 'required',

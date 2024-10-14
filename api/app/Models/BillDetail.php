@@ -13,7 +13,6 @@ class BillDetail extends Model
     protected $fillable = [
         'bill_id',
         'product_id',
-        'barcode',
         'unit',
         'expiry_date',
         'quantity',

@@ -23,6 +23,7 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             'product_category_id' => 'required',
+            'barcode',
             'name' => 'required',
             'brand' => 'required',
             'quantity_onhand' => 'required',
