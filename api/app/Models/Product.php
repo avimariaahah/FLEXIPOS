@@ -19,6 +19,7 @@ class Product extends Model
         'wholesale_unit',
         'retail_unit',
         'wholesale_quantity',
+        'current_price',
         'reorder_point',
         'markup',
         'is_active',

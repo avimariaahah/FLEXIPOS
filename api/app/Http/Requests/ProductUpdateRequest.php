@@ -30,6 +30,7 @@ class ProductUpdateRequest extends FormRequest
             'wholesale_unit' => 'required',
             'retail_unit' => 'required',
             'wholesale_quantity' => 'required',
+            'current_price',
             'reorder_point' => 'required',
             'markup' => 'required',
             'is_active' => 'required',

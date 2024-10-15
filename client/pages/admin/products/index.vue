@@ -232,6 +232,9 @@
                                         <span class="pl-3">{{ product.wholesale_quantity }}</span>
                                     </td>
                                     <td>
+                                        <span class="pl-3">{{ product.current_price }}</span>
+                                    </td>
+                                    <td>
                                         <span class="pl-3">{{ product.reorder_point }}</span>
                                     </td>
                                     <td>
@@ -345,6 +348,7 @@ const state = reactive({
         { name: "Wholesale", sorter: true, key: "wholesaleunit" },
         { name: "Retail", sorter: true, key: "retailunit" },
         { name: "Retail Quantity", sorter: true, key: "retailqtyperwholesaleunit" },
+        { name: "Current Price", sorter: true, key: "current_price" },
         { name: "Reorder Point", sorter: true, key: "reorderpoint" },
         { name: "Markup", sorter: true, key: "markup" },
         { name: "Is Active", sorter: true, key: "is_active" },
@@ -505,6 +509,7 @@ async function saveProduct() {
             wholesale_unit: product.value.wholesale_unit,
             retail_unit: product.value.retail_unit,
             wholesale_quantity: product.value.wholesale_quantity,
+            current_price: 0,
             reorder_point: product.value.reorder_point,
             markup: product.value.markup,
             is_active: product.value.is_active,

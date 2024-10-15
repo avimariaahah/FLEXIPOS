@@ -28,6 +28,7 @@ class ProductRepository implements ProductRepositoryInterface
         $product->wholesale_unit = $payload->wholesale_unit;
         $product->retail_unit = $payload->retail_unit;
         $product->wholesale_quantity = $payload->wholesale_quantity;
+        $product->current_price = $payload->current_price;
         $product->reorder_point = $payload->reorder_point;
         $product->markup = $payload->markup;
         $product->is_active = $payload->is_active;
@@ -47,6 +48,7 @@ class ProductRepository implements ProductRepositoryInterface
         $product->wholesale_unit = $payload->wholesale_unit;
         $product->retail_unit = $payload->retail_unit;
         $product->wholesale_quantity = $payload->wholesale_quantity;
+        $product->current_price = $payload->current_price;
         $product->reorder_point = $payload->reorder_point;
         $product->markup = $payload->markup;
         $product->is_active = $payload->is_active;

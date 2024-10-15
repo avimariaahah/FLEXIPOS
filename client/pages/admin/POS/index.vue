@@ -74,27 +74,28 @@
                 <div class="text-center py-2 rounded-t-sm">
                     <div class="bg-white text-gray-900 text-2xl font-bold text-center rounded py-6 px-4 w-full">
                         <!-- Replace with the dynamic amount of products scanned -->
-
+                        <!-- PUT PRICE HERE -->
+                        {{ totalAmount.toFixed(2) }}
                     </div>
                 </div>
-                <div class="mt-4">
-                    <h2 class="text-lg font-bold text-center">Sample Item</h2>
+                <div v-if="mostRecentItem" class="mt-4">
+                    <h2 class="text-lg font-bold text-center">{{ mostRecentItem.description }}</h2>
                     <ul class="list-disc">
                         <li class="mb-1 flex justify-between">
                             <span>Price:</span>
-                            <span>100.00</span>
+                            <span>{{ mostRecentItem.price }}</span>
                         </li>
                         <li class="mb-1 flex justify-between">
                             <span>Quantity:</span>
-                            <span>2.00</span>
+                            <span>{{ mostRecentItem.quantity }}</span>
                         </li>
                         <li class="mb-1 flex justify-between">
                             <span>Discount:</span>
-                            <span>0</span>
+                            <span>{{ mostRecentItem.discount }}</span>
                         </li>
                         <li class="mb-1 flex justify-between font-bold">
                             <span>Total:</span>
-                            <span>200.00</span>
+                            <span>{{ mostRecentItem.total }}</span>
                         </li>
                     </ul>
                 </div>
@@ -130,7 +131,7 @@
                             <span>Total Amount Due:</span>
                             <span>200.00</span>
                         </li>
-                        <li class="mb-1 mt-72 flex justify-between">
+                        <li class="mb-1 mt-64 flex justify-between">
                             <span>CASHIER: </span>
                             <span> {{ firstname }} {{ lastname }}</span>
                         </li>
@@ -167,7 +168,7 @@
             </button>
 
             <button class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
-                <span class="text-xxs">CTRL<br>+SHIFT+<br>0</span>
+                <span class="text-xxs">CTRL<br>+SHIFT+<br>V</span>
             </button>
 
             <button class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
@@ -216,7 +217,7 @@ interface Product {
     id: number;
     barcode: string;
     name: string;
-    price: number;
+    current_price: number;
 }
 
 // const area
@@ -242,6 +243,16 @@ const state = reactive({
     error: null as Error | null,
     isTableLoading: false,
     products: [] as Product[],
+});
+
+// computed property to calculate total amount
+const totalAmount = computed(() => {
+    return items.value.reduce((total, item) => total + item.total, 0);
+});
+
+// computed property for the most recent item
+const mostRecentItem = computed(() => {
+    return items.value[items.value.length - 1] || null;
 });
 
 // async functions area
@@ -279,15 +290,18 @@ function addItem() {
         const product = state.products.find(product => product.barcode === barcodeInput.value);
         console.log(product?.barcode);
 
+        let quantity = 1;
+        let discount = 0;
+
         if (product) {
             // Add the item to the list
             items.value.push({
                 barcode: product.barcode,
                 description: product.name,
-                price: 0,
-                quantity: 1,
-                discount: 0,
-                total: 100,
+                price: product.current_price,
+                quantity: quantity,
+                discount: discount,
+                total: product.current_price * quantity,
             });
         } else {
             // Alert if the product does not exist
@@ -343,6 +357,14 @@ function printItems() {
         }, 100); // Adjust the timeout as necessary
     } else {
         console.log('Failed to open print window');
+    }
+}
+
+function removeItem(barcode: string) {
+    let supervisorCode = 12345;
+    const index = items.value.findIndex(item => item.barcode === barcode);
+    if (index !== -1 && supervisorCode == supervisorCode) {
+        items.value.splice(index, 1);
     }
 }
 

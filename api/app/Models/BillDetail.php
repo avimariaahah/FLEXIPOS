@@ -35,6 +35,7 @@ class BillDetail extends Model
             $product = $billDetail->product;
             if ($product) {
                 $product->quantity_onhand += $billDetail->quantity;
+                $product->current_price = $billDetail->price;
                 $product->save();
             }
         });
