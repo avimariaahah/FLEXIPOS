@@ -16,11 +16,16 @@ class PaymentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'payment_method_id' => $this->payment_method_id,
-            'bill_id' => $this->bill_id,
-            'amount' => $this->amount,
-            'date' => $this->date,
-            'status' => $this->status,
+            'branch_no' => $this->branch_no,
+            'or_number' => $this->or_number,
+            'customer_id' => $this->customer_id,
+            'is_approved' => $this->is_approved,
+            'is_cancelled' => $this->is_cancelled,
+            'payment_date' => $this->payment_date,
+            'prepared_by_id' => $this->prepared_by_id,
+            'cancelled_by_id' => $this->cancelled_by_id,
+            'approvedby' => $this->approvedby,
+            'remarks' => $this->remarks,
             'created_at' => $this->created_at,
         ];
     }

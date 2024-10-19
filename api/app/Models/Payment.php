@@ -12,21 +12,26 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'bill_id',
-        'branch_id',
-        'customer_id',
+        'branch_no',
         'or_number',
-        'prepared_by_id',
-        'cancelled_by_id',
+        'customer_id',
         'is_approved',
         'is_cancelled',
-        'date',
-        'status',
+        'payment_date',
+        'prepared_by_id',
+        'cancelled_by_id',
+        'approvedby',
+        'remarks',
     ];
 
-    public function bill(): BelongsTo
+    public function customer(): BelongsTo
     {
-        return $this->belongsTo(Bill::class);
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function prepared_by(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class);
     }
 
     public function payment_details(): HasMany

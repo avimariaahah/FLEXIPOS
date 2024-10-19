@@ -23,10 +23,12 @@ class PaymentDetailStoreRequest extends FormRequest
     {
         return [
             'payment_id' => 'required',
-            'transaction_ref' => 'required',
+            'payment_method_id' => 'required',
+            'bank_id',
+            'cheque_number',
+            'cheque_date',
             'amount' => 'required',
-            'description' => 'required',
-            'status' => 'required',
+            'sales_invoice_no',
         ];
     }
 }

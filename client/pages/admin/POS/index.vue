@@ -1,4 +1,8 @@
 <template>
+
+    <Head>
+        <Title>POS - {{ runtimeConfig.public.appName }}</Title>
+    </Head>
     <div class="min-h-screen flex flex-col bg-gray-200">
         <header class="bg-gray-900 text-white p-4 flex justify-between items-center">
             <img class="h-8 pl-6 w-auto" src="/public/images/Logo.png" alt="" />
@@ -163,11 +167,13 @@
                 <span class="text-xxs">F3</span>
             </button>
 
-            <button class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
+            <button @click="toggleCashForm"
+                class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
                 <span class="text-xxs">CTRL<br>+<br>ENTER</span>
             </button>
 
-            <button class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
+            <button @click="toggleVoidForm"
+                class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
                 <span class="text-xxs">CTRL<br>+SHIFT+<br>V</span>
             </button>
 
@@ -195,13 +201,77 @@
                 <span class="text-xxs">F11</span>
             </button>
         </div>
+
+        <!-- Popup Forms -->
+        <!-- Cash Form -->
+        <div v-if="showCashForm" class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
+            <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                <form @submit.prevent="">
+                    <div class="grid grid-cols-1 gap-1 mt-3 mx-2">
+                        <!-- Fields -->
+                        <div class="mb-1">
+                            <FormLabel for="cashtendered" label="Cash Tendered" class="mr-3" />
+                            <FormTextField id="cashtendered" name="cashtendered" v-model="payment.cash_tendered"
+                                placeholder="Cash Tendered" required />
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex justify-end gap-2 mt-4">
+                            <FormButton type="submit" buttonStyle="success" class="w-full">
+                                Save
+                            </FormButton>
+                            <FormButton @click="toggleCashForm" buttonStyle="xxx" class="w-full">
+                                Cancel
+                            </FormButton>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Void Item Form -->
+        <div v-if="showVoidForm" class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
+            <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                <form @submit.prevent="removeItem(voidItem.barcode)">
+                    <div class="grid grid-cols-1 gap-1 mt-3 mx-2">
+                        <!-- Fields -->
+                        <div class="mb-1">
+                            <FormLabel for="voiditem" label="Enter barcode" class="mr-3" />
+                            <FormTextField id="voiditem" name="voiditem" v-model="voidItem.barcode"
+                                placeholder="Enter item barcode" required />
+                        </div>
+                        <div class="mb-1">
+                            <FormLabel for="supervisorcode" label="Security" class="mr-3" />
+                            <FormTextField id="supervisorcode" name="supervisorcode" v-model="voidItem.supervisor_code"
+                                placeholder="Enter void code" required />
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex justify-end gap-2 mt-4">
+                            <FormButton type="submit" buttonStyle="success" class="w-full">
+                                Save
+                            </FormButton>
+                            <FormButton @click="toggleVoidForm" buttonStyle="xxx" class="w-full">
+                                Cancel
+                            </FormButton>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
 //import area
 import { ref, onMounted, onUnmounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { productService } from '~/components/api/admin/ProductService.js';
+
+
+// Alert and i18n setup
+const { successAlert } = useAlert();
+const { errorAlert } = useAlert();
+const { t } = useI18n()
 
 // interface area
 interface Item {
@@ -221,6 +291,7 @@ interface Product {
 }
 
 // const area
+const runtimeConfig = useRuntimeConfig();
 const user_id = computed(() => localStorage.getItem('user_id'));
 const firstname = computed(() => localStorage.getItem('firstname'));
 const lastname = computed(() => localStorage.getItem('lastname'));
@@ -268,6 +339,43 @@ async function fetchProducts() {
     }
     state.isTableLoading = false;
 }
+
+// form functions area
+const showCashForm = ref(false);
+const showVoidForm = ref(false);
+
+function toggleCashForm() {
+    showCashForm.value = !showCashForm.value;
+    // Reset fields form when toggling
+}
+
+function toggleVoidForm() {
+    showVoidForm.value = !showVoidForm.value;
+    // Reset fields form when toggling
+}
+
+const payment = ref({
+    cash_tendered: '',
+});
+
+const voidItem = ref({
+    barcode: '',
+    supervisor_code: '',
+});
+
+// rules
+// const rules = computed(() => ({
+//     payment: {
+//         cash_tendered: {
+//             required: helpers.withMessage('This field is required.', required),
+//         },
+//         isActive: {
+//             required: helpers.withMessage('This field is required.', required),
+//         },
+//     },
+// }));
+
+// const v$ = useVuelidate(rules, payment);
 
 // functions area
 
@@ -360,11 +468,31 @@ function printItems() {
     }
 }
 
+// Function to remove item based on barcode
 function removeItem(barcode: string) {
-    let supervisorCode = 12345;
+    const supervisorCode = "123";
     const index = items.value.findIndex(item => item.barcode === barcode);
-    if (index !== -1 && supervisorCode == supervisorCode) {
+
+    // Explicitly check for -1 to determine if the item was found
+    if (index !== -1 && voidItem.value.supervisor_code === supervisorCode) {
         items.value.splice(index, 1);
+        successAlert(`${t('alert.Success')}!`, `item with barcode ${barcode} removed successfully!`);
+    } else {
+        if (index === -1) {
+            errorAlert(`${t('alert.Error')}!`, `Item with barcode ${barcode} not found.`);
+        } else {
+            errorAlert(`${t('alert.Error')}!`, `Item with barcode ${barcode} cannot be removed. Please check your supervisor code.`);
+        }
+    }
+}
+
+successAlert(`${t('alert.Success')}!`, `Product Category deleted sucessfully!`);
+errorAlert(`${t('alert.Error')}!`, `'Product Category deletion failed.'`);
+
+function handleCashPaymentEvent(event: KeyboardEvent) {
+    if (event.ctrlKey && event.key === 'Enter') {
+        event.preventDefault(); // Prevent the default refresh action
+        toggleCashForm();
     }
 }
 
@@ -374,6 +502,27 @@ function handlePrintEvent(event: KeyboardEvent) {
         printItems();
     }
 }
+
+// for multiple event keys for instance: CTRL + E + Q
+// USE THIS FOR MUTIPLE EVENT KEYS FOR INSTANCE: CTRL + E + Q
+let keysPressed: { [key: string]: boolean } = {};
+
+// Function to handle void item event
+function handleVoidItemEvent(event: KeyboardEvent) {
+    keysPressed[event.key] = true;
+    console.log('Key pressed:', event.key, keysPressed);
+    if (keysPressed['Control'] && keysPressed['Shift'] && keysPressed['V']) {
+        event.preventDefault(); // Prevent default action
+        toggleVoidForm(); // Call the function to toggle the void form
+    }
+}
+
+// Event listener for keyup events to reset keysPressed object
+function handleKeyUp(event: KeyboardEvent) {
+    delete keysPressed[event.key];
+    console.log('Key released:', event.key, keysPressed);
+}
+
 
 function toggleDescCode() {
     if (displayText.value === 'CODE') {
@@ -392,25 +541,12 @@ function handleCtrlS(event: KeyboardEvent) {
     }
 }
 
-// USE THIS FOR MUTIPLE EVENT KEYS FOR INSTANCE: CTRL + E + Q
-// let keysPressed: { [key: string]: boolean } = {};
-
-// document.addEventListener('keydown', (event) => {
-//     keysPressed[event.key] = true;
-//     if (keysPressed['Control'] && keysPressed['e'] && keysPressed['q']) {
-//         // Your code here
-//         event.preventDefault();
-//         toggleDescCode();
-//     }
-// });
-
-// document.addEventListener('keyup', (event) => {
-//     delete keysPressed[event.key];
-// });
-
 onMounted(() => {
     window.addEventListener('keydown', handleCtrlS);
     window.addEventListener('keydown', handlePrintEvent);
+    window.addEventListener('keydown', handleCashPaymentEvent);
+    window.addEventListener('keydown', handleVoidItemEvent);
+    window.addEventListener('keyup', handleKeyUp);
     setInterval(updateDateTime, 1000);
     setInterval(updateTimeOnly, 1000);
     barcodeInputRef.value?.focus();
@@ -420,6 +556,9 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('keydown', handleCtrlS);
     window.removeEventListener('keydown', handlePrintEvent);
+    window.removeEventListener('keydown', handleCashPaymentEvent);
+    window.removeEventListener('keydown', handleVoidItemEvent);
+    window.removeEventListener('keyup', handleKeyUp);
 });
 
 function logout() {

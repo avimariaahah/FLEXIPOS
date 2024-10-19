@@ -17,10 +17,12 @@ class PaymentDetailResource extends JsonResource
         return [
             'id' => $this->id,
             'payment_id' => $this->payment_id,
-            'transaction_ref' => $this->transaction_ref,
+            'payment_method_id' => $this->payment_method_id,
+            'bank_id' => $this->bank_id,
+            'cheque_number' => $this->cheque_number,
+            'cheque_date' => $this->cheque_date,
             'amount' => $this->amount,
-            'description' => $this->description,
-            'status' => $this->status,
+            'sales_invoice_no' => $this->sales_invoice_no,
             'created_at' => $this->created_at,
         ];
     }

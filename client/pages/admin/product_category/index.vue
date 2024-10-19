@@ -254,8 +254,8 @@ const categoryToEdit = ref<number | null>(null);
 async function saveCategory() {
     v$.value.$touch();
     if (v$.value.$invalid) {
-        return;
         console.log('Form validation failed. Please check the input fields.');
+        return;
     }
     try {
         const categoryData = {

@@ -12,16 +12,12 @@ class PaymentDetail extends Model
 
     protected $fillable = [
         'payment_id',
-        'payment_method_id',  // Example: 'cash', 'credit_card', 'bank_transfer', etc.
+        'payment_method_id',
         'bank_id',
-        'check_number',
-        'due_date',
-        'sales_invoice_id',
+        'cheque_number',
+        'cheque_date',
         'amount',
-        'cas_tendered',
-        'change',
-        'description',
-        'status',
+        'sales_invoice_no',
     ];
 
     public function payment(): BelongsTo
@@ -33,4 +29,9 @@ class PaymentDetail extends Model
     {
         return $this->belongsTo(PaymentMethod::class);
     }
+
+    // public function bank(): BelongsTo
+    // {
+    //     return $this->belongsTo(Bank::class);
+    // }
 }
