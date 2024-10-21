@@ -2,7 +2,7 @@
 
 namespace App\Interface\Service;
 
-interface ProductCategoryServiceInterface
+interface BranchServiceInterface
 {
     public function findProductCategories();
 

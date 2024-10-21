@@ -11,10 +11,12 @@ return new class extends Migration
         Schema::create('payment_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('payment_id');
-            $table->string('transaction_ref');
+            $table->string('payment_method_id');
+            $table->string('bank_id');
+            $table->string('cheque_number');
+            $table->string('cheque_date');
             $table->string('amount');
-            $table->string('description');
-            $table->string('status');
+            $table->string('sales_invoice_no');
             $table->timestamps();
         });
 

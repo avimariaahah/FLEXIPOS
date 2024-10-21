@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use Faker\Factory as Faker;
+
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     protected $fillable = [
         'role_id',
@@ -22,6 +25,44 @@ class User extends Authenticatable
         'email',
         'password',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Listen for the created event
+        static::created(function ($user) {
+            // Determine the designation based on role_id
+            $designation = null;
+            $faker = Faker::create();
+
+            switch ($user->role_id) {
+                case 1:
+                    $designation = 'Owner';
+                    break;
+                case 2:
+                    $designation = 'Admin';
+                    break;
+                case 3:
+                    // Assign designation based on the user's role or any other logic
+                    // You may need to define how to get the designation for a 'user'
+                    $designation = 'User'; // or set this dynamically based on other criteria
+                    break;
+                default:
+                    $designation = 'Unknown'; // Fallback designation
+            }
+
+            // Create a new Employee record
+            Employee::create([
+                'firstname' => $user->firstname,
+                'lastname' => $user->lastname,
+                'email' => $user->email,
+                'phone' => $faker->phoneNumber, // Set a default value or leave it null
+                'designation' => $designation,
+                'is_active' => true, // Default value for is_active
+            ]);
+        });
+    }
 
     public function role(): BelongsTo
     {

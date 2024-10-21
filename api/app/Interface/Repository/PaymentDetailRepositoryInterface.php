@@ -2,7 +2,7 @@
 
 namespace App\Interface\Repository;
 
-interface PaymentInvoiceDetailRepositoryInterface
+interface PaymentDetailRepositoryInterface
 {
     public function findMany();
 

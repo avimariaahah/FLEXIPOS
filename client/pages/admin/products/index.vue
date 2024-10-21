@@ -208,37 +208,37 @@
                             )">
                                 <tr v-for="(product, index) in state.products?.data" :key="index">
                                     <td>
-                                        <span class="truncate pl-3">{{ product.barcode }}</span>
+                                        <span class="pl-3 pr-3">{{ product.barcode }}</span>
                                     </td>
                                     <td>
-                                        <span class="truncate pl-3">{{ product.name }}</span>
+                                        <span>{{ product.name }}</span>
                                     </td>
                                     <td>
-                                        <span class="pl-3">{{ product.categoryname }}</span>
+                                        <span>{{ product.categoryname }}</span>
                                     </td>
                                     <td>
-                                        <span class="pl-3">{{ product.brand }}</span>
+                                        <span>{{ product.brand }}</span>
                                     </td>
                                     <td>
-                                        <span class="pl-3">{{ product.quantity_onhand }}</span>
+                                        <span>{{ product.quantity_onhand }}</span>
                                     </td>
                                     <td>
-                                        <span class="pl-3">{{ product.wholesale_unit }}</span>
+                                        <span>{{ product.wholesale_unit }}</span>
                                     </td>
                                     <td>
-                                        <span class="pl-3">{{ product.retail_unit }}</span>
+                                        <span>{{ product.retail_unit }}</span>
                                     </td>
                                     <td>
-                                        <span class="pl-3">{{ product.wholesale_quantity }}</span>
+                                        <span>{{ product.wholesale_quantity }}</span>
                                     </td>
                                     <td>
-                                        <span class="pl-3">{{ product.current_price }}</span>
+                                        <span>{{ product.current_price }}</span>
                                     </td>
                                     <td>
-                                        <span class="pl-3">{{ product.reorder_point }}</span>
+                                        <span>{{ product.reorder_point }}</span>
                                     </td>
                                     <td>
-                                        <span class="pl-3">{{ product.markup + "%" }}</span>
+                                        <span>{{ product.markup + "%" }}</span>
                                     </td>
 
                                     <td>

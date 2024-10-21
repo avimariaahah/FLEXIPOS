@@ -132,13 +132,13 @@ import { productCategoryService } from '~/components/api/admin/ProductCategorySe
 const runtimeConfig = useRuntimeConfig();
 let currentTablePage = 1;
 
-interface SortData {
-    sortField: string;
-    sortOrder: "ascend" | "descend" | null;
-}
-
 interface Category {
     data: any[];
+}
+
+interface SortData {
+    sortField: string;
+    sortOrder: "descend" | "ascend" | null;
 }
 
 const state = reactive({
@@ -149,7 +149,7 @@ const state = reactive({
     ],
     error: null as Error | null,
     isTableLoading: false,
-    sortData: { sortField: "", sortOrder: null } as SortData,
+    sortData: { sortField: 'id', sortOrder: 'descend' } as SortData,
     categories: { data: [] } as Category,
 });
 
@@ -170,10 +170,9 @@ function toggleForm() {
     category.value = { productcategoryname: category.value.productcategoryname, isActive: category.value.isActive }; // Reset form when toggling
 }
 
-
 async function fetchProductCategory() {
-    state.isTableLoading = true;
     state.error = null;
+    state.isTableLoading = true;
     try {
         const params = {
             page: currentTablePage,
@@ -186,34 +185,6 @@ async function fetchProductCategory() {
         state.error = error;
     }
     state.isTableLoading = false;
-}
-function previous() {
-    if (currentTablePage > 1) {
-        currentTablePage--;
-        fetchProductCategory();
-    }
-}
-
-function next() {
-    currentTablePage++;
-    fetchProductCategory();
-}
-
-function sort(sortingData: { column: string; sort: string }) {
-    currentTablePage = 1;
-    if (sortingData.sort === 'ascend' || sortingData.sort === 'descend') {
-        state.sortData = {
-            sortField: sortingData.column,
-            sortOrder: sortingData.sort,
-        };
-    } else {
-        console.error('Invalid sort order:', sortingData.sort);
-        state.sortData = {
-            sortField: sortingData.column,
-            sortOrder: 'ascend',
-        };
-    }
-    fetchProductCategory();
 }
 
 const categoryToEdit = ref<number | null>(null);
@@ -279,6 +250,25 @@ async function deleteCategory(categoryID: number) {
     } catch (error: any) {
         console.error(error.message);
     }
+}
+
+function sort(sortingData: any) {
+    currentTablePage = 1
+    state.sortData = {
+        sortField: sortingData.column,
+        sortOrder: sortingData.sort,
+    }
+    fetchProductCategory()
+}
+
+function previous() {
+    currentTablePage--;
+    fetchProductCategory();
+}
+
+function next() {
+    currentTablePage++;
+    fetchProductCategory();
 }
 
 </script>

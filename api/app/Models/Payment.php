@@ -12,7 +12,7 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'branch_no',
+        // 'branch_no',
         'or_number',
         'customer_id',
         'is_approved',

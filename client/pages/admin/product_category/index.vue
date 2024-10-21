@@ -137,7 +137,7 @@ const { errorAlert } = useAlert();
 const { t } = useI18n()
 
 const runtimeConfig = useRuntimeConfig();
-let currentTablePage = 1;
+let currentTablePage = ref(1);
 
 interface SortData {
     sortField: string;
@@ -156,7 +156,7 @@ const state = reactive({
     ],
     error: null as Error | null,
     isTableLoading: false,
-    sortData: { sortField: "", sortOrder: null } as SortData,
+    sortData: { sortField: 'id', sortOrder: 'ascend' } as SortData,
     categories: { data: [] } as Category,
 });
 
@@ -170,13 +170,6 @@ const activeInactiveOptions = [
     { value: true, label: 'Active' },
     { value: false, label: 'Inactive' },
 ];
-
-const selectedIsActive = computed({
-    get: () => category.value.isActive,
-    set: (newValue: boolean) => {
-        category.value.isActive = newValue;
-    }
-});
 
 const rules = computed(() => ({
     category: {
@@ -204,8 +197,8 @@ function toggleForm() {
 
 
 async function fetchProductCategory() {
-    state.isTableLoading = true;
     state.error = null;
+    state.isTableLoading = true;
     try {
         const params = {
             page: currentTablePage,
@@ -220,20 +213,9 @@ async function fetchProductCategory() {
     }
     state.isTableLoading = false;
 }
-function previous() {
-    if (currentTablePage > 1) {
-        currentTablePage--;
-        fetchProductCategory();
-    }
-}
-
-function next() {
-    currentTablePage++;
-    fetchProductCategory();
-}
 
 function sort(sortingData: { column: string; sort: string }) {
-    currentTablePage = 1;
+    currentTablePage.value = 1;
     if (sortingData.sort === 'ascend' || sortingData.sort === 'descend') {
         state.sortData = {
             sortField: sortingData.column,
@@ -322,6 +304,20 @@ async function deleteCategory(id: number) {
         fetchProductCategory();
     } catch (error: any) {
         console.error(error.message);
+    }
+}
+
+function previous() {
+    if (currentTablePage.value > 1) {
+        currentTablePage.value--;
+        fetchProductCategory();
+    }
+}
+
+function next() {
+    if (state.categories.data.length) {
+        currentTablePage.value++;
+        fetchProductCategory();
     }
 }
 </script>

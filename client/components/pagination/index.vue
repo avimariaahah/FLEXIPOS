@@ -9,12 +9,10 @@
             {{ props.data.meta && props.data.meta.total ? props.data.meta.total : 0 }}
         </div>
         <div class="grow flex flex-row justify-end gap-x-3">
-            <button
-                class="w-28 bg-primary text-white rounded-sm text-sm px-4 py-3 dark:bg-sky-500 dark:hover:bg-sky-400"
+            <button class="w-28 bg-tertiary text-white rounded-sm text-sm px-4 py-3 bg-gray-950"
                 v-if="props.data.links && props.data.links.prev !== null"
                 @click="!(props.data.links && props.data.links.prev === null) && $emit('previous')">Previous</button>
-            <button
-                class="w-28 bg-primary text-white rounded-sm text-sm px-4 py-3 dark:bg-sky-500 dark:hover:bg-sky-400"
+            <button class="w-28 bg-tertiary text-white rounded-sm text-sm px-4 py-3 bg-gray-950"
                 v-if="props.data.links && props.data.links.next !== null"
                 @click="!(props.data.links && props.data.links.next === null) && $emit('next')">Next</button>
         </div>

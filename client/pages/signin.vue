@@ -177,7 +177,7 @@ async function login() {
                     if (role == 'superadmin') {
                         navigateTo('/superadmin/dashboard')
                     }
-                    else if (role == 'admin') {
+                    else if (role == 'Admin') {
                         navigateTo('/admin/dashboard')
                     }
                     else {
