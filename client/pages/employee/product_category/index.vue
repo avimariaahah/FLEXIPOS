@@ -2,10 +2,6 @@
     <NuxtLayout name="default">
         <main>
 
-            <Head>
-                <Title>Category - {{ runtimeConfig.public.appName }}</Title>
-            </Head>
-
             <!-- Add Category Button -->
             <div class="mt-4 sm:ml-16 sm:mt-3 sm:flex-none mr-6">
                 <button type="button" @click="toggleForm()"

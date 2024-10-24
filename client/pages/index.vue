@@ -1,5 +1,10 @@
 <template>
+
+    <Head>
+        <Title>{{ runtimeConfig.public.appName }}</Title>
+    </Head>
     <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+
         <!-- Content goes here -->
         <div class="bg-white">
             <!-- Start of Main Page/Home -->
@@ -482,7 +487,7 @@
                                 <li v-for="item in footerNavigation.solutions" :key="item.name">
                                     <a :href="item.href" class="text-sm leading-6 text-gray-300 hover:text-white">{{
                                         item.name
-                                    }}</a>
+                                        }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -492,7 +497,7 @@
                                 <li v-for="item in footerNavigation.support" :key="item.name">
                                     <a :href="item.href" class="text-sm leading-6 text-gray-300 hover:text-white">{{
                                         item.name
-                                    }}</a>
+                                        }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -504,7 +509,7 @@
                                 <li v-for="item in footerNavigation.company" :key="item.name">
                                     <a :href="item.href" class="text-sm leading-6 text-gray-300 hover:text-white">{{
                                         item.name
-                                    }}</a>
+                                        }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -514,7 +519,7 @@
                                 <li v-for="item in footerNavigation.legal" :key="item.name">
                                     <a :href="item.href" class="text-sm leading-6 text-gray-300 hover:text-white">{{
                                         item.name
-                                    }}</a>
+                                        }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -543,6 +548,7 @@ import { CheckIcon, MinusCircleIcon, PlusCircleIcon, XCircleIcon } from '@heroic
 
 //main page functions
 const mobileMenuOpen = ref(true);
+const runtimeConfig = useRuntimeConfig();
 const navigation = [
     { name: 'Home', href: '#' },
     { name: 'Features', href: '#' },

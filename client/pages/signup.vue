@@ -1,4 +1,8 @@
 <template>
+
+    <Head>
+        <Title>{{ runtimeConfig.public.appName }}</Title>
+    </Head>
     <LoadingSpinner :isActive="state.isPageLoading">
         <div class="flex h-screen items-center justify-center">
             <div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -91,7 +95,7 @@ import { required, email, minLength, sameAs, helpers } from '@vuelidate/validato
 import { authService } from '@/components/api/AuthService.js';
 import { useAlert } from '@/composables/alert';
 import { useI18n } from 'vue-i18n';
-
+const runtimeConfig = useRuntimeConfig();
 
 const { successAlert } = useAlert();
 const { errorAlert } = useAlert();

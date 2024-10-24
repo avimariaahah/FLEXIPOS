@@ -1,4 +1,8 @@
 <template>
+
+    <Head>
+        <Title>Pricing - {{ runtimeConfig.public.appName }}</Title>
+    </Head>
     <div class="bg-white py-24 sm:py-32">
         <div class="mx-auto max-w-7xl px-6 lg:px-8">
             <div class="mx-auto max-w-4xl text-center">
@@ -67,6 +71,7 @@ import { ref, onMounted } from 'vue';
 import { RadioGroup, RadioGroupOption } from '@headlessui/vue'; // Ensure correct import
 import { processPlanService } from '~/components/api/ProcessPlanService';
 const route = useRoute(); // Get the current route
+const runtimeConfig = useRuntimeConfig();
 const id = ref(route.query.user_id);
 
 const frequencies = [

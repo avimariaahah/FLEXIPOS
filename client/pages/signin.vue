@@ -1,4 +1,8 @@
 <template>
+
+    <Head>
+        <Title>{{ runtimeConfig.public.appName }}</Title>
+    </Head>
     <button @click="backToHome" class="ml-4 mt-4">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
             class="size-6 hover:text-zinc-500">
@@ -121,6 +125,7 @@ import { required, helpers } from "@vuelidate/validators";
 import FormError from "../components/form/Error.vue"; // Adjust the path if necessary
 import { authService } from "~/components/api/AuthService";
 import { computed } from "vue";
+const runtimeConfig = useRuntimeConfig();
 
 interface LoginError {
     message?: string;
