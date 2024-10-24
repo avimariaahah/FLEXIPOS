@@ -263,6 +263,8 @@ interface Suppliers {
 
 interface Products {
     id: number;
+    barcode: string;
+    wholesale_unit: string;
     name: string;
     is_active: boolean;
 }
@@ -338,11 +340,15 @@ watch(
         // Update the name in billDetail if the selected product exists
         if (selectedProduct) {
             billDetail.value.name = selectedProduct.name;
+            billDetail.value.barcode = selectedProduct.barcode;
+            billDetail.value.unit = selectedProduct.wholesale_unit;
+
         } else {
             billDetail.value.name = ''; // Reset name if no product is selected
         }
     }
 );
+
 
 async function fetchSuppliers() {
     state.isTableLoading = true;
@@ -414,56 +420,60 @@ const toggleBillForm = () => {
 
 async function saveBill() {
     try {
-        console.log('Bill before save:', bill.value);
-        const billData = {
-            supplier_id: bill.value.supplier_id,
-            prepared_by_id: user_id.value,
-            cancelled_by_id: bill.value.cancelled_by_id,
-            bill_date: bill.value.bill_date,
-            purchase_order_no: bill.value.purchase_order_no,
-            payment_terms: bill.value.payment_terms,
-            is_cancelled: bill.value.is_cancelled || false,
-        };
+        if (billDetailsList.value.length > 0) {
+            console.log('Bill before save:', bill.value);
+            const billData = {
+                supplier_id: bill.value.supplier_id,
+                prepared_by_id: user_id.value,
+                cancelled_by_id: bill.value.cancelled_by_id,
+                bill_date: bill.value.bill_date,
+                purchase_order_no: bill.value.purchase_order_no,
+                payment_terms: bill.value.payment_terms,
+                is_cancelled: bill.value.is_cancelled || false,
+            };
 
-        // Create new bill.
-        const response = await billService.createBills(billData);
-        if (response && response.data.id) {
-            alert('Bill has been added! The value of the ID is: ' + response.data.id);
-            console.log(response);
+            // Create new bill.
+            const response = await billService.createBills(billData);
+            if (response && response.data.id) {
+                alert('Bill has been added! The value of the ID is: ' + response.data.id);
+                console.log(response);
 
-            // Save bill details
-            for (const detail of billDetailsList.value) {
-                const billDetailData = {
-                    bill_id: response.data.id, // Use the correct response ID
-                    product_id: detail.product_id,
-                    barcode: detail.barcode,
-                    unit: detail.unit,
-                    expiry_date: detail.expiry_date,
-                    quantity: detail.quantity,
-                    price: detail.price,
-                };
+                // Save bill details
+                for (const detail of billDetailsList.value) {
+                    const billDetailData = {
+                        bill_id: response.data.id, // Use the correct response ID
+                        product_id: detail.product_id,
+                        barcode: detail.barcode,
+                        unit: detail.unit,
+                        expiry_date: detail.expiry_date,
+                        quantity: detail.quantity,
+                        price: detail.price,
+                    };
 
-                console.log('Saving bill detail:', billDetailData); // Log the detail being saved
-                const result = await billDetailService.createBillDetails(billDetailData);
+                    console.log('Saving bill detail:', billDetailData); // Log the detail being saved
+                    const result = await billDetailService.createBillDetails(billDetailData);
 
-                if (result) {
-                    console.log('Bill detail saved successfully:', result);
-                    resetBillForm();
-                } else {
-                    console.error('Failed to save bill detail:', billDetailData);
+                    if (result) {
+                        console.log('Bill detail saved successfully:', result);
+                        resetBillForm();
+                    } else {
+                        console.error('Failed to save bill detail:', billDetailData);
+                    }
                 }
+                successAlert(t('alert.bill_created'), t('alert.success'));
+            } else {
+                errorAlert(t('Error'), t('Failed to create bill.'));
             }
 
-            alert('Bill details have been added!');
-        } else {
-            alert('Bill creation failed! No ID returned.');
+            fetchBills(); // Refresh the bill list.
+            toggleBillForm(); // Hide the form after save.
         }
-
-        fetchBills(); // Refresh the bill list.
-        toggleBillForm(); // Hide the form after save.
+        else {
+            errorAlert(t('Error'), t('Please add atleast one bill detail.'));
+        }
     } catch (error: any) {
         console.error('Error saving bill:', error.message);
-        alert('An error occurred while saving the bill.');
+        errorAlert(t('Error'), t('An error occurred while saving the bill.'));
     }
 }
 

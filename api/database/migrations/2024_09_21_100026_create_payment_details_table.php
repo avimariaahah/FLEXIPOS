@@ -11,17 +11,20 @@ return new class extends Migration
         Schema::create('payment_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('payment_id');
+            $table->unsignedBigInteger('product_id');
+            $table->string('quantity');
             $table->string('payment_method_id');
-            $table->string('bank_id');
-            $table->string('cheque_number');
-            $table->string('cheque_date');
+            $table->string('bank_id')->nullable();
+            $table->string('cheque_number')->nullable();
+            $table->string('cheque_date')->nullable();
             $table->string('amount');
-            $table->string('sales_invoice_no');
+            $table->string('sales_invoice_no')->nullable();
             $table->timestamps();
         });
 
         Schema::table('payment_details', function (Blueprint $table) {
             $table->foreign('payment_id')->references('id')->on('payments')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

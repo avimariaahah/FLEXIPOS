@@ -6,6 +6,8 @@ use App\Interface\Repository\BillDetailRepositoryInterface;
 use App\Interface\Repository\BillRepositoryInterface;
 use App\Interface\Repository\CustomerRepositoryInterface;
 use App\Interface\Repository\EmployeeRepositoryInterface;
+use App\Interface\Repository\PaymentDetailRepositoryInterface;
+use App\Interface\Repository\PaymentRepositoryInterface;
 use App\Interface\Repository\ProductCategoryRepositoryInterface;
 use App\Interface\Repository\ProductRepositoryInterface;
 use App\Interface\Repository\SupplierRepositoryInterface;
@@ -15,6 +17,8 @@ use App\Interface\Service\BillDetailServiceInterface;
 use App\Interface\Service\BillServiceInterface;
 use App\Interface\Service\CustomerServiceInterface;
 use App\Interface\Service\EmployeeServiceInterface;
+use App\Interface\Service\PaymentDetailServiceInterface;
+use App\Interface\Service\PaymentServiceInterface;
 use App\Interface\Service\ProductCategoryServiceInterface;
 use App\Interface\Service\ProductServiceInterface;
 use App\Interface\Service\SupplierServiceInterface;
@@ -23,6 +27,8 @@ use App\Repository\BillDetailRepository;
 use App\Repository\BillRepository;
 use App\Repository\CustomerRepository;
 use App\Repository\EmployeeRepository;
+use App\Repository\PaymentDetailRepository;
+use App\Repository\PaymentRepository;
 use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\SupplierRepository;
@@ -32,6 +38,8 @@ use App\Service\BillDetailService;
 use App\Service\BillService;
 use App\Service\CustomerService;
 use App\Service\EmployeeService;
+use App\Service\PaymentDetailService;
+use App\Service\PaymentService;
 use App\Service\ProductCategoryService;
 use App\Service\ProductService;
 use App\Service\SupplierService;
@@ -55,6 +63,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CustomerRepositoryInterface::class, CustomerRepository::class);
         $this->app->bind(BillRepositoryInterface::class, BillRepository::class);
         $this->app->bind(BillDetailRepositoryInterface::class, BillDetailRepository::class);
+        $this->app->bind(PaymentRepositoryInterface::class, PaymentRepository::class);
+        $this->app->bind(PaymentDetailRepositoryInterface::class, PaymentDetailRepository::class);
 
         //Service
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
@@ -66,6 +76,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CustomerServiceInterface::class, CustomerService::class);
         $this->app->bind(BillServiceInterface::class, BillService::class);
         $this->app->bind(BillDetailServiceInterface::class, BillDetailService::class);
+        $this->app->bind(PaymentServiceInterface::class, PaymentService::class);
+        $this->app->bind(PaymentDetailServiceInterface::class, PaymentDetailService::class);
     }
 
     /**

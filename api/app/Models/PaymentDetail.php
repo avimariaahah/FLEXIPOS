@@ -12,6 +12,8 @@ class PaymentDetail extends Model
 
     protected $fillable = [
         'payment_id',
+        'product_id',
+        'quantity',
         'payment_method_id',
         'bank_id',
         'cheque_number',
@@ -19,10 +21,25 @@ class PaymentDetail extends Model
         'amount',
         'sales_invoice_no',
     ];
+    protected static function booted()
+    {
+        static::created(function ($paymentDetail) {
+            $product = $paymentDetail->product;
+            if ($product) {
+                $product->quantity_onhand -= $paymentDetail->quantity;
+                $product->save();
+            }
+        });
+    }
 
     public function payment(): BelongsTo
     {
         return $this->belongsTo(Payment::class);
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
     }
 
     public function payment_method(): BelongsTo
@@ -33,5 +50,5 @@ class PaymentDetail extends Model
     // public function bank(): BelongsTo
     // {
     //     return $this->belongsTo(Bank::class);
-    // }
+    // }`
 }

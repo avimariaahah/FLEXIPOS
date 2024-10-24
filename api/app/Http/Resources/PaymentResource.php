@@ -16,7 +16,6 @@ class PaymentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'branch_no' => $this->branch_no,
             'or_number' => $this->or_number,
             'customer_id' => $this->customer_id,
             'is_approved' => $this->is_approved,
@@ -27,6 +26,7 @@ class PaymentResource extends JsonResource
             'approvedby' => $this->approvedby,
             'remarks' => $this->remarks,
             'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

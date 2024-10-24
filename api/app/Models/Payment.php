@@ -12,7 +12,6 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
-        // 'branch_no',
         'or_number',
         'customer_id',
         'is_approved',
@@ -23,6 +22,21 @@ class Payment extends Model
         'approvedby',
         'remarks',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($payment) {
+            $payment->or_number = self::generateOrNumber();
+        });
+    }
+
+    private static function generateOrNumber()
+    {
+        // Generate a unique OR number, e.g., using current timestamp or any other logic
+        return 'OR-' . now()->format('YmdHis') . '-' . rand(1000, 999999);
+    }
 
     public function customer(): BelongsTo
     {

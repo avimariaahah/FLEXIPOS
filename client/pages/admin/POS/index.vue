@@ -47,6 +47,7 @@
                                 <th class="py-2 px-4 border-b text-right">Quantity</th>
                                 <th class="py-2 px-4 border-b text-right">Discount</th>
                                 <th class="py-2 px-4 border-b text-right">Total</th>
+                                <th class="py-2 px-4 border-b text-right">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,7 +57,11 @@
                                 <td class="py-2 px-4 border-b text-right">{{ item.price }}</td>
                                 <td class="py-2 px-4 border-b text-right">{{ item.quantity }}</td>
                                 <td class="py-2 px-4 border-b text-right">{{ item.discount }}</td>
-                                <td class="py-2 px-4 border-b text-right">{{ item.total }}</td>
+                                <td class="py-2 px-4 border-b text-right">{{ item.price * item.quantity }}</td>
+                                <td class="py-2 px-4 border-b text-right">
+                                    <button @click="openQuantityForm(item.barcode, item.quantity)">Modify
+                                        Quantity</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -99,7 +104,7 @@
                         </li>
                         <li class="mb-1 flex justify-between font-bold">
                             <span>Total:</span>
-                            <span>{{ mostRecentItem.total }}</span>
+                            <span>{{ mostRecentItem.price * mostRecentItem.quantity }}</span>
                         </li>
                     </ul>
                 </div>
@@ -107,35 +112,43 @@
                 <div class="mt-3">
                     <h2 class="text-lg font-bold text-center ">SALES SUB TOTALS</h2>
                     <ul class="list-disc">
-                        <li class="mb-1 flex justify-between mt-2">
-                            <span>Amount Due:</span>
-                            <span>200.00</span>
-                        </li>
                         <li class="mb-1 flex justify-between">
                             <span>Total Item/s:</span>
-                            <span>2.00</span>
-                        </li>
-                        <li class="mb-1 flex justify-between">
-                            <span>Total Discount:</span>
-                            <span>0</span>
+                            <span>{{ totalItems }}</span>
                         </li>
                         <li class="mb-1 flex justify-between">
                             <span>NET:</span>
-                            <span>0</span>
+                            <span>0.00</span>
+                        </li>
+                        <li class="mb-1 flex justify-between">
+                            <span>Total Discount:</span>
+                            <span>{{ formattedTotalDiscount }}</span>
                         </li>
                         <li class="mb-1 flex justify-between">
                             <span>VAT:</span>
-                            <span>0</span>
+                            <span>{{ formattedVat }}</span>
+                        </li>
+                        <li class="mb-1 flex justify-between">
+                            <span>VATABLE:</span>
+                            <span>{{ formattedVatable }}</span>
                         </li>
                         <li class="mb-1 flex justify-between">
                             <span>VAT EXEMPT:</span>
-                            <span>0</span>
+                            <span>0.00</span>
                         </li>
                         <li class="mb-1 flex justify-between font-bold">
                             <span>Total Amount Due:</span>
-                            <span>200.00</span>
+                            <span> {{ formattedTotalAmount }}</span>
                         </li>
-                        <li class="mb-1 mt-64 flex justify-between">
+                        <li class="mb-1 mt-10 flex justify-between">
+                            <span>Cash Tendered:</span>
+                            <span> {{ formattedCashTendered }}</span>
+                        </li>
+                        <li class="mb-1 flex justify-between font-bold">
+                            <span>Change:</span>
+                            <span> {{ calculateChange }}</span>
+                        </li>
+                        <li class="mb-1 mt-52 flex justify-between">
                             <span>CASHIER: </span>
                             <span> {{ firstname }} {{ lastname }}</span>
                         </li>
@@ -157,10 +170,12 @@
             <button
                 class="bg-white text-black ml-5 mr-4 font-bold py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
                 <span class="text-xxs">F1</span>
+                <p>(help)</p>
             </button>
 
             <button class="bg-white font-bold mr-4 text-black py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
                 <span class="text-xxs">F2</span>
+                <p>(discount)</p>
             </button>
 
             <button class="bg-white text-black mr-4 font-bold py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
@@ -177,7 +192,8 @@
                 <span class="text-xxs">CTRL<br>+SHIFT+<br>V</span>
             </button>
 
-            <button class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
+            <button @click=""
+                class="bg-white text-black font-bold mr-4 py-3 px-4 w-24 h-24 rounded flex flex-col items-center">
                 <span class="text-xxs">F6</span>
             </button>
 
@@ -206,12 +222,12 @@
         <!-- Cash Form -->
         <div v-if="showCashForm" class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
             <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-                <form @submit.prevent="">
+                <form @submit.prevent="savePayment()">
                     <div class="grid grid-cols-1 gap-1 mt-3 mx-2">
                         <!-- Fields -->
                         <div class="mb-1">
                             <FormLabel for="cashtendered" label="Cash Tendered" class="mr-3" />
-                            <FormTextField id="cashtendered" name="cashtendered" v-model="payment.cash_tendered"
+                            <FormNumberField id="cashtendered" name="cashtendered" v-model="payment.cash_tendered"
                                 placeholder="Cash Tendered" required />
                         </div>
 
@@ -258,6 +274,48 @@
                 </form>
             </div>
         </div>
+        <!-- Modify Quantity Form -->
+        <div v-if="showQuantityForm" class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
+            <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                <form @submit.prevent="setQuantity(barcodeInput, Number(setQuantityTo.quantity))">
+                    <div class="grid grid-cols-1 gap-1 mt-3 mx-2">
+                        <!-- Fields -->
+                        <div class="mb-1">
+                            <FormLabel for="addqty" label="Enter Quantity" class="mr-3" />
+                            <FormTextField id="addqty" name="addqty" v-model="setQuantityTo.quantity"
+                                placeholder="Enter item quantity" required />
+                        </div>
+                        <!-- Action Buttons -->
+                        <div class="flex justify-end gap-2 mt-4">
+                            <FormButton type="submit" buttonStyle="success" class="w-full">SET</FormButton>
+                            <button type="button" @click="closeQuantityForm"
+                                class="w-full bg-red-500 text-white">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Add Discount Form -->
+        <div v-if="showDiscountForm" class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
+            <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                <form @submit.prevent="">
+                    <div class="grid grid-cols-1 gap-1 mt-3 mx-2">
+                        <!-- Fields -->
+                        <div class="mb-1">
+                            <FormLabel for="discount" label="Senior ID Number:" class="mr-3" />
+                            <FormTextField id="discount" name="discount" v-model="setQuantityTo.quantity"
+                                placeholder="Senior ID Number" required />
+                        </div>
+                        <!-- Action Buttons -->
+                        <div class="flex justify-end gap-2 mt-4">
+                            <FormButton type="submit" buttonStyle="success" class="w-full">SET</FormButton>
+                            <button type="button" @click="closeDiscountForm"
+                                class="w-full bg-red-500 text-white">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -266,6 +324,8 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { productService } from '~/components/api/admin/ProductService.js';
+import { paymentService } from '~/components/api/admin/PaymentService.js';
+import { paymentDetailService } from '~/components/api/admin/PaymentDetailService.js';
 
 
 // Alert and i18n setup
@@ -275,6 +335,7 @@ const { t } = useI18n()
 
 // interface area
 interface Item {
+    id: number;
     barcode: string;
     description: string;
     price: number;
@@ -287,6 +348,7 @@ interface Product {
     id: number;
     barcode: string;
     name: string;
+    discount: number;
     current_price: number;
 }
 
@@ -300,8 +362,10 @@ const placeholderText = ref('Enter Barcode');
 const currentTime = ref('');
 const currentDateTime = ref('');
 const barcodeInput = ref('');
+const vatRate = 0.12; // Example VAT rate
 const barcodeInputRef = ref<HTMLInputElement | null>(null);
 const itemsPerPage = 16;
+const setQuantityTo = ref({ quantity: '' });
 const currentPage = ref(1);
 const items = ref<Item[]>([]);
 const paginatedItems = computed(() => {
@@ -321,9 +385,61 @@ const totalAmount = computed(() => {
     return items.value.reduce((total, item) => total + item.total, 0);
 });
 
-// computed property for the most recent item
-const mostRecentItem = computed(() => {
-    return items.value[items.value.length - 1] || null;
+const totalItems = computed(() => {
+    return items.value.reduce((total, item) => total + Number(item.quantity), 0);
+});
+
+const calculateVat = computed(() => {
+    const amountExcludingVat = totalAmount.value / (1 + vatRate);
+    const vatAmount = amountExcludingVat * vatRate;
+    return vatAmount; // Return as a number
+});
+
+const calculateVatable = computed(() => {
+    return totalAmount.value - calculateVat.value;
+});
+
+const calculateNet = computed(() => {
+    return (totalAmount.value / (1 + vatRate));
+});
+
+const calculateTotalDiscount = computed(() => {
+    let discountPercentage = 0.20; // 20% discount
+    let totalAmount = formattedTotalAmount.value;
+    let discountAmount = Number(totalAmount) * discountPercentage; // Calculate discount amount
+    return Number(totalAmount) - discountAmount; // Subtract discount amount from total
+});
+
+const getCashTendered = computed(() => {
+    return payment.value.cash_tendered;
+});
+
+const calculateChange = computed(() => {
+    return Number(formattedCashTendered.value) - Number(formattedTotalAmount.value);
+});
+
+const calculateTotalItems = computed(() => {
+    return totalItems.value;
+});
+
+const formattedVat = computed(() => {
+    return calculateVat.value.toFixed(2);
+});
+
+const formattedVatable = computed(() => {
+    return calculateVatable.value.toFixed(2);
+});
+
+const formattedTotalDiscount = computed(() => {
+    return calculateTotalDiscount.value.toFixed(2);
+});
+
+const formattedTotalAmount = computed(() => {
+    return totalAmount.value.toFixed(2);
+});
+
+const formattedCashTendered = computed(() => {
+    return Number(getCashTendered.value).toFixed(2);
 });
 
 // async functions area
@@ -343,6 +459,8 @@ async function fetchProducts() {
 // form functions area
 const showCashForm = ref(false);
 const showVoidForm = ref(false);
+const showQuantityForm = ref(false);
+const showDiscountForm = ref(false);
 
 function toggleCashForm() {
     showCashForm.value = !showCashForm.value;
@@ -354,28 +472,51 @@ function toggleVoidForm() {
     // Reset fields form when toggling
 }
 
+function toggleDiscountForm() {
+    showDiscountForm.value = !showDiscountForm.value;
+    // Reset fields form when toggling
+}
+
+function closeDiscountForm() {
+    showDiscountForm.value = false;
+}
+
+function openQuantityForm(barcode: any, quantity: any) {
+    showQuantityForm.value = true;
+    barcodeInput.value = barcode; // Set the barcode for the form
+    setQuantityTo.value.quantity = quantity; // Optional: pre-fill the quantity if desired
+}
+
+function closeQuantityForm() {
+    showQuantityForm.value = false;
+    setQuantityTo.value.quantity = ''; // Reset quantity field
+}
+
+function setQuantity(barcode: string, quantity: number) {
+    const item = items.value.find(item => item.barcode === barcode);
+
+    if (item) {
+        item.quantity = quantity;
+        item.total = item.price * item.quantity; // Ensure the total is recalculated
+        closeQuantityForm(); // Close the form after setting the quantity
+    } else {
+        errorAlert(`${t('alert.Error')}!`, `Item with barcode ${barcode} not found.`);
+    }
+}
+
 const payment = ref({
+    customer_id: 1,
     cash_tendered: '',
+    cancelled_by_id: null, // Changed to null for clarity
+    is_approved: true,
+    is_cancelled: false,
+    remarks: 'POS payment',
 });
 
 const voidItem = ref({
     barcode: '',
     supervisor_code: '',
 });
-
-// rules
-// const rules = computed(() => ({
-//     payment: {
-//         cash_tendered: {
-//             required: helpers.withMessage('This field is required.', required),
-//         },
-//         isActive: {
-//             required: helpers.withMessage('This field is required.', required),
-//         },
-//     },
-// }));
-
-// const v$ = useVuelidate(rules, payment);
 
 // functions area
 
@@ -391,82 +532,258 @@ function nextPage() {
     }
 }
 
+// computed property for the most recent item
+const mostRecentItem = computed(() => {
+    // Return the last item in the items array if it exists
+    return items.value.length > 0 ? items.value[items.value.length - 1] : null;
+});
+
 function addItem() {
     // Check if the barcode input is valid
     if (barcodeInput.value.trim() !== '') {
         // Find the product with the matching barcode
+        let quantity = 1; // Default quantity
+        let discount = 0; // Default discount
         const product = state.products.find(product => product.barcode === barcodeInput.value);
-        console.log(product?.barcode);
-
-        let quantity = 1;
-        let discount = 0;
+        console.log(product?.barcode); // Log the product's barcode
 
         if (product) {
-            // Add the item to the list
-            items.value.push({
-                barcode: product.barcode,
-                description: product.name,
-                price: product.current_price,
-                quantity: quantity,
-                discount: discount,
-                total: product.current_price * quantity,
-            });
+            // Check if the item already exists in the items array
+            const existingItemIndex = items.value.findIndex(item => item.barcode === product.barcode);
+            if (existingItemIndex !== -1) {
+                // If it exists, update the quantity and total
+                const existingItem = items.value[existingItemIndex];
+                existingItem.description = product.name; // Update the description
+                existingItem.discount; // Keep existing discount
+                existingItem.quantity++; // Increment the quantity
+                existingItem.total = existingItem.price * existingItem.quantity; // Update total
+
+                // Move the updated item to the end of the array to reflect it as the most recent item
+                items.value.splice(existingItemIndex, 1);
+                items.value.push(existingItem);
+            } else {
+                // If it's a new item, push it to the items array
+                items.value.push({
+                    id: product.id,
+                    barcode: product.barcode,
+                    description: product.name,
+                    price: product.current_price,
+                    quantity: quantity,
+                    discount: discount,
+                    total: product.current_price * quantity,
+                });
+            }
+            // Optionally, you could log the details of the most recent item
+            console.log("Most Recent Item Details:", mostRecentItem.value);
         } else {
             // Alert if the product does not exist
             alert(`Product with barcode ${barcodeInput.value} does not exist.`);
         }
 
-        // Clear the barcode input
+        // Clear the barcode input for the next scan
         barcodeInput.value = '';
     }
 }
 
+let OfficialReceiptNumber = '';
+
+async function savePayment() {
+    if (Number(payment.value.cash_tendered) >= totalAmount.value) {
+        try {
+            const formatDateTime = (date: Date) => {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+                const day = String(date.getDate()).padStart(2, '0');
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                const seconds = String(date.getSeconds()).padStart(2, '0');
+                return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+            };
+
+            if (items.value.length > 0) {
+                console.log('Payment before save:', items.value);
+                const itemData = {
+                    prepared_by_id: user_id.value,
+                    customer_id: payment.value.customer_id,
+                    is_approved: payment.value.is_approved || false,
+                    is_cancelled: payment.value.is_cancelled || false,
+                    payment_date: formatDateTime(new Date()),
+                    cancelled_by_id: payment.value.cancelled_by_id,
+                    approvedby: user_id.value,
+                    remarks: payment.value.remarks,
+                };
+
+                // Create new payment.
+                const response = await paymentService.createPayment(itemData);
+                if (response && response.data.id) {
+                    alert('Payment has been added! The value of the ID is: ' + response.data.id);
+                    console.log(response);
+                    console.log(response.data.or_number);
+                    // Save payment details
+                    for (const item of items.value) {
+                        const paymentDetail = {
+                            or_number: response.data.or_number, // Use the correct response OR number
+                            payment_id: response.data.id, // Use the correct response ID
+                            product_id: item.id,
+                            quantity: item.quantity,
+                            payment_method_id: 2,
+                            bank_id: null,
+                            cheque_number: null,
+                            cheque_date: null,
+                            amount: formattedTotalAmount.value, // Assuming each item has a total
+                            sales_invoice_no: null,
+
+                        };
+                        OfficialReceiptNumber = response.data.or_number;
+
+                        console.log('Saving payment detail:', paymentDetail); // Log the detail being saved
+                        const result = await paymentDetailService.createPaymentDetail(paymentDetail);
+
+                        if (result) {
+                            console.log('Payment detail saved successfully:', result);
+                        } else {
+                            console.error('Failed to save payment detail:', paymentDetail);
+                        }
+                    }
+                    printItems();
+                    successAlert(t('alert.payment_created'), t('alert.success'));
+                    // Reset the payment and item arrays
+                    payment.value = {
+                        customer_id: 1,
+                        cash_tendered: '',
+                        cancelled_by_id: null,
+                        is_approved: true,
+                        is_cancelled: false,
+                        remarks: 'POS payment',
+                    };
+                    items.value = [];
+                    barcodeInput.value = '';
+                    currentPage.value = 1;
+                    showCashForm.value = false;
+                } else {
+                    errorAlert(t('Error'), t('Failed to create payment.'));
+                }
+            } else {
+                errorAlert(t('Error'), t('Please add at least one payment detail.'));
+            }
+        } catch (error: any) {
+            console.error('Error saving payment:', error.message);
+            errorAlert(t('Error'), t('An error occurred while saving the payment.'));
+        }
+    } else {
+        alert('Payment amount should be equal to or greater than total amount.');
+        console.log(payment.value.cash_tendered);
+    }
+}
+
+
 function printItems() {
+    updateDateTime();
     const printWindow = window.open('', 'Print Receipt', 'width=800,height=600');
     if (printWindow) {
         let html = '';
         html += '<!DOCTYPE html><html><head><title>Receipt</title></head><body>';
-        html += '<style>body { font-family: Arial, sans-serif; }</style>';
-        html += '<h1>Receipt</h1>';
-        html += '<h4>Date: ' + currentDateTime.value + '</h4>';
-        html += '<h4>Time: ' + currentTime.value + '</h4>';
-        html += '<h4>Cashier: ' + firstname.value + ' ' + lastname.value + '</h4>';
-        html += '<table border="1" cellpadding="5" cellspacing="0">';
-        html += '<tr><th>Barcode</th><th>Description</th><th>Price</th><th>Quantity</th></tr>';
+        html += '<style>';
+        html += 'body { font-family: Arial, sans-serif; font-size: small; }';
+        html += '.receipt-header { text-align: left; margin-bottom: 20px; }';
+        html += '.receipt-title { text-align: center; font-size: xs; margin-top: 15px; padding-top: 15px;}';
+        html += '.receipt-address { text-align: center; font-size: small; margin-top: 0; padding-top: 0;}';
+        html += '.receipt-vatregTIN { text-align: center; font-size: small; margin-top: 0; padding-top: 0;}';
+        html += '.receipt-item { padding: 5px 0; border-bottom: 1px dashed #000; }';
+        html += '.receipt-total { font-weight: bold; border-top: 1px dashed #000; border-bottom: 1px dashed #000; }';
+        html += '.receipt-table { width: 100%; margin: 10px 0; }';
+        html += '.receipt-table th, .receipt-table td { padding: 5px; }';
+        html += '.receipt-table th { border-top: 1px dashed #000; text-align: left; }';
+        html += '.receipt-table td.right-align { text-align: right; }';
+        html += '.receipt-footer { text-align: center; margin-top: 50px; border: none; }';
+        html += '.no-margin { margin: 0; }';
+        html += '.margin-left { margin-left: 10px; }';
+        html += '.cashier-margin { margin-top: 40px; }';
+        html += '.buyer-details { margin-top: 30px; }';
+        html += '</style>';
 
-        // Debugging: Log items to console
-        console.log('Items to print:', items.value);
+        html += '<div class="receipt-header">';
+        html += '<h2 class="receipt-title">FlexiPOS</h2>';
+        html += '<h1 class="receipt-address">JP LAUREL AVENUE BAJADA 13-B POBLACION</h1>';
+        html += '<h1 class="receipt-vatregTIN">TIN: 234-634-259-00161</h1>';
+        html += '<h4 class="margin-left cashier-margin">CASHIER: ' + lastname.value + '</h4>';
+        html += '<div style="display: flex; justify-content: space-between; align-items: center;">';
+        html += '<h4 class="no-margin margin-left">Date: ' + currentDateTime.value + '</h4>';
+        html += '<h4 style="text-align: center; flex-grow: 1; margin: 0;">Time: ' + currentTime.value + '</h4>';
+        html += '</div>';
+        html += '<h4 class="margin-left or-number">OR Number: </br>' + OfficialReceiptNumber + '</h4>';
+        html += '</div>';
 
+        html += '<div class="receipt-body">';
+
+        // Add the table header
+        html += '<table class="receipt-table">';
+        html += '<tr>';
+        html += '<th>Qty</th>';
+        html += '<th>Description</th>';
+        html += '<th>Price</th>';
+        html += '<th>Amount</th>';
+        html += '</tr>';
+
+        // Add each item in the list
         items.value.forEach((item) => {
+            html += '<tr class="receipt-item">';
+            html += `<td colspan="4">${item.barcode}</td>`;
+            html += '</tr>';
             html += '<tr>';
-            html += `<td>${item.barcode}</td>`;
-            html += `<td>${item.description}</td>`;
-            html += `<td>$${item.price}</td>`;
             html += `<td>${item.quantity}</td>`;
+            html += `<td>${item.description}</td>`;
+            html += `<td class="right-align">${item.price}</td>`; // Right-align the price
+            html += `<td class="right-align">${(item.quantity * item.price)}</td>`; // Right-align the amount
             html += '</tr>';
         });
-        html += '</table>';
 
-        const subtotal = items.value.reduce((acc, item) => acc + item.total, 0);
-        html += '<h4>Subtotal: $' + subtotal + '</h4>';
-        html += '<h4>Tax (0%): $0.00</p>';
-        html += '<h4>Total: $' + subtotal + '</h4>';
+        html += '</table>'; // Close the table
+
+        const subtotal = items.value.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+        // Add the subtotal and total
+        html += '<div class="receipt-total">';
+        html += `<h4>DISCOUNT  <span style="float:right;">${formattedTotalDiscount.value}</span></h4>`;
+        html += `<h4>VAT  <span style="float:right;">${formattedVat.value}</span></h4>`;
+        html += `<h4>VATABLE  <span style="float:right;">${formattedVatable.value}</span></h4>`;
+        html += `<h4>SUB-TOTAL  <span style="float:right;">${subtotal.toFixed(2)}</span></h4>`; // Right-align subtotal
+        html += `<h4>CASH<span style="float:right;">${formattedCashTendered.value}</span></h4>`; // Right-align cash
+        html += '</div>'; // Close receipt-total
+
+        html += '<div style="text-align: center;">'; // Centering the Change text
+        html += `<h4>Change: ${calculateChange.value}</h4>`;
+        html += '</div>'; // Close the centered div
+
+        // Add total number of items
+        html += '<div style="margin-top: 15px; text-align: left; display: block;">';
+        html += '<h4 class="no-margin margin-left">TOTAL NO OF ITEMS: ' + { calculateTotalItems }
+            + '</h4>';
+        html += '</div>';
+
+        // Add Buyer details
+        html += '<div class="buyer-details">';
+        html += '<h4 class="no-margin margin-left">BUYER NAME: ' + '</h4>';
+        html += '<h4 class="no-margin margin-left">BUYER ADDRESS: ' + '</h4>';
+        html += '<h4 class="no-margin margin-left">BUYER TIN: ' + '</h4>';
+        html += '<h4 class="no-margin margin-left">BUSINESS STYLE: ' + '</h4>';
+        html += '</div>';
+
+        // Receipt footer
+        html += '<div class="receipt-footer">';
         html += '<h4>Thank you for shopping with us!</h4>';
-        html += '</body></html>';
+        html += '</div>';
+
+        html += '</body></html>'; // Close all tags
 
         printWindow.document.write(html);
-        printWindow.document.close(); // Close the document to prevent further modifications
-        printWindow.focus(); // Focus on the print window
-
-        // Use setTimeout to ensure the document is fully rendered before printing
-        setTimeout(() => {
-            printWindow.print(); // Print the window
-            printWindow.close(); // Close the print window
-        }, 100); // Adjust the timeout as necessary
-    } else {
-        console.log('Failed to open print window');
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
     }
 }
+
 
 // Function to remove item based on barcode
 function removeItem(barcode: string) {
@@ -486,9 +803,6 @@ function removeItem(barcode: string) {
     }
 }
 
-successAlert(`${t('alert.Success')}!`, `Product Category deleted sucessfully!`);
-errorAlert(`${t('alert.Error')}!`, `'Product Category deletion failed.'`);
-
 function handleCashPaymentEvent(event: KeyboardEvent) {
     if (event.ctrlKey && event.key === 'Enter') {
         event.preventDefault(); // Prevent the default refresh action
@@ -500,6 +814,13 @@ function handlePrintEvent(event: KeyboardEvent) {
     if (event.ctrlKey && event.key === 'r') {
         event.preventDefault(); // Prevent the default refresh action
         printItems();
+    }
+}
+
+function handleDiscountEvent(event: KeyboardEvent) {
+    if (event.ctrlKey && event.key === '2') {
+        event.preventDefault(); // Prevent the default refresh action
+        toggleDiscountForm();
     }
 }
 
@@ -546,6 +867,7 @@ onMounted(() => {
     window.addEventListener('keydown', handlePrintEvent);
     window.addEventListener('keydown', handleCashPaymentEvent);
     window.addEventListener('keydown', handleVoidItemEvent);
+    window.addEventListener('keydown', handleDiscountEvent);
     window.addEventListener('keyup', handleKeyUp);
     setInterval(updateDateTime, 1000);
     setInterval(updateTimeOnly, 1000);
@@ -558,6 +880,7 @@ onUnmounted(() => {
     window.removeEventListener('keydown', handlePrintEvent);
     window.removeEventListener('keydown', handleCashPaymentEvent);
     window.removeEventListener('keydown', handleVoidItemEvent);
+    window.removeEventListener('keydown', handleDiscountEvent);
     window.removeEventListener('keyup', handleKeyUp);
 });
 

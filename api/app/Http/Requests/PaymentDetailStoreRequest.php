@@ -23,6 +23,8 @@ class PaymentDetailStoreRequest extends FormRequest
     {
         return [
             'payment_id' => 'required',
+            'product_id' => 'required',
+            'quantity',
             'payment_method_id' => 'required',
             'bank_id',
             'cheque_number',

@@ -15,6 +15,14 @@ class CustomerSeeder extends Seeder
     {
         $customers = [
             [
+                'firstname' => 'WALK IN',
+                'lastname' => 'CASH',
+                'email' => 'walk-in.customer@flexipos.com',
+                'phone' => 'none',
+                'address' => 'none',
+                'is_active' => true,
+            ],
+            [
                 'firstname' => 'John',
                 'lastname' => 'Doe',
                 'email' => 'johndoe@example.com',
