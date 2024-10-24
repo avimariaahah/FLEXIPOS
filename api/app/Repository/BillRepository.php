@@ -25,6 +25,7 @@ class BillRepository implements BillRepositoryInterface
         $bill->cancelled_by_id = $payload->cancelled_by_id;
         $bill->purchase_order_no = $payload->purchase_order_no;
         $bill->bill_date = $payload->bill_date;
+        $bill->amount = $payload->amount;
         $bill->payment_terms = $payload->payment_terms;
         $bill->is_cancelled = $payload->is_cancelled;
         $bill->save();
@@ -40,6 +41,7 @@ class BillRepository implements BillRepositoryInterface
         $bill->cancelled_by_id = $payload->cancelled_by_id;
         $bill->purchase_order_no = $payload->purchase_order_no;
         $bill->bill_date = $payload->bill_date;
+        $bill->amount = $payload->amount;
         $bill->payment_terms = $payload->payment_terms;
         $bill->is_cancelled = $payload->is_cancelled;
         $bill->save();

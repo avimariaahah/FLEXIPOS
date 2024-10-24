@@ -84,7 +84,7 @@
                     <div class="bg-white text-gray-900 text-2xl font-bold text-center rounded py-6 px-4 w-full">
                         <!-- Replace with the dynamic amount of products scanned -->
                         <!-- PUT PRICE HERE -->
-                        {{ totalAmount.toFixed(2) }}
+                        {{ formattedTotalAmount }}
                     </div>
                 </div>
                 <div v-if="mostRecentItem" class="mt-4">
@@ -122,7 +122,7 @@
                         </li>
                         <li class="mb-1 flex justify-between">
                             <span>Total Discount:</span>
-                            <span>{{ formattedTotalDiscount }}</span>
+                            <span>0.00</span>
                         </li>
                         <li class="mb-1 flex justify-between">
                             <span>VAT:</span>
@@ -349,6 +349,7 @@ interface Product {
     barcode: string;
     name: string;
     discount: number;
+    markup: number;
     current_price: number;
 }
 
@@ -547,7 +548,18 @@ function addItem() {
         const product = state.products.find(product => product.barcode === barcodeInput.value);
         console.log(product?.barcode); // Log the product's barcode
 
+        // Check if product is found before proceeding
         if (product) {
+            let currentprice = product.current_price; // Get the current price
+            let markup = product.markup; // Assuming markup is a percentage
+            let markupamount = Number(currentprice) * (Number(markup) / 100); // Calculate the markup amount
+            let thisprice = Number(currentprice) + Number(markupamount); // Calculate the total price including markup
+
+            console.log("Markup: " + markup);
+            console.log("Current Price: " + currentprice);
+            console.log("Markup Amount: " + markupamount);
+            console.log("Price fetched: " + thisprice);
+
             // Check if the item already exists in the items array
             const existingItemIndex = items.value.findIndex(item => item.barcode === product.barcode);
             if (existingItemIndex !== -1) {
@@ -556,25 +568,24 @@ function addItem() {
                 existingItem.description = product.name; // Update the description
                 existingItem.discount; // Keep existing discount
                 existingItem.quantity++; // Increment the quantity
-                existingItem.total = existingItem.price * existingItem.quantity; // Update total
 
+                // Update total based on the updated quantity
+                existingItem.total = thisprice * existingItem.quantity; // Update total correctly using thisprice
                 // Move the updated item to the end of the array to reflect it as the most recent item
                 items.value.splice(existingItemIndex, 1);
                 items.value.push(existingItem);
             } else {
-                // If it's a new item, push it to the items array
+                // Push a new item with the correct total
                 items.value.push({
                     id: product.id,
                     barcode: product.barcode,
                     description: product.name,
-                    price: product.current_price,
+                    price: thisprice, // Use the price calculated with markup
                     quantity: quantity,
                     discount: discount,
-                    total: product.current_price * quantity,
+                    total: thisprice * quantity, // Calculate total using thisprice
                 });
             }
-            // Optionally, you could log the details of the most recent item
-            console.log("Most Recent Item Details:", mostRecentItem.value);
         } else {
             // Alert if the product does not exist
             alert(`Product with barcode ${barcodeInput.value} does not exist.`);
@@ -584,6 +595,7 @@ function addItem() {
         barcodeInput.value = '';
     }
 }
+
 
 let OfficialReceiptNumber = '';
 

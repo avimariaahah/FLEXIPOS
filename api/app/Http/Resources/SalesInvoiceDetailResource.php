@@ -18,11 +18,11 @@ class SalesInvoiceDetailResource extends JsonResource
             'id' => $this->id,
             'sales_invoice_id' => $this->sales_invoice_id,
             'product_id' => $this->product_id,
-            'quantity_sold' => $this->quantity_sold,
+            'barcode' => $this->barcode,
+            'unit' => $this->unit,
+            'expiry_date' => $this->expiry_date,
+            'quantity' => $this->quantity,
             'price' => $this->price,
-            'discount' => $this->discount,
-            'tax_amount' => $this->tax_amount,
-            'total' => $this->total,
             'created_at' => $this->created_at,
         ];
     }

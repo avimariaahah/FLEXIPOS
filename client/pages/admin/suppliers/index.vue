@@ -195,13 +195,13 @@
                                     </td>
                                 </tr>
                             </template>
-                            <template #empty v-if="state.suppliers?.data?.length === 0">
+                            <!-- <template #empty v-if="state.suppliers?.data?.length === 0">
                                 <tr>
                                     <td colspan="7" class="text-center py-4 text-sm text-gray-600">
                                         No suppliers found.
                                     </td>
                                 </tr>
-                            </template>
+                            </template> -->
                         </Table>
                     </div>
                     <Pagination :data="state.suppliers" @previous="previous" @next="next" />

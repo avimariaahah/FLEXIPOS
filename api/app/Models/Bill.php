@@ -17,6 +17,7 @@ class Bill extends Model
         'cancelled_by_id',
         'purchase_order_no',
         'bill_date',
+        'amount',
         'payment_terms',
         'is_cancelled',
     ];

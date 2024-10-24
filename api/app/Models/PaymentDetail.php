@@ -21,6 +21,7 @@ class PaymentDetail extends Model
         'amount',
         'sales_invoice_no',
     ];
+
     protected static function booted()
     {
         static::created(function ($paymentDetail) {

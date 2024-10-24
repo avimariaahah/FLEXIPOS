@@ -10,18 +10,24 @@ return new class extends Migration
     {
         Schema::create('sales_invoices', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('branch_id');
-            $table->unsignedBigInteger('sales_order_id');
+            $table->unsignedBigInteger('branch_id')->nullable();
+            $table->unsignedBigInteger('sales_order_id')->nullable();
             $table->unsignedBigInteger('customer_id');
-            $table->unsignedBigInteger('processed_by_id');
-            $table->string('cancel_type');
-            $table->string('cancel_id');
-            $table->string('approve_type');
+            $table->unsignedBigInteger('prepared_by_id');
+            $table->unsignedBigInteger('cancelled_by_id')->nullable();
+            $table->unsignedBigInteger('approved_by_id')->nullable();
+            $table->string('invoice_no');
+            $table->string('sales_invoice_ref_doc_no');
+            $table->string('date');
+            $table->string('due_date');
+            $table->string('terms');
+            $table->string('amount');
             $table->string('approve_id');
             $table->string('document_no');
             $table->string('date');
-            $table->boolean('is_approved');
-            $table->boolean('is_cancelled');
+            $table->string('remarks')->nullable();
+            $table->boolean('is_cancelled')->nullable();
+            $table->boolean('is_approved')->nullable();
             $table->timestamps();
         });
 
@@ -29,7 +35,9 @@ return new class extends Migration
             $table->foreign('branch_id')->references('id')->on('branches')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('sales_order_id')->references('id')->on('sales_orders')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('customer_id')->references('id')->on('customers')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('processed_by_id')->references('id')->on('employees')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('prepared_by_id')->references('id')->on('employees')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('cancelled_by_id')->references('id')->on('employees')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('approved_by_id')->references('id')->on('employees')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

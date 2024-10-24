@@ -174,6 +174,9 @@
                                     {{ bill.bill_date }}
                                 </td>
                                 <td class="pl-3">
+                                    ₱{{ Number(bill.amount).toFixed(2) }}
+                                </td>
+                                <td class="pl-3">
                                     {{ bill.payment_terms }}
                                 </td>
                                 <td class="pl-3">
@@ -276,6 +279,7 @@ const state = reactive({
         { name: "Cancelled By", sorter: true, key: "cancelled_by_id" },
         { name: "P.O. Number", sorter: true, key: "purchase_order_no" },
         { name: "Bill Date", sorter: true, key: "bill_date" },
+        { name: "Amount", sorter: true, key: "amount" },
         { name: "Terms", sorter: true, key: "payment_terms" },
         { name: "Status", sorter: true, key: "is_cancelled" },
         { name: "Actions", key: "actions" },
@@ -307,6 +311,7 @@ const bill = ref({
     cancelled_by_id: '',
     purchase_order_no: '',
     bill_date: '',
+    amount: 0,
     payment_terms: '',
     is_cancelled: false
 });
@@ -317,6 +322,7 @@ const billDetail = ref<{
     barcode: string;
     unit: string;
     expiry_date: string;
+    amount: number;
     quantity: string;
     price: string;
 }>({
@@ -325,6 +331,7 @@ const billDetail = ref<{
     barcode: '',
     unit: '',
     expiry_date: '',
+    amount: 0,
     quantity: '',
     price: ''
 });
@@ -413,6 +420,7 @@ const toggleBillForm = () => {
         barcode: '',
         unit: '',
         expiry_date: '',
+        amount: 0,
         quantity: '',
         price: ''
     };
@@ -428,9 +436,18 @@ async function saveBill() {
                 cancelled_by_id: bill.value.cancelled_by_id,
                 bill_date: bill.value.bill_date,
                 purchase_order_no: bill.value.purchase_order_no,
+                amount: bill.value.amount, // You might want to calculate this based on bill details
                 payment_terms: bill.value.payment_terms,
                 is_cancelled: bill.value.is_cancelled || false,
             };
+
+            // Calculate total amount from bill details
+            const totalAmount = billDetailsList.value.reduce((total, detail) => {
+                return total + (Number(detail.quantity) * Number(detail.price));
+            }, 0);
+
+            // Update the amount in billData with the calculated total amount
+            billData.amount = totalAmount;
 
             // Create new bill.
             const response = await billService.createBills(billData);
@@ -467,15 +484,15 @@ async function saveBill() {
 
             fetchBills(); // Refresh the bill list.
             toggleBillForm(); // Hide the form after save.
-        }
-        else {
-            errorAlert(t('Error'), t('Please add atleast one bill detail.'));
+        } else {
+            errorAlert(t('Error'), t('Please add at least one bill detail.'));
         }
     } catch (error: any) {
         console.error('Error saving bill:', error.message);
         errorAlert(t('Error'), t('An error occurred while saving the bill.'));
     }
 }
+
 
 const viewBill = async (id: number) => {
 
@@ -515,6 +532,7 @@ const addBillDetails = () => {
         barcode: '',
         unit: '',
         expiry_date: '',
+        amount: 0,
         quantity: '',
         price: ''
     };
@@ -527,6 +545,7 @@ function resetBillForm() {
         cancelled_by_id: '',
         purchase_order_no: '',
         bill_date: '',
+        amount: 0,
         payment_terms: '',
         is_cancelled: false
     };

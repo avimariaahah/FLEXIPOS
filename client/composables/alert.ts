@@ -17,5 +17,21 @@ export function useAlert() {
         })
     }
 
-    return { errorAlert, successAlert }
+    function warningAlert(title: string, message: string) {
+        notify({
+            title: title,
+            text: message,
+            type: 'warn',
+        });
+
+        // // Wait a moment to allow the notification to be added to the DOM
+        // setTimeout(() => {
+        //     const notificationElement = document.querySelector('.vue-notification');
+        //     if (notificationElement) {
+        //         notificationElement.classList.add('notification-center');
+        //     }
+        // }, 0);
+    }
+
+    return { errorAlert, successAlert, warningAlert }
 }

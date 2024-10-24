@@ -1,6 +1,10 @@
 <template>
     <div>
         <NuxtLayout name="admin">
+
+            <Head>
+                <Title>Sales Invoice - {{ runtimeConfig.public.appName }}</Title>
+            </Head>
             <main>
                 <!-- Search and Add Product Button Container -->
                 <div class="relative flex items-center space-x-4 mt-3">
@@ -21,7 +25,7 @@
                     <button @click="goToSalesInvoice" type="button"
                         class="rounded-md bg-gray-900 px-3 py-2 text-center text-xxs font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 flex items-center justify-center gap-2">
                         <PlusIcon class="h-3 w-3" aria-hidden="true" />
-                        Create Sales
+                        Create Sales Invoice
                     </button>
                 </div>
 
@@ -119,10 +123,12 @@ import { ref, computed } from 'vue';
 import { PlusIcon } from '@heroicons/vue/24/outline';
 import { useRouter } from 'vue-router';
 
+const runtimeConfig = useRuntimeConfig();
+
 const router = useRouter();
 
 function goToSalesInvoice() {
-    router.push({ name: 'sales_details' });
+    navigateTo('sales_invoice/sales_invoice_detail');
 }
 
 const showForm = ref(false);

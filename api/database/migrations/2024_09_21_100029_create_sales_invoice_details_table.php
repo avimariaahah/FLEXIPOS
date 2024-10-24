@@ -12,11 +12,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('sales_invoice_id');
             $table->unsignedBigInteger('product_id');
-            $table->string('quantity_sold');
+            $table->string('barcode');
+            $table->string('unit');
+            $table->string('expiry_date');
+            $table->string('quantity');
             $table->string('price');
-            $table->string('discount');
-            $table->string('tax_amount');
-            $table->string('total');
             $table->timestamps();
         });
 

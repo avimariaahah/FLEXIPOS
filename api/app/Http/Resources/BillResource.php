@@ -22,6 +22,7 @@ class BillResource extends JsonResource
             'purchase_order_no' => $this->purchase_order_no,
             'bill_date' => $this->bill_date,
             'payment_terms' => $this->payment_terms,
+            'amount' => $this->amount,
             'is_cancelled' => $this->is_cancelled,
             'created_at' => $this->created_at,
         ];

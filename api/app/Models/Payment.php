@@ -35,7 +35,7 @@ class Payment extends Model
     private static function generateOrNumber()
     {
         // Generate a unique OR number, e.g., using current timestamp or any other logic
-        return 'OR-' . now()->format('YmdHis') . '-' . rand(1000, 999999);
+        return 'OR-'.now()->format('YmdHis').'-'.rand(1000, 999999);
     }
 
     public function customer(): BelongsTo

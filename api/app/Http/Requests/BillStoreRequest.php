@@ -27,6 +27,7 @@ class BillStoreRequest extends FormRequest
             'cancelled_by_id',
             'purchase_order_no' => 'required',
             'bill_date' => 'required',
+            'amount',
             'payment_terms' => 'required',
             'is_cancelled',
         ];

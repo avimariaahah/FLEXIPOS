@@ -13,11 +13,11 @@ class SalesInvoiceDetail extends Model
     protected $fillable = [
         'sales_invoice_id',
         'product_id',
-        'quantity_sold',
+        'barcode',
+        'unit',
+        'expiry_date',
+        'quantity',
         'price',
-        'discount',
-        'tax_amount',
-        'total',
     ];
 
     public function sales_invoice(): BelongsTo

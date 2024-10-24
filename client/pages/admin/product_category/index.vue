@@ -134,10 +134,11 @@ import { useI18n } from 'vue-i18n';
 // Alert and i18n setup
 const { successAlert } = useAlert();
 const { errorAlert } = useAlert();
+const { warningAlert } = useAlert();
 const { t } = useI18n()
 
 const runtimeConfig = useRuntimeConfig();
-let currentTablePage = ref(1);
+let currentTablePage = 1;
 
 interface SortData {
     sortField: string;
@@ -164,6 +165,7 @@ const showForm = ref(false);
 
 onMounted(() => {
     fetchProductCategory();
+    warningAlert('Warning', 'This feature is not yet implemented.');
 });
 
 const activeInactiveOptions = [
@@ -215,7 +217,7 @@ async function fetchProductCategory() {
 }
 
 function sort(sortingData: { column: string; sort: string }) {
-    currentTablePage.value = 1;
+    currentTablePage = 1;
     if (sortingData.sort === 'ascend' || sortingData.sort === 'descend') {
         state.sortData = {
             sortField: sortingData.column,
@@ -308,16 +310,14 @@ async function deleteCategory(id: number) {
 }
 
 function previous() {
-    if (currentTablePage.value > 1) {
-        currentTablePage.value--;
-        fetchProductCategory();
-    }
+    currentTablePage--;
+    fetchProductCategory();
+
 }
 
 function next() {
-    if (state.categories.data.length) {
-        currentTablePage.value++;
-        fetchProductCategory();
-    }
+    currentTablePage++;
+    fetchProductCategory();
+
 }
 </script>

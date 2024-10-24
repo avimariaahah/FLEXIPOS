@@ -24,11 +24,11 @@ class SalesInvoiceDetailUpdateRequest extends FormRequest
         return [
             'sales_invoice_id' => 'required',
             'product_id' => 'required',
-            'quantity_sold' => 'required',
-            'price' => 'required',
-            'discount' => 'required',
-            'tax_amount' => 'required',
-            'total' => 'required',
+            'barcode',
+            'unit',
+            'expiry_date',
+            'quantity',
+            'price',
         ];
     }
 }

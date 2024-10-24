@@ -15,6 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('cancelled_by_id')->nullable();
             $table->string('purchase_order_no');
             $table->string('bill_date');
+            $table->string('amount');
             $table->string('payment_terms');
             $table->boolean('is_cancelled');
             $table->timestamps();
