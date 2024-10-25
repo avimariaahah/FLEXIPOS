@@ -150,7 +150,7 @@
                         </li>
                         <li class="mb-1 mt-52 flex justify-between">
                             <span>CASHIER: </span>
-                            <span> {{ firstname }} {{ lastname }}</span>
+                            <span> {{ firstname }} {{ lastname }} </span>
                         </li>
                         <li class="mb-1 flex justify-between">
                             <span>DATE: </span>

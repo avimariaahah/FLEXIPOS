@@ -26,6 +26,7 @@ class ProductResource extends JsonResource
             'wholesale_quantity' => $this->wholesale_quantity,
             'reorder_point' => $this->reorder_point,
             'current_price' => $this->current_price,
+            'expiry_date' => $this->expiry_date,
             'markup' => $this->markup,
             'is_active' => $this->is_active,
             'created_at' => $this->created_at,

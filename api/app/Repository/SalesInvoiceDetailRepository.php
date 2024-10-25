@@ -22,6 +22,7 @@ class SalesInvoiceDetailRepository implements SalesInvoiceDetailRepositoryInterf
     {
         $salesInvoiceDetail = new SalesInvoiceDetail();
         $salesInvoiceDetail->sales_invoice_id = $payload->sales_invoice_id;
+        $salesInvoiceDetail->sales_invoice_ref_doc_no = $payload->sales_invoice_ref_doc_no;
         $salesInvoiceDetail->product_id = $payload->product_id;
         $salesInvoiceDetail->barcode = $payload->barcode;
         $salesInvoiceDetail->unit = $payload->unit;
@@ -37,6 +38,7 @@ class SalesInvoiceDetailRepository implements SalesInvoiceDetailRepositoryInterf
     {
         $salesInvoiceDetail = SalesInvoiceDetail::findOrFail($id);
         $salesInvoiceDetail->sales_invoice_id = $payload->sales_invoice_id;
+        $salesInvoiceDetail->sales_invoice_ref_doc_no = $payload->sales_invoice_ref_doc_no;
         $salesInvoiceDetail->product_id = $payload->product_id;
         $salesInvoiceDetail->barcode = $payload->barcode;
         $salesInvoiceDetail->unit = $payload->unit;

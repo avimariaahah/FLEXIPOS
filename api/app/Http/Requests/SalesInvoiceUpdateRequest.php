@@ -23,13 +23,14 @@ class SalesInvoiceUpdateRequest extends FormRequest
     {
         return [
             'branch_id',
-            'sales_order_id' => 'required',
+            'sales_order_id',
             'customer_id' => 'required',
             'prepared_by_id' => 'required',
+            'sales_representative' => 'required',
             'cancelled_by_id',
             'approved_by_id',
             'invoice_no',
-            'sales_invoice_ref_doc_no',
+            'document_no',
             'date',
             'due_date',
             'terms',

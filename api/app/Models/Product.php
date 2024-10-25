@@ -20,6 +20,7 @@ class Product extends Model
         'retail_unit',
         'wholesale_quantity',
         'current_price',
+        'expiry_date',
         'reorder_point',
         'markup',
         'is_active',

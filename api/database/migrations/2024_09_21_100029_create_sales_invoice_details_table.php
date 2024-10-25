@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('sales_invoice_id');
             $table->unsignedBigInteger('product_id');
+            $table->string('sales_invoice_ref_doc_no');
             $table->string('barcode');
             $table->string('unit');
             $table->string('expiry_date');

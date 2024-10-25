@@ -36,6 +36,7 @@ class BillDetail extends Model
             if ($product) {
                 $product->quantity_onhand += $billDetail->quantity;
                 $product->current_price = $billDetail->price;
+                $product->expiry_date = $billDetail->expiry_date;
                 $product->save();
             }
         });

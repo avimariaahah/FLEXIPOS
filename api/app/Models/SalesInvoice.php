@@ -17,10 +17,11 @@ class SalesInvoice extends Model
         'sales_order_id',
         'customer_id',
         'prepared_by_id',
+        'sales_representative',
         'cancelled_by_id',
         'approved_by_id',
         'invoice_no',
-        'sales_invoice_ref_doc_no',
+        'document_no',
         'date',
         'due_date',
         'terms',
@@ -34,7 +35,7 @@ class SalesInvoice extends Model
         parent::boot();
 
         static::creating(function ($sales_invoice) {
-            $sales_invoice->sales_invoice_ref_doc_no = self::generateInvoiceRefDocNo();
+            $sales_invoice->document_no = self::generateInvoiceRefDocNo();
         });
     }
 
@@ -43,9 +44,9 @@ class SalesInvoice extends Model
         // Generate a unique OR number, e.g., using current date in mm/dd/yyyy format and current timestamp
         $date = now()->format('m/d/Y');
         $timestamp = now()->format('His');
-        return 'SI-' . $date . '-' . $timestamp . '-' . rand(1000, 9999);
-    }
 
+        return 'SI-'.$date.'-'.$timestamp.'-'.rand(1000, 9999);
+    }
 
     public function branch(): BelongsTo
     {
@@ -70,6 +71,11 @@ class SalesInvoice extends Model
     public function approve(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function sales_representative(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class);
     }
 
     public function sales_invoice_detail(): HasMany

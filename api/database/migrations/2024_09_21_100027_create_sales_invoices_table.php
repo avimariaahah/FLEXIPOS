@@ -14,17 +14,15 @@ return new class extends Migration
             $table->unsignedBigInteger('sales_order_id')->nullable();
             $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('prepared_by_id');
+            $table->unsignedBigInteger('sales_representative');
             $table->unsignedBigInteger('cancelled_by_id')->nullable();
             $table->unsignedBigInteger('approved_by_id')->nullable();
             $table->string('invoice_no');
-            $table->string('sales_invoice_ref_doc_no');
             $table->string('date');
             $table->string('due_date');
             $table->string('terms');
             $table->string('amount');
-            $table->string('approve_id');
-            $table->string('document_no');
-            $table->string('date');
+            $table->string('document_no')->nullable();
             $table->string('remarks')->nullable();
             $table->boolean('is_cancelled')->nullable();
             $table->boolean('is_approved')->nullable();
@@ -38,6 +36,7 @@ return new class extends Migration
             $table->foreign('prepared_by_id')->references('id')->on('employees')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('cancelled_by_id')->references('id')->on('employees')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('approved_by_id')->references('id')->on('employees')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('sales_representative')->references('id')->on('employees')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

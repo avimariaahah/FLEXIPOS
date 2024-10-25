@@ -48,6 +48,7 @@ use App\Service\PaymentDetailService;
 use App\Service\PaymentService;
 use App\Service\ProductCategoryService;
 use App\Service\ProductService;
+use App\Service\SalesInvoiceDetailService;
 use App\Service\SalesInvoiceService;
 use App\Service\SupplierService;
 use App\Service\UserService;
@@ -88,7 +89,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(PaymentServiceInterface::class, PaymentService::class);
         $this->app->bind(PaymentDetailServiceInterface::class, PaymentDetailService::class);
         $this->app->bind(SalesInvoiceServiceInterface::class, SalesInvoiceService::class);
-        $this->app->bind(SalesInvoiceDetailServiceInterface::class, SalesInvoiceService::class);
+        $this->app->bind(SalesInvoiceDetailServiceInterface::class, SalesInvoiceDetailService::class);
     }
 
     /**

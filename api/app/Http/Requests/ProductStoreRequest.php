@@ -31,6 +31,7 @@ class ProductStoreRequest extends FormRequest
             'retail_unit' => 'required',
             'wholesale_quantity' => 'required',
             'current_price',
+            'expiry_date',
             'reorder_point' => 'required',
             'markup' => 'required',
             'is_active' => 'required',

@@ -12,6 +12,7 @@ class SalesInvoiceDetail extends Model
 
     protected $fillable = [
         'sales_invoice_id',
+        'sales_invoice_ref_doc_no',
         'product_id',
         'barcode',
         'unit',

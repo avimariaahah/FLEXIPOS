@@ -228,13 +228,9 @@ const lastname = computed(() => localStorage.getItem('lastname'));
 const dateConfig = ref<{ dateFormat: string }>({ dateFormat: "m/d/Y" });
 
 const currentTablePage = ref(1);
-const yesNoOptions = [
-    { value: true, label: "YES" },
-    { value: false, label: "NO" },
-];
 
 // Alert and i18n setup
-const { successAlert, errorAlert } = useAlert();
+const { successAlert, errorAlert, warningAlert } = useAlert();
 const { t } = useI18n();
 
 const runtimeConfig = useRuntimeConfig();
@@ -452,7 +448,6 @@ async function saveBill() {
             // Create new bill.
             const response = await billService.createBills(billData);
             if (response && response.data.id) {
-                alert('Bill has been added! The value of the ID is: ' + response.data.id);
                 console.log(response);
 
                 // Save bill details
@@ -515,7 +510,7 @@ const deleteBill = async (id: number) => {
 
 const addBillDetails = () => {
     if (billDetail.value.price === '') {
-        alert('Please enter all fields.');
+        warningAlert(t('Error'), t('Please enter all fields.'));
         return;
     }
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('retail_unit');
             $table->string('wholesale_quantity');
             $table->string('current_price')->default(0);
+            $table->string('expiry_date')->nullable();
             $table->string('reorder_point');
             $table->string('markup');
             $table->boolean('is_active');

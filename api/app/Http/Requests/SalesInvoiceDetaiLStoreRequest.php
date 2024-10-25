@@ -23,6 +23,7 @@ class SalesInvoiceDetailStoreRequest extends FormRequest
     {
         return [
             'sales_invoice_id' => 'required',
+            'sales_invoice_ref_doc_no' => 'required',
             'product_id' => 'required',
             'barcode',
             'unit',
