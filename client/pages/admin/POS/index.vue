@@ -405,10 +405,11 @@ const calculateNet = computed(() => {
 });
 
 const calculateTotalDiscount = computed(() => {
-    let discountPercentage = 0.20; // 20% discount
-    let totalAmount = formattedTotalAmount.value;
-    let discountAmount = Number(totalAmount) * discountPercentage; // Calculate discount amount
-    return Number(totalAmount) - discountAmount; // Subtract discount amount from total
+    // let discountPercentage = 0.20; // 20% discount
+    // let totalAmount = formattedTotalAmount.value;
+    // let discountAmount = Number(totalAmount) * discountPercentage; // Calculate discount amount
+    // return Number(totalAmount) - discountAmount; // Subtract discount amount from total
+    return 0;
 });
 
 const getCashTendered = computed(() => {

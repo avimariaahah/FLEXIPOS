@@ -5,12 +5,20 @@
     </Head>
     <LoadingSpinner :isActive="state.isPageLoading">
         <div class="flex h-screen items-center justify-center">
-            <div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-                <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-md">
+            <div class=" min-h-screen flex flex-col justify-center sm:px-6 lg:px-8">
+                <div class="sm:mx-auto sm:w-full sm:max-w-md">
                     <div class="py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                        <div class="flex justify-center mb-7">
-                            <h3>Register</h3>
-                        </div>
+                        <button @click="backToHome">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6 hover:text-zinc-500">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                            </svg>
+                        </button>
+                        <img class="mx-auto h-10 w-auto" src="/public/images/Logo.png" alt="Your Company" />
+                        <h2 class=" text-center text-xl font-bold leading-9 tracking-tight text-gray-900">
+                            Register your account
+                        </h2>
                         <form class="mt-3 space-y-3" @submit.prevent="createUserAccount">
                             <div class="space-y-2">
                                 <div class="flex justify-center">
@@ -190,5 +198,9 @@ async function createUserAccount() {
 function navigateToLogin(event: Event) {
     event.preventDefault();
     window.location.href = '/signin'; // Navigate to the login page
+}
+
+function backToHome() {
+    navigateTo('./');
 }
 </script>
