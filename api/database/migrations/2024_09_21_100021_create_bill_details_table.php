@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('expiry_date');
             $table->string('quantity');
             $table->string('price');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
 

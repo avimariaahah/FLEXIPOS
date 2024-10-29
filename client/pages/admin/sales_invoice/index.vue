@@ -220,7 +220,7 @@ async function fetchSalesInvoice() {
 }
 
 function goToSalesInvoice() {
-    navigateTo('sales_invoice/sales_invoice_detail');
+    navigateTo('sales_invoice/create');
 }
 
 function editSale(index: number) {

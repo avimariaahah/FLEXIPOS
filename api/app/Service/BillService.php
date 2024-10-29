@@ -5,6 +5,9 @@ namespace App\Service;
 use App\Http\Resources\BillResource;
 use App\Interface\Repository\BillRepositoryInterface;
 use App\Interface\Service\BillServiceInterface;
+use App\Models\Bill;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BillService implements BillServiceInterface
 {
@@ -43,8 +46,29 @@ class BillService implements BillServiceInterface
         return new BillResource($bill);
     }
 
-    public function removeBills(int $id)
+    // Remove bills and adjust quantities
+    public function removeBills(int $billId)
     {
-        return $this->billRepository->delete($id);
+        return DB::transaction(function () use ($billId) {
+            $bill = Bill::findOrFail($billId);
+            $billDetails = $bill->billDetails; // Load bill details before deletion
+
+            // Adjust quantities before deleting the bill
+            foreach ($billDetails as $billDetail) {
+                $product = $billDetail->product;
+                if ($product) {
+                    // Adjust the product's quantity
+                    $product->quantity_onhand -= $billDetail->quantity;
+                    $product->save();
+
+                    Log::info("Adjusted Product ID: {$product->id} quantity by -{$billDetail->quantity}");
+                }
+            }
+
+            // Now delete the bill
+            $bill->delete();
+
+            return response()->json(['message' => 'Bill deleted successfully'], 200);
+        });
     }
 }

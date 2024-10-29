@@ -18,84 +18,11 @@
                     </div>
 
                     <!-- Add Product Button -->
-                    <button @click="toggleForm" type="button"
+                    <button @click="navigateToCreate" type="button"
                         class="rounded-md bg-gray-900 px-3 py-2 text-center text-xxs font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900 flex items-center justify-center gap-2">
                         <PlusIcon class="h-3 w-3" aria-hidden="true" />
                         New Payment
                     </button>
-                </div>
-
-                <!-- Payment Form -->
-                <div v-if="showForm" class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
-                    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-                        <form @submit.prevent="submitPayment">
-                            <div class="grid grid-cols-1 gap-4">
-                                <div class="flex items-center">
-                                    <label for="paymentType" class="text-xxs font-medium text-gray-700 w-24">Payment
-                                        Type</label>
-                                    <select id="paymentType" v-model="payment.payment_type"
-                                        class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-sm px-3 py-2"
-                                        required>
-                                        <option value="" disabled>Select Payment Type</option>
-                                        <option value="Cash">Cash</option>
-                                        <option value="Cheque">Cheque</option>
-                                    </select>
-                                </div>
-
-                                <div class="flex items-center">
-                                    <label for="paymentDate" class="text-xxs font-medium text-gray-700 w-24">Payment
-                                        Date</label>
-                                    <input id="paymentDate" v-model="payment.payment_date" type="date"
-                                        class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-sm px-3 py-2"
-                                        required />
-                                </div>
-                                <div class="flex items-center">
-                                    <label for="supplier"
-                                        class="text-xxs font-medium text-gray-700 w-24">Supplier</label>
-                                    <select id="supplier" v-model="payment.supplier"
-                                        class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-sm px-3 py-2"
-                                        required>
-                                        <!-- <option value="" disabled>Select Supplier</option>
-                        <option v-for="supplier in suppliers" :key="supplier.id" :value="supplier.name">
-                        {{ supplier.name }}
-                        </option> -->
-                                    </select>
-                                </div>
-
-                                <div class="flex items-center">
-                                    <label for="cashVoucherNo" class="text-xxs font-medium text-gray-700 w-24">Cash
-                                        Voucher No</label>
-                                    <input id="cashVoucherNo" v-model="payment.cash_voucher_no" type="text"
-                                        class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-sm px-3 py-2" />
-                                </div>
-                                <div class="flex items-center">
-                                    <label for="isCancelled" class="text-xxs font-medium text-gray-700 w-24">Is
-                                        Cancelled</label>
-                                    <select id="isCancelled" v-model="payment.is_cancelled"
-                                        class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-xs px-3 py-2">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                                <div class="flex items-center">
-                                    <label for="preparedById" class="text-xxs font-medium text-gray-700 w-24">Prepared
-                                        By ID</label>
-                                    <input id="preparedById" v-model="payment.prepared_by_id" type="text"
-                                        class="block flex-1 rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-sm px-3 py-2" />
-                                </div>
-                            </div>
-                            <div class="flex justify-end gap-2 mt-4">
-                                <button type="submit"
-                                    class="rounded-md bg-gray-900 px-4 py-2 text-xxs font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-                                    Save
-                                </button>
-                                <button @click="toggleForm" type="button"
-                                    class="rounded-md bg-gray-200 px-4 py-2 text-xxs font-semibold text-gray-700 shadow-sm hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300">
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
-                    </div>
                 </div>
 
                 <!-- Payments List Table -->
@@ -262,5 +189,9 @@ function nextPage() {
     if (currentPage.value < totalPages.value) {
         currentPage.value++;
     }
+}
+
+function navigateToCreate() {
+    navigateTo("payments/create")
 }
 </script>
