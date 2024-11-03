@@ -44,11 +44,14 @@
                             </div>
                             <div class="w-1/4">
                                 <FormLabel label="Cash Voucher Number" />
-                                <FormTextField id="cashvoucher" name="cashvoucher" placeholder="voucher number" />
+                                <FormTextField id="cashvoucher" name="cashvoucher" v-model="makepayment.cash_voucher_no"
+                                    placeholder="voucher number" />
                             </div>
                             <div class="w-1/4">
                                 <FormLabel label="Date" />
-                                <FormTextField id="cashvoucher" name="cashvoucher" placeholder="mm/dd/yyyy" />
+                                <input id="date" type="date" v-model="makepayment.date"
+                                    class="block w-full rounded-md border border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500 text-sm px-3 py-2"
+                                    required />
                             </div>
                             <div class="w-1/4">
                                 <FormLabel label="Prepared By" />
@@ -66,7 +69,7 @@
                             </div>
                         </div>
                         <div v-if="state.selectedSupplierId" class="flex mt-8">
-                            <div class="w-6/12">
+                            <div class="w-full">
                                 <div class="relative">
                                     <div class="absolute inset-0 flex items-center" aria-hidden="true">
                                         <div class="w-full border-t border-gray-300" />
@@ -104,7 +107,86 @@
                                 </div>
                                 <!-- <Pagination :data="state.categories" @previous="previous" @next="next" /> -->
                             </div>
-                            <div class="w-6/12">
+                        </div>
+                        <div v-if="state.selectedSupplierId" class="flex space-x-4 mt-8">
+                            <div class="w-1/2">
+                                <FormLabel label="Bill ID" />
+                                <FormNumberField id="billid" name="Bill ID" v-model="selectedbillinput.bill_id"
+                                    placeholder="Bill ID" />
+                                <FormLabel label="Purchase Order Number" />
+                                <FormTextField id="ponumber" name="ponumber"
+                                    v-model="selectedbillinput.purchase_order_no" placeholder="Purchase Order Number" />
+                                <FormLabel label="Date" />
+                                <FormTextField id="date" name="date" v-model="selectedbillinput.bill_date"
+                                    placeholder="Date" />
+                                <FormLabel label="amount" />
+                                <FormNumberField id="amount" name="amount" v-model="selectedbillinput.amount"
+                                    placeholder="Amount" />
+                                <FormLabel label="Payment Amount" />
+                                <FormNumberField id="paymentamount" name="paymentamount"
+                                    v-model="selectedbillinput.amount_to_pay" placeholder="Payment Amount" />
+                                <FormButton class="mt-3 w-full" button-style="success" @click="addBillsPaymentDetail">
+                                    Add Bills
+                                    Payment
+                                    Detail
+                                </FormButton>
+                            </div>
+                            <div class="w-1/2">
+                                <FormButton v-if="payment.payment_type === 'cheque'" button-style="xxx">Add Cheque
+                                </FormButton>
+                                <FormLabel v-if="payment.payment_type === 'cheque'" label="Cheque Amount" />
+                                <FormNumberField v-if="payment.payment_type === 'cheque'" v-model="payment.cheque"
+                                    name="chequeamount" placeholder="Cheque Amount" />
+                                <FormLabel v-if="payment.payment_type === 'gcash'" label="Gcash Amount" />
+                                <FormNumberField v-if="payment.payment_type === 'gcash'" v-model="payment.gcash"
+                                    name="gcashamount" placeholder="Gcash Amount" />
+                                <FormLabel v-if="payment.payment_type === 'gcash'" label="Gcash Reference Number" />
+                                <FormNumberField v-if="payment.payment_type === 'gcash'"
+                                    v-model="payment.gcashreference" name="gcashreference"
+                                    placeholder="Gcash Reference Number" />
+                                <FormLabel label="Cash Amount" />
+                                <FormNumberField v-model="payment.cash" name="cashamount" placeholder="Cash Amount" />
+                                <FormLabel label="Total Amount" />
+                                <FormNumberField v-model="formattedPaymentAmount" name="totalamount"
+                                    placeholder="Total Amount" readonly />
+                                <FormLabel label="Total Payment Amount" />
+                                <FormNumberField v-model="formattedTotalAmountToPay" name="totalamount"
+                                    placeholder="Amount to Pay" readonly />
+                            </div>
+                        </div>
+                        <div class="flex space-x-4 mt-8">
+                            <div v-if="state.selectedSupplierId" class="w-full">
+                                <div class="relative">
+                                    <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                                        <div class="w-full border-t border-gray-300" />
+                                    </div>
+                                    <div class="relative flex">
+                                        <h2 class="bg-white text-lg font-normal">Cheque Details</h2>
+                                    </div>
+                                </div>
+                                <!-- Product table -->
+                                <Alert type="danger" :text="state.error?.message" v-if="state.error" />
+                                <div class="table-responsive">
+                                    <Table :columnHeaders="state.chequeDetailColumnHeader" :data="state.cheques"
+                                        :isLoading="state.isTableLoading" :sortData="state.sortData" @sort="sort">
+                                        <template #body v-if="!state.isTableLoading && state.cheques?.data.length">
+                                            <tr v-for="(cheque, index) in state.cheques?.data" :key="index">
+                                                <td class="pl-3">
+                                                    {{ cheque.id }}
+                                                </td>
+                                                <td class="pl-3">
+                                                    {{ cheque.purchase_order_no }}
+                                                </td>
+                                                <td class="pl-3">
+                                                    {{ cheque.bill_date }}
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </Table>
+                                </div>
+                                <!-- <Pagination :data="state.categories" @previous="previous" @next="next" /> -->
+                            </div>
+                            <div class="w-full">
                                 <div class="relative">
                                     <div class="absolute inset-0 flex items-center" aria-hidden="true">
                                         <div class="w-full border-t border-gray-300" />
@@ -134,9 +216,7 @@
                                                     {{ bill.amount }}
                                                 </td>
                                                 <td class="pl-3">
-                                                    <FormNumberField id="paymentamount" name="paymentamount"
-                                                        v-model="paymentAmountNumber.toString"
-                                                        placeholder="Payment Amount" />
+                                                    {{ bill.paymentamount }}
                                                 </td>
                                             </tr>
                                         </template>
@@ -146,64 +226,7 @@
                             </div>
                         </div>
                         <div v-if="state.selectedSupplierId" class="flex space-x-4 mt-8">
-                            <div v-if="payment.payment_type === 'cheque'" class="w-6/12">
-                                <div class="relative">
-                                    <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                                        <div class="w-full border-t border-gray-300" />
-                                    </div>
-                                    <div class="relative flex">
-                                        <h2 class="bg-white text-lg font-normal">Cheque Details</h2>
-                                    </div>
-                                </div>
-                                <!-- Product table -->
-                                <Alert type="danger" :text="state.error?.message" v-if="state.error" />
-                                <div class="table-responsive">
-                                    <Table :columnHeaders="state.selectedBillColumnHeader" :data="state.selectedBills"
-                                        :isLoading="state.isTableLoading" :sortData="state.sortData" @sort="sort">
-                                        <template #body
-                                            v-if="!state.isTableLoading && state.selectedBills?.data.length">
-                                            <tr v-for="(bill, index) in state.selectedBills?.data" :key="index">
-                                                <td class="pl-3">
-                                                    {{ bill.id }}
-                                                </td>
-                                                <td class="pl-3">
-                                                    {{ bill.purchase_order_no }}
-                                                </td>
-                                                <td class="pl-3">
-                                                    {{ bill.bill_date }}
-                                                </td>
-                                                <td class="pl-3">
-                                                    {{ bill.amount }}
-                                                </td>
-                                                <td class="pl-3">
-                                                    <FormNumberField id="paymentamount" name="paymentamount"
-                                                        v-model="paymentAmountNumber.toString" placeholder="0" />
-                                                </td>
-                                            </tr>
-                                        </template>
-                                    </Table>
-                                </div>
-                                <!-- <Pagination :data="state.categories" @previous="previous" @next="next" /> -->
-                            </div>
-                            <div class="w-1/2">
-                                <FormButton v-if="payment.payment_type === 'cheque'" button-style="xxx">Add Cheque
-                                </FormButton>
-                                <FormLabel v-if="payment.payment_type === 'cheque'" label="Cheque Amount" />
-                                <FormNumberField v-if="payment.payment_type === 'cheque'" v-model="payment.cheque"
-                                    name="chequeamount" placeholder="Cheque Amount" />
-                                <FormLabel v-if="payment.payment_type === 'gcash'" label="Gcash Amount" />
-                                <FormNumberField v-if="payment.payment_type === 'gcash'" v-model="payment.gcash"
-                                    name="gcashamount" placeholder="Gcash Amount" />
-                                <FormLabel v-if="payment.payment_type === 'gcash'" label="Gcash Reference Number" />
-                                <FormNumberField v-if="payment.payment_type === 'gcash'"
-                                    v-model="payment.gcashreference" name="gcashreference"
-                                    placeholder="Gcash Reference Number" />
-                                <FormLabel label="Cash Amount" />
-                                <FormNumberField v-model="payment.cash" name="cashamount" placeholder="Cash Amount" />
-                                <FormLabel label="Total Amount" />
-                                <FormNumberField v-model="paymentAmountNumber" name="totalamount"
-                                    placeholder="Total Amount" />
-                            </div>
+
                         </div>
                         <div v-if="isPaymentAmountValid" class="flex space-x-4 mt-8">
                             <div class="w-full">
@@ -224,6 +247,8 @@ import type { Error } from '@/types/error';
 import { supplierService } from '~/components/api/admin/SupplierService';
 import { billService } from '~/components/api/admin/BillService';
 import { useI18n } from 'vue-i18n';
+import { billPaymentService } from '~/components/api/admin/BillPaymentService';
+import { billPaymentDetailService } from '~/components/api/admin/BillPaymentDetailService';
 
 // Alert and i18n setup
 const { successAlert } = useAlert();
@@ -246,23 +271,14 @@ interface SelectedBill {
     data: any[];
 }
 
+interface Cheques {
+    data: any[];
+}
+
 interface SortData {
     sortField: string;
     sortOrder: "ascend" | "descend" | null;
 }
-
-const isPaymentAmountValid = computed(() => {
-    return parseFloat(payment.amount) > 0;
-});
-
-const paymentAmountNumber = computed<string>({
-    get() {
-        return Number(payment.gcash) + Number(payment.cheque) + Number(payment.cash); // return as string
-    },
-    set(value) {
-        payment.amount = value; // directly set as string
-    },
-});
 
 function sort(sortingData: { column: string; sort: string }) {
     currentTablePage = 1;
@@ -281,10 +297,36 @@ function sort(sortingData: { column: string; sort: string }) {
     fetchBills();
 }
 
-async function makePayment() {
-    successAlert('Payment successful!', 'Your payment has been successfully made.');
-    navigateTo('/admin/payments');
-}
+// Computed property to check if payment amount is valid
+const isPaymentAmountValid = computed(() => {
+    return paymentAmountNumber.value > 0;
+});
+
+const totalAmountToPay = computed(() => {
+    return state.selectedBills?.data.reduce((total, bill) => total + Number(bill.paymentamount), 0);
+});
+
+const formattedTotalAmountToPay = computed(() => {
+    return totalAmountToPay.value.toFixed(2);
+});
+
+const formattedPaymentAmount = computed({
+    get() {
+        return paymentAmountNumber.value.toString();
+    },
+    set(value) {
+        paymentAmountNumber.value = Number(value);
+    }
+});
+
+const paymentAmountNumber = computed({
+    get() {
+        return Number(payment.gcash) + Number(payment.cheque) + Number(payment.cash);
+    },
+    set(value) {
+        payment.amount = value.toString();
+    },
+});
 
 async function fetchBills() {
     state.error = null;
@@ -324,6 +366,10 @@ interface Supplier {
     is_active: boolean;
 }
 
+interface amountToPay {
+    amount: string;
+}
+
 const supplier = reactive({
     id: '',
     name: '',
@@ -355,6 +401,54 @@ const payment = reactive({
     is_cancelled: false,
 });
 
+interface MakePayment {
+    supplier_id: number;
+    prepared_by_id: number;
+    approved_by_id: number;
+    cancelled_by_id: number;
+    payment_type: string;
+    cash_voucher_no: string;
+    date: string;
+    is_cancelled: boolean;
+}
+
+interface PaySelectedBillDetail {
+    bills_payment_id: number;
+    purchase_order_number: string;
+    date: string;
+    amount: string;
+    amount_to_pay: string;
+}
+
+const paySelectedBills = reactive<PaySelectedBillDetail[]>([]);
+
+const makepayment = reactive({
+    supplier_id: user_id.value,
+    prepared_by_id: user_id.value,
+    approved_by_id: '',
+    cancelled_by_id: '',
+    payment_type: payment.payment_type,
+    cash_voucher_no: payment.voucher_number,
+    date: payment.date,
+    is_cancelled: payment.is_cancelled,
+});
+
+interface selectedBillInput {
+    bill_id: string;
+    purchase_order_no: string;
+    bill_date: string;
+    amount: string;
+    amount_to_pay: string;
+}
+
+const selectedbillinput = reactive({
+    bill_id: '',
+    purchase_order_no: '',
+    bill_date: '',
+    amount: '',
+    amount_to_pay: '',
+});
+
 const state = reactive({
     unpaidBillColumnHeader: [
         { name: "ID", sorter: true, key: "id" },
@@ -368,16 +462,24 @@ const state = reactive({
         { name: "P.O. Number", sorter: true, key: "poNumber" },
         { name: "Date", sorter: true, key: "date" },
         { name: "Amount", sorter: true, key: "amount" },
-        { name: "Amount to pay", sorter: true, key: "paymentamount" },
+        { name: "Payment Amount", sorter: true, key: "paymentamount" },
+    ],
+    chequeDetailColumnHeader: [
+        { name: "Cheque Number", sorter: true, key: "chequeNumber" },
+        { name: "Cheque Date", sorter: true, key: "chequeDate" },
+        { name: "Amount", sorter: true, key: "amount" },
     ],
     isTableLoading: false,
     error: null as Error | null,
     sortData: { sortField: 'id', sortOrder: 'ascend' } as SortData,
     unpaidBills: { data: [] } as UnpaidBill,
     selectedBills: { data: [] } as SelectedBill,
+    cheques: { data: [] } as Cheques,
     suppliers: [] as Supplier[],
     payments: [] as Payment[],
+    makepaymentsData: [] as MakePayment[],
     selectedSupplierId: null as number | null,
+    paySelectedBills: [] as PaySelectedBillDetail[],
 });
 
 async function fetchSuppliers() {
@@ -390,18 +492,107 @@ async function fetchSuppliers() {
     }
 }
 
-function selectBill(bill: any) {
-    // Remove the selected bill from unpaidBills and add it to selectedBills
-    const index = state.unpaidBills.data.findIndex((b) => b.id === bill.id);
-    if (index !== -1) {
-        // Move the bill to selectedBills
-        state.selectedBills.data.push(state.unpaidBills.data.splice(index, 1)[0]);
+function selectBill(bill: Bill) {
+    const selectedBill = state.unpaidBills.data.find((b) => b.id === bill.id);
+    if (selectedBill) {
+        // Populate selectedbillinput with the selected bill's data
+        selectedbillinput.bill_id = selectedBill.id;
+        selectedbillinput.purchase_order_no = selectedBill.purchase_order_no;
+        selectedbillinput.bill_date = selectedBill.bill_date;
+        selectedbillinput.amount = selectedBill.amount;
+    }
+}
+function addBillsPaymentDetail() {
+    console.log("selected bill amount to pay input: ", selectedbillinput.amount_to_pay);
+    console.log("selected bill amount input: ", selectedbillinput.amount);
+    if (Number(selectedbillinput.amount_to_pay) > Number(selectedbillinput.amount)) {
+        errorAlert('Error', 'Payment amount cannot be greater than the bill amount');
+        return; // Early return to prevent adding the bill
+    }
+
+    const newBill: Bill = {
+        id: selectedbillinput.bill_id,
+        purchase_order_no: selectedbillinput.purchase_order_no,
+        bill_date: selectedbillinput.bill_date,
+        amount: selectedbillinput.amount,
+        paymentamount: selectedbillinput.amount_to_pay,
+    };
+
+    state.selectedBills.data.push(newBill);
+
+    // Optionally clear the form
+    selectedbillinput.bill_id = '';
+    selectedbillinput.purchase_order_no = '';
+    selectedbillinput.bill_date = '';
+    selectedbillinput.amount = '';
+    selectedbillinput.amount_to_pay = '';
+}
+
+
+async function makePayment() {
+    try {
+        const paymentData = {
+            prepared_by_id: user_id.value,
+            approved_by_id: makepayment.approved_by_id,
+            cancelled_by_id: makepayment.cancelled_by_id,
+            payment_date: makepayment.date,
+            payment_type: makepayment.payment_type,
+            cash_voucher_no: makepayment.cash_voucher_no,
+            is_cancelled: payment.is_cancelled,
+        };
+
+        console.log('Payment Data', paymentData);
+        console.log('Selected Bills Data:', state.selectedBills.data);
+        state.selectedBills.data.forEach(bill => {
+            console.log('BILL ID FROM SELECTED BILLS:', bill.id);
+        });
+        console.log('Payment Amount:', formattedPaymentAmount.value);
+
+        //Create new bill.
+        const response = await billPaymentService.createBillPayment(paymentData);
+
+        if (response && response.data.id) {
+            console.log(response);
+
+            // Save bill payment details
+            for (const detail of state.selectedBills.data) {
+                const billPaymentDetail = {
+                    bill_id: detail.id,
+                    bills_payment_id: response.data.id,
+                    amount: detail.paymentamount,
+                };
+
+                console.log('Saving bill payment detail:', billPaymentDetail); // Log the detail being saved
+                const result = await billPaymentDetailService.createBillPaymentDetail(billPaymentDetail);
+
+                if (result) {
+                    console.log('Bill Payment detail saved successfully:', result);
+                } else {
+                    console.error('Failed to save bill payment detail:', billPaymentDetail);
+                }
+            }
+            successAlert(t('alert.bill_created'), t('alert.success'));
+        } else {
+            errorAlert(t('Error'), t('Failed to create bill.'));
+        }
+
+        if (makepayment.payment_type === 'cheque') {
+            console.log('inserting cheque details to db');
+        }
+        else {
+            console.log('cash payment no need to save cheque details.');
+        }
+        navigateTo('/admin/payments');
+    }
+    catch (error: any) {
+        console.error('Error saving bill:', error.message);
+        errorAlert(t('Error'), t('An error occurred while saving the bill.'));
     }
 }
 
-// watch(() => payment.amount, (newAmount) => {
-//     console.log('Payment amount changed:', newAmount);
-// });
+watch(() => payment.amount, (newAmount) => {
+    console.log('Payment amount changed:', newAmount);
+});
 
 watch(
     () => state.selectedSupplierId,
@@ -420,6 +611,7 @@ watch(
 
         // Update the name in billDetail if the selected product exists
         if (selectedSupplier) {
+            supplier.id = selectedSupplier.id;
             supplier.name = selectedSupplier.name;
             supplier.email = selectedSupplier.email;
             supplier.phone = selectedSupplier.phone;

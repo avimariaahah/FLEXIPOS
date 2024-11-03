@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class BillsPaymentDetail extends Model
+class BillPaymentDetail extends Model
 {
     use HasFactory;
 
@@ -23,6 +23,6 @@ class BillsPaymentDetail extends Model
 
     public function billsPayment(): BelongsTo
     {
-        return $this->belongsTo(BillsPayment::class);
+        return $this->belongsTo(BillPayment::class);
     }
 }

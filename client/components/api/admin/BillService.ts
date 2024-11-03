@@ -1,4 +1,3 @@
-import axios from "axios";
 import BaseAPIService from "../BaseAPIService";
 
 class BillService extends BaseAPIService {

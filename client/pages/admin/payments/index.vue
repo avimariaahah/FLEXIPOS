@@ -27,70 +27,55 @@
 
                 <!-- Payments List Table -->
                 <div class="mt-4 overflow-x-auto">
-                    <table class="min-w-full bg-white rounded-lg shadow-md mt-2 rounded-b-lg">
-                        <thead>
-                            <tr class="text-left">
-                                <th class="px-4 py-2 text-xxs font-semibold text-white bg-gray-900">payment_type</th>
-                                <th class="px-4 py-2 text-xxs font-semibold text-white bg-gray-900">payment_date</th>
-                                <th class="px-4 py-2 text-xxs font-semibold text-white bg-gray-900">supplier</th>
-                                <th class="px-4 py-2 text-xxs font-semibold text-white bg-gray-900">cash_voucher_no</th>
-                                <th class="px-4 py-2 text-xxs font-semibold text-white bg-gray-900">is_cancelled</th>
-                                <th class="px-4 py-2 text-xxs font-semibold text-white bg-gray-900">prepared_by_id</th>
-                                <th class="px-4 py-2 text-xxs font-semibold text-white bg-gray-900 rounded-tr-lg">
-                                    actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-gray-100">
-                            <tr v-for="(payment, index) in paginatedPayments" :key="index" class="border-t bg-gray-50">
-                                <td class="px-4 py-2 text-xxs text-gray-700">{{ payment.payment_type }}</td>
-                                <td class="px-4 py-2 text-xxs text-gray-700">{{ payment.payment_date }}</td>
-                                <td class="px-4 py-2 text-xxs text-gray-700">{{ payment.supplier }}</td>
-                                <td class="px-4 py-2 text-xxs text-gray-700">{{ payment.cash_voucher_no }}</td>
-                                <td class="px-4 py-2 text-xxs text-gray-700">{{ payment.is_cancelled }}</td>
-                                <td class="px-4 py-2 text-xxs text-gray-700">{{ payment.prepared_by_id }}</td>
-                                <td class="px-4 py-2 text-xxs text-gray-700">
-                                    <div class="flex space-x-2">
-                                        <button @click="editPayment(index)" class="text-gray-600 hover:text-gray-900">
-                                            <!-- Edit Icon -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                                fill="currentColor">
-                                                <path
-                                                    d="M17.414 2.586a2 2 0 00-2.828 0l-10 10V16a1 1 0 001 1h3.414l10-10a2 2 0 000-2.828l-1.586-1.586zM5 13l-1.5 1.5V13h1.5zm4.5-4.5L14 4l2 2-4.5 4.5H9.5V8.5z" />
-                                            </svg>
-                                        </button>
-                                        <button @click="deletePayment(index)" class="text-red-600 hover:text-red-900">
-                                            <!-- Delete Icon -->
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                                fill="currentColor">
-                                                <path fill-rule="evenodd"
-                                                    d="M6 2a2 2 0 00-2 2v1H2v2h1v9a2 2 0 002 2h8a2 2 0 002-2V7h1V5h-2V4a2 2 0 00-2-2H6zm4 12a1 1 0 102 0V8a1 1 0 10-2 0v6zm-3-1a1 1 0 002 0V8a1 1 0 10-2 0v5zm8-1a1 1 0 10-2 0V8a1 1 0 102 0v5z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr v-if="payments.length === 0">
-                                <td colspan="7" class="px-4 py-2 text-xxs text-gray-500 text-center bg-gray-100">No
-                                    payments available.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <!-- Pagination Controls -->
-                    <div class="flex justify-between items-center mt-4">
-                        <span class="text-xxs text-gray-700 ml-1">Page {{ currentPage }} of {{ totalPages }}</span>
-                        <div class="flex space-x-2">
-                            <button @click="previousPage" :disabled="currentPage === 1"
-                                class="px-4 py-2 text-xxs font-semibold text-gray-900 bg-gray-200 rounded-md hover:bg-gray-300 disabled:bg-gray-100">
-                                Previous
-                            </button>
-                            <button @click="nextPage" :disabled="currentPage === totalPages"
-                                class="px-4 py-2 text-xxs font-semibold text-white bg-gray-900 rounded-md hover:bg-gray-800 disabled:bg-gray-700">
-                                Next
-                            </button>
-                        </div>
+                    <!-- Product Table -->
+                    <Alert type="danger" :text="state.error?.message" v-if="state.error" />
+                    <div class="table-responsive">
+                        <Table :columnHeaders="state.unpaidBillColumnHeader" :data="state.billPayment"
+                            :isLoading="state.isTableLoading" :sortData="state.sortData" @sort="sort">
+                            <template #body v-if="!state.isTableLoading && state.billPayment?.data.length">
+                                <tr v-for="(billpayment, index) in state.billPayment?.data" :key="index">
+                                    <td class="pl-3">
+                                        {{ billpayment.prepared_by_id }}
+                                    </td>
+                                    <td class="pl-3">
+                                        {{ billpayment.approved_by_id }}
+                                    </td>
+                                    <td class="pl-3">
+                                        {{ billpayment.cancelled_by_id }}
+                                    </td>
+                                    <td class="pl-3">
+                                        {{ billpayment.payment_date }}
+                                    </td>
+                                    <td class="pl-3">
+                                        {{ billpayment.payment_type }}
+                                    </td>
+                                    <td class="pl-3">
+                                        {{ billpayment.cash_voucher_no }}
+                                    </td>
+                                    <td class="pl-3">
+                                        {{ billpayment.is_cancelled }}
+                                    </td>
+                                    <td class="pl-3">
+                                        <div class="flex space-x-2">
+                                            <button @click="viewBill(bill.id)"
+                                                class="text-gray-600 hover:text-gray-900">
+                                                View
+                                            </button>
+                                            <button @click="editBill(bill.id)"
+                                                class="text-gray-600 hover:text-gray-900">
+                                                Edit
+                                            </button>
+                                            <button @click="deleteBill(bill.id)"
+                                                class="text-red-600 hover:text-red-900">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </Table>
                     </div>
+                    <!-- <Pagination :data="state.categories" @previous="previous" @next="next" /> -->
                 </div>
             </main>
         </NuxtLayout>
@@ -100,35 +85,90 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { PlusIcon } from '@heroicons/vue/24/outline';
+import { billPaymentService } from '~/components/api/admin/BillPaymentService';
+import { employeeService } from '~/components/api/admin/EmployeeService';
 
-const showForm = ref(false);
-const payment = ref({
-    payment_type: '',
-    payment_date: '',
-    supplier: '',
-    cash_voucher_no: '',
-    is_cancelled: 'No',
-    prepared_by_id: ''
+interface BillPayment {
+    data: any[];
+}
+
+const currentTablePage = 1;
+
+interface SortData {
+    sortField: string;
+    sortOrder: "ascend" | "descend" | null;
+}
+
+function sort(sortingData: { column: string; sort: string }) {
+    currentTablePage = 1;
+    if (sortingData.sort === 'ascend' || sortingData.sort === 'descend') {
+        state.sortData = {
+            sortField: sortingData.column,
+            sortOrder: sortingData.sort,
+        };
+    } else {
+        console.error('Invalid sort order:', sortingData.sort);
+        state.sortData = {
+            sortField: sortingData.column,
+            sortOrder: 'ascend',
+        };
+    }
+}
+
+const state = reactive({
+    unpaidBillColumnHeader: [
+        { name: "Prepared By", sorter: true, key: "preparedby" },
+        { name: "Approved By", sorter: true, key: "approvedby" },
+        { name: "Cancelled By", sorter: true, key: "cancelledby" },
+        { name: "Payment Date", sorter: true, key: "paymentdate" },
+        { name: "Payment Type", sorter: true, key: "paymentype" },
+        { name: "Cash Voucher No", sorter: true, key: "cvn" },
+        { name: "Is Cancelled", sorter: true, key: "is_cancelled" },
+        { name: "Actions", sorter: true, key: "actions" },
+    ],
+    isTableLoading: false,
+    error: null as Error | null,
+    billPayment: { data: [] } as BillPayment,
+    sortData: { sortField: 'id', sortOrder: 'ascend' } as SortData,
+    employees: [],
 });
-const payments = ref<Array<{
-    payment_type: string,
-    payment_date: string,
-    supplier: string,
-    cash_voucher_no: string,
-    is_cancelled: string,
-    prepared_by_id: string
-}>>([]);
-const currentPage = ref(1);
-const itemsPerPage = 10;
-let editingIndex = ref<number | null>(null);
 
-const totalPages = computed(() => Math.ceil(payments.value.length / itemsPerPage));
+// Function to fetch employees
+async function fetchEmployees() {
+    try {
+        const response = await employeeService.getEmployees();
+        state.employees = response.data; // Assuming the response structure contains the employee data
+    } catch (error) {
+        console.error('Failed to fetch employees:', error);
+        state.error = error;
+    }
+}
 
-const paginatedPayments = computed(() => {
-    const start = (currentPage.value - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    return payments.value.slice(start, end);
-});
+// Update fetchBillsPayment to replace IDs with employee names
+async function fetchBillsPayment() {
+    state.error = null;
+    state.isTableLoading = true;
+    fetchEmployees();
+    try {
+        const response = await billPaymentService.getBillPayments();
+        state.billPayment = response; // Store the fetched bill payments
+
+        // Map employee IDs to names
+        state.billPayment.data.forEach(billpayment => {
+            const preparedBy = state.employees.find(emp => emp.id === billpayment.prepared_by_id);
+            const approvedBy = state.employees.find(emp => emp.id === billpayment.approved_by_id);
+            const cancelledBy = state.employees.find(emp => emp.id === billpayment.cancelled_by_id);
+
+            billpayment.prepared_by_id = preparedBy ? `${preparedBy.firstname} ${preparedBy.lastname}` : '';
+            billpayment.approved_by_id = approvedBy ? `${approvedBy.firstname} ${approvedBy.lastname}` : '';
+            billpayment.cancelled_by_id = cancelledBy ? `${cancelledBy.firstname} ${cancelledBy.lastname}` : '';
+        });
+    } catch (error: any) {
+        state.error = error;
+    }
+    state.isTableLoading = false;
+}
+
 
 function toggleForm() {
     showForm.value = !showForm.value;
@@ -149,26 +189,6 @@ function resetPaymentForm() {
     };
 }
 
-function submitPayment() {
-    if (isPaymentFormValid()) {
-        if (editingIndex.value !== null) {
-            // Update the existing payment.
-            payments.value[editingIndex.value] = { ...payment.value };
-            editingIndex.value = null;
-        } else {
-            // Add a new payment.
-            payments.value.push({ ...payment.value });
-        }
-        resetPaymentForm();
-        showForm.value = false;
-    }
-}
-
-function isPaymentFormValid() {
-    return payment.value.payment_type.trim() !== '' &&
-        payment.value.supplier.trim() !== '';
-}
-
 function editPayment(index: number) {
     payment.value = { ...payments.value[index] };
     editingIndex.value = index;
@@ -179,19 +199,23 @@ function deletePayment(index: number) {
     payments.value.splice(index, 1);
 }
 
-function previousPage() {
-    if (currentPage.value > 1) {
-        currentPage.value--;
-    }
-}
+// function previousPage() {
+//     if (currentPage.value > 1) {
+//         currentPage.value--;
+//     }
+// }
 
-function nextPage() {
-    if (currentPage.value < totalPages.value) {
-        currentPage.value++;
-    }
-}
+// function nextPage() {
+//     if (currentPage.value < totalPages.value) {
+//         currentPage.value++;
+//     }
+// }
 
 function navigateToCreate() {
     navigateTo("payments/create")
 }
+
+onMounted(() => {
+    fetchBillsPayment();
+});
 </script>

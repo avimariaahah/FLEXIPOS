@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class BillsPayment extends Model
+class BillPayment extends Model
 {
     use HasFactory;
 
@@ -20,6 +20,13 @@ class BillsPayment extends Model
         'cash_voucher_no',
         'is_cancelled',
     ];
+
+    public function casts(): array
+    {
+        return [
+            'is_cancelled' => 'boolean',
+        ];
+    }
 
     public function prepared_by(): BelongsTo
     {
@@ -38,6 +45,6 @@ class BillsPayment extends Model
 
     public function billsPaymentDetail(): HasMany
     {
-        return $this->hasMany(BillsPaymentDetail::class);
+        return $this->hasMany(BillPaymentDetail::class);
     }
 }

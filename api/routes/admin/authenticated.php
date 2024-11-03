@@ -4,6 +4,9 @@ use App\Http\Controllers\Api\Admin\AdminController;
 use App\Http\Controllers\Api\Admin\AuthController;
 use App\Http\Controllers\Api\Admin\BillController;
 use App\Http\Controllers\Api\Admin\BillDetailController;
+use App\Http\Controllers\Api\Admin\BillPaymentChequeController;
+use App\Http\Controllers\Api\Admin\BillPaymentController;
+use App\Http\Controllers\Api\Admin\BillPaymentDetailController;
 use App\Http\Controllers\Api\Admin\CustomerController;
 use App\Http\Controllers\Api\Admin\EmployeeController;
 use App\Http\Controllers\Api\Admin\PaymentController;
@@ -30,6 +33,9 @@ Route::middleware('auth:sanctum')->group(function () {
         'payment_details' => PaymentDetailController::class,
         'sales_invoice' => SalesInvoiceController::class,
         'sales_invoice_details' => SalesInvoiceDetailController::class,
+        'bills_payment' => BillPaymentController::class,
+        'bills_payment_details' => BillPaymentDetailController::class,
+        'bills_payment_cheques' => BillPaymentChequeController::class,
     ]);
 
     Route::apiResource('admin', AdminController::class)->except(['store']);

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class BillsPaymentCheque extends Model
+class BillPaymentCheque extends Model
 {
     use HasFactory;
 
@@ -21,7 +21,7 @@ class BillsPaymentCheque extends Model
 
     public function billsPayment(): BelongsTo
     {
-        return $this->belongsTo(BillsPayment::class);
+        return $this->belongsTo(BillPayment::class);
     }
 
     // public function bank(): BelongsTo
