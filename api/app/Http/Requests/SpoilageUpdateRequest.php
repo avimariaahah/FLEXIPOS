@@ -22,11 +22,13 @@ class SpoilageUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'required',
-            'reported_by_id' => 'required',
-            'quantity' => 'required',
-            'damage_type' => 'required',
-            'status' => 'required',
+            'branch_no' => 'required',
+            'damaged_date' => 'required',
+            'remarks' => 'required',
+            'prepared_by_id' => 'required',
+            'approved_by_id',
+            'is_cancelled',
+            'cancelled_by',
         ];
     }
 }

@@ -271,7 +271,7 @@ const navigation = [
             { name: "Sales Invoice", href: "/admin/sales_invoice", icon: DocumentTextIcon, current: false },
             { name: "Collections", href: "/admin/collections", icon: DocumentDuplicateIcon, current: false },
             { name: "Credit Memo", href: "/admin/creditmemo", icon: UserCircleIcon, current: false },
-            { name: "Damages / Spoilage", href: "/admin/payments", icon: CreditCardIcon, current: false },
+            { name: "Damages / Spoilage", href: "damage_spoilage", icon: CreditCardIcon, current: false },
             { name: "Replacement", href: "/admin/replacements", icon: UserCircleIcon, current: false },
         ],
     },

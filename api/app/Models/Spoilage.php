@@ -12,11 +12,13 @@ class Spoilage extends Model
     use HasFactory;
 
     protected $fillable = [
-        'product_id',
-        'reported_by_id',
-        'quantity',
-        'damage_type',
-        'status',
+        'branch_no',
+        'damaged_date',
+        'remarks',
+        'prepared_by_id',
+        'approved_by_id',
+        'is_cancelled',
+        'cancelled_by',
     ];
 
     public function product(): BelongsTo

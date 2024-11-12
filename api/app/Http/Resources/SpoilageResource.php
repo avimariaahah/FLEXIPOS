@@ -16,11 +16,13 @@ class SpoilageResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'reported_by_id' => $this->reported_by_id,
-            'product_id' => $this->product_id,
-            'quantity' => $this->quantity,
-            'damage_type' => $this->damage_type,
-            'status' => $this->status,
+            'branch_no' => $this->branch_no,
+            'prepared_by_id' => $this->prepared_by_id,
+            'damaged_date' => $this->damaged_date,
+            'remarks' => $this->remarks,
+            'approved_by_id' => $this->approved_by_id,
+            'is_cancelled' => $this->is_cancelled,
+            'cancelled_by' => $this->cancelled_by,
             'created_at' => $this->created_at,
         ];
     }

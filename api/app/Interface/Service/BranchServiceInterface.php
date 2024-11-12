@@ -13,4 +13,7 @@ interface BranchServiceInterface
     public function updateProductCategory(object $payload, int $id);
 
     public function removeProductCategory(int $id);
+
+    public function findAllBranches(); 
+
 }

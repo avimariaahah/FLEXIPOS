@@ -35,7 +35,7 @@
                 </div>
                 <!-- Product Form -->
                 <div v-if="showForm" class="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50">
-                    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg h-96 overflow-y-auto">
                         <form @submit.prevent="saveProduct">
                             <FormLabel label="Product Details" class="text-xl" />
                             <Alert type="danger" :text="state?.error?.message"

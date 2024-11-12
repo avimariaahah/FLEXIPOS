@@ -15,12 +15,12 @@ class SpoilageDetailResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'spoilage_id' => $this->supplier_return_id,
+            'spoilage_id' => $this->spoilage_id,
             'product_id' => $this->product_id,
             'quantity' => $this->quantity,
-            'description' => $this->description,
-            'financial_impact' => $this->financial_impact,
+            'unit' => $this->unit,
+            'expiry_date' => $this->expiry_date,
+            'cost_per_quantity' => $this->cost_per_quantity,
             'created_at' => $this->created_at,
         ];
     }

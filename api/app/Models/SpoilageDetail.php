@@ -13,9 +13,10 @@ class SpoilageDetail extends Model
     protected $fillable = [
         'spoilage_id',
         'product_id',
+        'unit',
+        'expiry_date',
         'quantity',
-        'description',
-        'financial_impact',
+        'cost_per_quantity',
     ];
 
     public function spoilage(): BelongsTo

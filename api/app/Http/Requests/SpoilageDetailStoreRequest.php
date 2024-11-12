@@ -24,9 +24,10 @@ class SpoilageDetailStoreRequest extends FormRequest
         return [
             'spoilage_id' => 'required',
             'product_id' => 'required',
+            'unit' => 'required',
+            'expiry_date' => 'required',
             'quantity' => 'required',
-            'description' => 'required',
-            'financial_impact' => 'required',
+            'cost_per_quantity' => 'required',
         ];
     }
 }
